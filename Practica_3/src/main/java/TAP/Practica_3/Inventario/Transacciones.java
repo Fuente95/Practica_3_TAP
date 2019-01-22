@@ -39,4 +39,24 @@ public class Transacciones {
 	public void setCantidadTransaccion(Integer cantidadTransaccion) {
 		this.cantidadTransaccion = cantidadTransaccion;
 	}
+	
+	// Getter de la fecha
+	public Date getFechaTransaccion() {
+		return fechaTransaccion;
+	}
+	
+	// Setter de la fecha
+	public void setFechaTransaccion(Date fechaTransaccion) {
+		this.fechaTransaccion = fechaTransaccion;
+	}
+	
+	// Getter de la identificación
+	public Integer getIdentificacionTransaccion() {
+		return identifacionTransaccion;
+	}
+	
+	// Setter de la identificación
+	public void setIdentificacionTransaccion(Integer identifacionTransaccion) {
+		this.identifacionTransaccion = identifacionTransaccion;
+	}
 }
