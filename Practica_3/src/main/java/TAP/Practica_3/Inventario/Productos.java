@@ -27,6 +27,7 @@ public class Productos {
 		return componentesProducto;
 	}
 	
+	//
 	public void setComponentes (ArrayList <Productos> componentesProducto) {
 		this.componentesProducto = componentesProducto;
 	}
