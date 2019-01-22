@@ -30,4 +30,28 @@ public class Productos {
 	public void setComponentes (ArrayList <Productos> componentesProducto) {
 		this.componentesProducto = componentesProducto;
 	}
+	
+	public String getNombreProducto () {
+		return nombreProducto;
+	}
+	
+	public void setNombreProducto (String nombreProducto) {
+		this.nombreProducto = nombreProducto;
+	}
+	
+	public Integer getCantidadProducto () {
+		return cantidadProducto;
+	}
+	
+	public void setCantidadProducto (Integer cantidadProducto) {
+		this.cantidadProducto = cantidadProducto;
+	}
+	
+	public Double getPrecioFabricacionProducto () {
+		return preciofabProducto;
+	}
+	
+	public void setPrecioFabricacionProducto (Double preciofabProducto) {
+		this.preciofabProducto = preciofabProducto;
+	}
 }
