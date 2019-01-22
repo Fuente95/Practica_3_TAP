@@ -12,7 +12,6 @@ public class Almacen {
 	
 	// Creamos el constructor
 	private Almacen() {
-		// Añadimos un elemento al arraylist
 		almacen = new ArrayList<Productos>();
 	}
 	
@@ -26,7 +25,7 @@ public class Almacen {
 	
 	// Creamos los getters y setters necesarios
 	// Getter de los productos que se encuentran en el almacen
-	public ArrayList<Productos> getProductosAlmacen() {
+	public ArrayList <Productos> getProductosAlmacen() {
 		return almacen;
 	}
 	
