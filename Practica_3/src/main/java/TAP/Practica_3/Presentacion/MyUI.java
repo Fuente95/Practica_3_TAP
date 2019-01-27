@@ -1,4 +1,4 @@
-package TAP.Practica_3.UI;
+package TAP.Practica_3.Presentacion;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,6 +23,8 @@ import com.vaadin.ui.VerticalLayout;
 
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
+import TAP.Practica_3.Logica.CambiarDolares;
+import TAP.Practica_3.Logica.CambiarEuros;
 
 
 /**
