@@ -12,6 +12,11 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import TAP.Practica_3.Inventario.Productos;
+import TAP.Practica_3.Inventario.Transacciones;
+import TAP.Practica_3.Logica.CambiarDolares;
+import TAP.Practica_3.Logica.CambiarEuros;
+
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
  * (or tab) or some part of an HTML page where a Vaadin application is embedded.
@@ -22,13 +27,19 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-    /**
-	 * 
-	 */
+    // Creación de las variables necesarias
+	private Productos productoEscogido;
+	private Transacciones transaccionRealizada;
+	private Double preciofabProducto = 0.0;
+	
 	private static final long serialVersionUID = 1L;
 
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
+		
+		CambiarDolares eurosAdolares = new CambiarDolares(); 
+		CambiarEuros dolaresAeuros = new CambiarEuros();
+		
         final VerticalLayout layout = new VerticalLayout();
         
         final TextField name = new TextField();
