@@ -10,6 +10,9 @@ public class Transacciones {
 	private Integer cantidadTransaccion;
 	private Double costeTransaccion = 0.0;
 	
+	public Transacciones() {
+		
+	}
 	// Creamos el constructor
 	public Transacciones (Date fechaTransaccion, Integer identificacionTransaccion, 
 			Integer cantidadTransaccion) {
