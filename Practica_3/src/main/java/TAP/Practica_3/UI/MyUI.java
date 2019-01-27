@@ -1,4 +1,4 @@
-package TAP.Practica_3.Interfaz;
+package TAP.Practica_3.UI;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +21,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-
+import TAP.Practica_3.Inventario.Productos;
+import TAP.Practica_3.Inventario.Transacciones;
 
 
 /**
@@ -34,11 +35,19 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+	// Creamos algunas variables 
+	private Productos productoSeleccionado;
+	private Transacciones transaccionSeleccionada;
+	private Double costesfabProducto = 0.0;
+	
 	private static final long serialVersionUID = 1L;
 
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
 
+		CambiarEuros eurosAdolares = new CambiarEuros();
+		CambiarDolares dolaresAeuros = new CambiarDolares();
+		
 		final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Panel de prueba");
         layout.addComponent(loginPanel);
