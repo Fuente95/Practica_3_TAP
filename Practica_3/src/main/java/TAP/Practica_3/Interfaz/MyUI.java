@@ -6,8 +6,11 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -41,18 +44,26 @@ public class MyUI extends UI {
 		CambiarEuros dolaresAeuros = new CambiarEuros();
 		
         final VerticalLayout layout = new VerticalLayout();
+        final Panel loginPanel = new Panel("Panel de prueba");
+        layout.addComponent(loginPanel);
+        loginPanel.setSizeFull();
         
+        final FormLayout loginForm = new FormLayout();
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
 
         Button button = new Button("Click Me");
         button.addClickListener(e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue() 
+            loginForm.addComponent(new Label("Thanks " + name.getValue() 
                     + ", it works!"));
         });
         
-        layout.addComponents(name, button);
+        loginForm.addComponent(name);
+        loginForm.addComponent(button);
         
+        loginPanel.setContent(loginForm);
+        layout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        layout.setSizeFull();
         setContent(layout);
     }
 
