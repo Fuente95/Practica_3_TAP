@@ -62,7 +62,7 @@ public class MyUI extends UI {
 		TextField campoCantidadProducto = new TextField("Cantidad del producto:");
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
-		Label dato1 = new Label("Datos de los productos");
+		Label indicacionDatos = new Label("Datos de los productos");
 		
 		// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -71,14 +71,32 @@ public class MyUI extends UI {
     	// Usaremos una organización en horizontal
     	HorizontalLayout horizontalLayout = new HorizontalLayout();	
     	
-    	// Creamos los botones para añadir productos
+    	// Creamos los botones para añadir ó modificar los productos
     	Button botonAniadirModProducto = new Button("Añadir/Modificar un producto");
+    	botonAniadirModProducto.setWidth("260px");
+    	
+    	// Damos un formato a los distintos campos
+    	campoNombreProducto.setWidth("260px");
+    	campoCantidadProducto.setWidth("260px");
+    	campoPrecioProducto.setWidth("260px");
+    	campoCosteFabProducto.setWidth("260px");
+    	
+    	// Creamos unos checkbox para poder crear los productos
+    	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
+    	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
+    	ArrayList<String> nombresComponentes = new ArrayList<String>() ;
+		while (recorrerLista1.hasNext()) {
+				nombresComponentes.add(recorrerLista1.next().getNombreProducto());
+				//precio.add(it.next().getPrecioFabricacion());
+			}
+    	opcionesComponentes.setItems(nombresComponentes);
     	
     	// Creamos el formulario
     	organizacion1.addComponents(campoNombreProducto, 
     			campoCantidadProducto,
     			campoPrecioProducto,
     			campoCosteFabProducto,
+    			opcionesComponentes,
     			botonAniadirModProducto);
     	organizacion2.addComponents(tablaDatos);
     	
@@ -91,8 +109,11 @@ public class MyUI extends UI {
     	tablaDatos.setWidth("550px");
     	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponents(dato1,organizacion1, organizacion2);
+    	horizontalLayout.addComponents(indicacionDatos,organizacion1, organizacion2);
     	setContent(horizontalLayout);
+    	
+    	
+    	
     	
 		/*final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Gestión de Inventario");
