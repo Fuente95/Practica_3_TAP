@@ -56,24 +56,31 @@ public class MyUI extends UI {
 		
 		// Creamos los elementos el formulario que tiene que rellenar
 		// el usuario
-		FormLayout formularioDatos = new FormLayout();
-		FormLayout formularioTransacciones = new FormLayout();
+		FormLayout organizacion1 = new FormLayout();
+		FormLayout organizacion2 = new FormLayout();
 		TextField campoNombreProducto = new TextField("Nombre del producto:");
 		TextField campoCantidadProducto = new TextField("Cantidad del producto:");
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
+		Label dato1 = new Label("Datos de los productos");
 		
 		// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
     	
+    	// Usaremos una organización en horizontal
     	HorizontalLayout horizontalLayout = new HorizontalLayout();	
     	
+    	// Creamos los botones para añadir productos
+    	Button botonAniadirModProducto = new Button("Añadir/Modificar un producto");
+    	
     	// Creamos el formulario
-    	formularioDatos.addComponents(campoNombreProducto, 
+    	organizacion1.addComponents(campoNombreProducto, 
     			campoCantidadProducto,
     			campoPrecioProducto,
-    			campoCosteFabProducto);
+    			campoCosteFabProducto,
+    			botonAniadirModProducto);
+    	organizacion2.addComponents(tablaDatos);
     	
     	// Visualizamos los productos mediante la tabla
     	tablaDatos.addColumn(Productos::getNombreProducto).setCaption("Nombre del producto");
@@ -83,9 +90,8 @@ public class MyUI extends UI {
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	tablaDatos.setWidth("550px");
     	
-    	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponents(formularioDatos, tablaDatos);
+    	horizontalLayout.addComponents(dato1,organizacion1, organizacion2);
     	setContent(horizontalLayout);
     	
 		/*final VerticalLayout layout = new VerticalLayout();
