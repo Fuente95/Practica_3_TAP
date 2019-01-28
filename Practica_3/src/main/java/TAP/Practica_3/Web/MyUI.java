@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -21,6 +22,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import TAP.Practica_3.Inventario.Almacen;
 import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
@@ -73,8 +75,17 @@ public class MyUI extends UI {
     			campoPrecioProducto,
     			campoCosteFabProducto);
     	
+    	// Visualizamos los productos mediante la tabla
+    	tablaDatos.addColumn(Productos::getNombreProducto).setCaption("Nombre del producto");
+    	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
+    	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Precio de fabricación");
+    	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
+    	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    	tablaDatos.setWidth("550px");
+    	
+    	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponent(formularioDatos);
+    	horizontalLayout.addComponents(formularioDatos, tablaDatos);
     	setContent(horizontalLayout);
     	
 		/*final VerticalLayout layout = new VerticalLayout();
