@@ -28,7 +28,6 @@ import TAP.Practica_3.Logica.CambiarDolares;
 import TAP.Practica_3.Logica.CambiarEuros;
 
 
-
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
  * (or tab) or some part of an HTML page where a Vaadin application is embedded.
@@ -62,7 +61,23 @@ public class MyUI extends UI {
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
 		
-		final VerticalLayout layout = new VerticalLayout();
+		// Creamos las tablas qué usaremos para visualizar datos
+    	Grid<Productos> tablaDatos = new Grid<Productos>();
+    	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
+    	
+    	HorizontalLayout horizontalLayout = new HorizontalLayout();	
+    	
+    	// Creamos el formulario
+    	formularioDatos.addComponents(campoNombreProducto, 
+    			campoCantidadProducto,
+    			campoPrecioProducto,
+    			campoCosteFabProducto);
+    	
+    	// Añadimos el formulario a horizontalLayout
+    	horizontalLayout.addComponent(formularioDatos);
+    	setContent(horizontalLayout);
+    	
+		/*final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Gestión de Inventario");
         layout.addComponent(loginPanel);
         loginPanel.setSizeFull();
@@ -85,7 +100,7 @@ public class MyUI extends UI {
         loginPanel.setContent(loginForm);
         layout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
         layout.setSizeFull();
-        setContent(layout);
+        setContent(layout);*/
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
