@@ -28,7 +28,6 @@ import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
 import TAP.Practica_3.Logica.CambiarDolares;
 import TAP.Practica_3.Logica.CambiarEuros;
-import vaadin.Dao.Dominio.Producto;
 
 
 /**
