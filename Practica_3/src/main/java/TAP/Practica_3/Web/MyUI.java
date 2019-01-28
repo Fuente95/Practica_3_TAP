@@ -21,6 +21,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
 import TAP.Practica_3.Logica.CambiarDolares;
@@ -47,12 +48,22 @@ public class MyUI extends UI {
 
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
-
-		CambiarEuros eurosAdolares = new CambiarEuros();
-		CambiarDolares dolaresAeuros = new CambiarDolares();
+		
+		// Cargamos los productos que se encuentran por defecto 
+		Predeterminado productosPre = new Predeterminado();
+		productosPre.Predeterminado();
+		
+		// Creamos los elementos el formulario que tiene que rellenar
+		// el usuario
+		FormLayout formularioDatos = new FormLayout();
+		FormLayout formularioTransacciones = new FormLayout();
+		TextField campoNombreProducto = new TextField("Nombre del producto:");
+		TextField campoCantidadProducto = new TextField("Cantidad del producto:");
+		TextField campoPrecioProducto = new TextField("Precio del producto:");
+		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
 		
 		final VerticalLayout layout = new VerticalLayout();
-        final Panel loginPanel = new Panel("Panel de prueba");
+        final Panel loginPanel = new Panel("Gestión de Inventario");
         layout.addComponent(loginPanel);
         loginPanel.setSizeFull();
 
