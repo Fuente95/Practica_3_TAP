@@ -28,6 +28,7 @@ import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
 import TAP.Practica_3.Logica.CambiarDolares;
 import TAP.Practica_3.Logica.CambiarEuros;
+import vaadin.Dao.Dominio.Producto;
 
 
 /**
@@ -72,8 +73,8 @@ public class MyUI extends UI {
     	HorizontalLayout horizontalLayout = new HorizontalLayout();	
     	
     	// Creamos los botones para añadir ó modificar los productos
-    	Button botonAniadirModProducto = new Button("Añadir/Modificar un producto");
-    	botonAniadirModProducto.setWidth("260px");
+    	Button botonAniadirProducto = new Button("Añadir el producto");
+    	botonAniadirProducto.setWidth("260px");
     	
     	// Damos un formato a los distintos campos
     	campoNombreProducto.setWidth("260px");
@@ -96,7 +97,7 @@ public class MyUI extends UI {
     			campoPrecioProducto,
     			campoCosteFabProducto,
     			opcionesComponentes,
-    			botonAniadirModProducto);
+    			botonAniadirProducto);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Visualizamos los productos mediante la tabla
@@ -111,7 +112,24 @@ public class MyUI extends UI {
     	horizontalLayout.addComponents(indicacionDatos,organizacion1, organizacion2);
     	setContent(horizontalLayout);
     	
-    	
+    	// Añadimos funcionalidad al botón de añadir el producto
+    	botonAniadirProducto.addClickListener(e -> {
+    		
+    		// Comprobamos si existe el producto
+    		if(productoSeleccionado == null) {
+    			Boolean existe = null;
+    			
+    			Iterator<Productos> recorrerLista2 = Almacen.getInstance().getProductosAlmacen().iterator();
+    			
+    			while (recorrerLista2.hasNext()) {
+    				if(recorrerLista2.next().getNombreProducto().equals(campoNombreProducto.getValue())) {
+    					existe = true;
+    				} else {
+
+    				}
+    			}
+    		}
+    	});
     	
     	
 		/*final VerticalLayout layout = new VerticalLayout();
