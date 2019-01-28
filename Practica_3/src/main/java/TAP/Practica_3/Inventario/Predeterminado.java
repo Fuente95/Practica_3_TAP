@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Predeterminado {
 
-	public void Predeterminado() {
+	public void  Predeterminado() {
 		
 		if (Almacen.getInstance().getProductosAlmacen().isEmpty()) {
 			// Creamos algunos datos para añadir
