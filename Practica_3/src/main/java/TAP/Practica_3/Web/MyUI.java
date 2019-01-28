@@ -87,7 +87,6 @@ public class MyUI extends UI {
     	ArrayList<String> nombresComponentes = new ArrayList<String>() ;
 		while (recorrerLista1.hasNext()) {
 				nombresComponentes.add(recorrerLista1.next().getNombreProducto());
-				//precio.add(it.next().getPrecioFabricacion());
 			}
     	opcionesComponentes.setItems(nombresComponentes);
     	
