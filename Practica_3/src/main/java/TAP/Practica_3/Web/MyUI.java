@@ -2,11 +2,13 @@ package TAP.Practica_3.Web;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
@@ -71,7 +73,7 @@ public class MyUI extends UI {
     	// Usaremos una organización en horizontal
     	HorizontalLayout horizontalLayout = new HorizontalLayout();	
     	
-    	// Creamos los botones para añadir ó modificar los productos
+    	// Creamos el botón para añadir nuevos productos
     	Button botonAniadirProducto = new Button("Añadir el producto");
     	botonAniadirProducto.setWidth("260px");
     	
@@ -120,10 +122,49 @@ public class MyUI extends UI {
     			
     			Iterator<Productos> recorrerLista2 = Almacen.getInstance().getProductosAlmacen().iterator();
     			
+    			// Comprobamos si existe el producto en la lista
     			while (recorrerLista2.hasNext()) {
     				if(recorrerLista2.next().getNombreProducto().equals(campoNombreProducto.getValue())) {
     					existe = true;
     				} else {
+    					
+    					// Si no existe, lo añadimos a la lista
+    					if (existe == null) {
+    						// Cogemos los componentes
+    						Set <String> eleccionComponentes = opcionesComponentes.getValue();
+    						double precioEleccion = 0.0;
+    						
+    						// Creamos el array necesario
+    						ArrayList<Productos> componentesProducto = new ArrayList<Productos>();
+    						Iterator<Productos> recorrerLista3 = Almacen.getInstance().getProductosAlmacen().iterator();
+    						
+    						while(recorrerLista3.hasNext()) {
+    							Productos siguienteComponente = recorrerLista3.next();
+    							if(eleccionComponentes.contains(siguienteComponente.getNombreProducto())) {
+    								componentesProducto.add(siguienteComponente);
+    								precioEleccion = siguienteComponente.getPrecioFabricacionProducto();
+    							}
+    						}
+    						
+    						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
+    						Double precioFinalProducto = precioEleccion + precioIntroducido;
+    						
+    						// Añadimos el producto
+    						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),
+    								Integer.parseInt(campoPrecioProducto.getValue()),
+    								precioFinalProducto,
+    								componentesProducto);
+    						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
+    						
+    						// Limpiamos los elementos ya existentes
+    						campoNombreProducto.clear();
+    						campoPrecioProducto.clear();
+    						campoCantidadProducto.clear();
+    						campoCosteFabProducto.clear();
+    						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    						Page.getCurrent().reload();
+    						
+    					}
 
     				}
     			}
