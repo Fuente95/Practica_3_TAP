@@ -77,6 +77,10 @@ public class MyUI extends UI {
     	Button botonAniadirProducto = new Button("Añadir el producto");
     	botonAniadirProducto.setWidth("260px");
     	
+    	// Creamos el botón para modificar un producto
+    	Button botonModificarProducto = new Button("Modificar el producto");
+    	botonModificarProducto.setWidth("260px");
+    	
     	// Damos un formato a los distintos campos
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
@@ -98,7 +102,8 @@ public class MyUI extends UI {
     			campoPrecioProducto,
     			campoCosteFabProducto,
     			opcionesComponentes,
-    			botonAniadirProducto);
+    			botonAniadirProducto,
+    			botonModificarProducto);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Visualizamos los productos mediante la tabla
@@ -156,7 +161,7 @@ public class MyUI extends UI {
     								componentesProducto);
     						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
     						
-    						// Limpiamos los elementos ya existentes
+    						// Limpiamos los campos rellenados
     						campoNombreProducto.clear();
     						campoPrecioProducto.clear();
     						campoCantidadProducto.clear();
