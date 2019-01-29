@@ -65,7 +65,10 @@ public class MyUI extends UI {
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
 		Label indicacionDatos = new Label("Datos de los productos");
-		
+		Label labelNombreProducto = new Label();
+        Label labelCantidadProducto = new Label();
+        Label labelFabricacionProducto = new Label();
+        
 		// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
@@ -176,6 +179,54 @@ public class MyUI extends UI {
     		}
     	});
     	
+    	//Selecion de producto por pantalla
+    	tablaDatos.addItemClickListener(event -> {
+    		
+    		productoSeleccionado = event.getItem();
+        	labelNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+        	labelCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+        	
+        	
+    	});
+    	
+    	// Añadimos funcionalidad al botón de modificar
+    	botonModificarProducto.addClickListener(e -> {
+    		Set <String> eleccionComponentes1 = opcionesComponentes.getValue();
+			double precioEleccion1 = 0.0;
+			
+			// Creamos el array necesario
+			ArrayList<Productos> componentesProducto1 = new ArrayList<Productos>();
+			Iterator<Productos> recorrerLista4 = Almacen.getInstance().getProductosAlmacen().iterator();
+			
+			while(recorrerLista4.hasNext()) {
+				Productos siguienteComponente1 = recorrerLista4.next();
+				if(eleccionComponentes1.contains(siguienteComponente1.getNombreProducto())) {
+					componentesProducto1.add(siguienteComponente1);
+					precioEleccion1 = siguienteComponente1.getPrecioFabricacionProducto();
+				}
+			}
+			
+			Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
+			Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
+			
+			// Añadimos el producto
+			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+			Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(),
+					Integer.parseInt(campoPrecioProducto.getValue()),
+					precioFinalProducto1,
+					componentesProducto1);
+			Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
+			
+			// Limpiamos los campos rellenados
+			productoSeleccionado = null;
+			campoNombreProducto.clear();
+			campoPrecioProducto.clear();
+			campoCantidadProducto.clear();
+			campoCosteFabProducto.clear();
+			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+			Page.getCurrent().reload();
+    	});
     	
 		/*final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Gestión de Inventario");
