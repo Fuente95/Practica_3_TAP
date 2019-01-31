@@ -23,6 +23,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 import TAP.Practica_3.Inventario.Almacen;
 import TAP.Practica_3.Inventario.Predeterminado;
@@ -84,6 +85,10 @@ public class MyUI extends UI {
     	Button botonModificarProducto = new Button("Modificar el producto");
     	botonModificarProducto.setWidth("260px");
     	
+    	// Creamos el botón para ver más opciones de un producto
+    	Button botonMasOpcionesProducto = new Button("Más opciones");
+    	botonMasOpcionesProducto.setWidth("260px");
+    	
     	// Damos un formato a los distintos campos
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
@@ -106,13 +111,14 @@ public class MyUI extends UI {
     			campoCosteFabProducto,
     			opcionesComponentes,
     			botonAniadirProducto,
-    			botonModificarProducto);
+    			botonModificarProducto,
+    			botonMasOpcionesProducto);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Visualizamos los productos mediante la tabla
     	tablaDatos.addColumn(Productos::getNombreProducto).setCaption("Nombre del producto");
     	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
-    	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Precio de fabricación");
+    	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	tablaDatos.setWidth("550px");
@@ -181,13 +187,10 @@ public class MyUI extends UI {
     	
     	//Selecion de producto por pantalla
     	tablaDatos.addItemClickListener(event -> {
-    		
     		productoSeleccionado = event.getItem();
         	labelNombreProducto.setValue(productoSeleccionado.getNombreProducto());
         	labelCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
-        	
-        	
     	});
     	
     	// Añadimos funcionalidad al botón de modificar
@@ -228,6 +231,20 @@ public class MyUI extends UI {
 			Page.getCurrent().reload();
     	});
     	
+    	//Ventana que se abre al clicar con los campos correspondientes
+    	Window pestanaMasOpciones = new Window("Opciones disponibles");
+    	
+      	HorizontalLayout horizontalLayout2 = new HorizontalLayout();	
+        VerticalLayout verticalLayout1 = new VerticalLayout();
+        VerticalLayout verticalLayout2 = new VerticalLayout();
+        
+    	// Añadimos funcionalidad al botón de más opciones
+        botonMasOpcionesProducto.addClickListener(e -> {
+    		
+        	addWindow(pestanaMasOpciones);
+    		
+
+    	});
 		/*final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Gestión de Inventario");
         layout.addComponent(loginPanel);
