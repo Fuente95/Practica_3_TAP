@@ -184,7 +184,7 @@ public class MyUI extends UI {
     			}
     		}
     	});
-    	
+
     	//Selecion de producto por pantalla
     	tablaDatos.addItemClickListener(event -> {
     		productoSeleccionado = event.getItem();
@@ -233,18 +233,24 @@ public class MyUI extends UI {
     	
     	//Ventana que se abre al clicar con los campos correspondientes
     	Window pestanaMasOpciones = new Window("Opciones disponibles");
+    
+    	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
     	
-      	HorizontalLayout horizontalLayout2 = new HorizontalLayout();	
-        VerticalLayout verticalLayout1 = new VerticalLayout();
-        VerticalLayout verticalLayout2 = new VerticalLayout();
-        
+    	Label prueba = new Label("Probando el funcionamiento de la nueva pestaña");
     	// Añadimos funcionalidad al botón de más opciones
-        botonMasOpcionesProducto.addClickListener(e -> {
+        	botonMasOpcionesProducto.addClickListener(e -> {
+            
+            pestanaMasOpciones.setContent(horizontalLayout2);
     		
-        	addWindow(pestanaMasOpciones);
-    		
-
+            horizontalLayout2.addComponent(prueba);
+            
+            // Indicamos que la pestaña salga en el centro
+            pestanaMasOpciones.center();
+            
+            // Hacemos que aparezca la nueva pestaña
+            addWindow(pestanaMasOpciones);
     	});
+        	
 		/*final VerticalLayout layout = new VerticalLayout();
         final Panel loginPanel = new Panel("Gestión de Inventario");
         layout.addComponent(loginPanel);
