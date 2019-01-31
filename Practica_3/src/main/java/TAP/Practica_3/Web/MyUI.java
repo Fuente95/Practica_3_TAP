@@ -182,9 +182,7 @@ public class MyUI extends UI {
     						campoCosteFabProducto.clear();
     						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     						Page.getCurrent().reload();
-    						
     					}
-
     				}
     			}
     		}
@@ -246,48 +244,49 @@ public class MyUI extends UI {
     	//Ventana que se abre al clicar con los campos correspondientes
     	Window pestanaMasOpciones = new Window("Opciones disponibles");
     
-    	HorizontalLayout horizontalLayout3 = new HorizontalLayout();
+    	// Creamos los layout para la nueva pestaña
+    	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+    	FormLayout organizacion3 = new FormLayout();
+    	FormLayout organizacion4 = new FormLayout();
+    	VerticalLayout verticalLayout = new VerticalLayout();
+    	VerticalLayout verticalLayout2 = new VerticalLayout();
     	
-    	Label prueba = new Label("Probando el funcionamiento de la nueva pestaña");
+    	// Creamos los elementos de la pestaña
+    	TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
+    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
+    	Label nombreProducto = new Label("Nombre del producto: ");
+    	Label cantidadProducto = new Label("Cantidad del producto: ");
+    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
     	
+    	// Creamos el boton para sumar cantidades
+    	Button aniadir = new Button("Sumar cantidad");
+    	aniadir.setWidth("260px");
+    	
+    	// Creamos el boton para restar cantidades
+    	Button restar = new Button("Restar cantidad");
+    	restar.setWidth("260px");
+    	
+    	// Creamos un boton para cerrar la pestaña
+        Button cerrar = new Button("Cerrar pestaña");
+        cerrar.setWidth("260px");
+        
+        // Colocamos los elementos en la pestaña
+        verticalLayout.addComponents(aniadirProducto,aniadir, restarProducto, restar, cerrar);
+    	verticalLayout2.addComponents(nombreProducto, cantidadProducto, precioFabProducto);
+    	organizacion3.addComponents(verticalLayout2);
+    	organizacion4.addComponents(verticalLayout);
+    	
+    	horizontalLayout2.addComponents(organizacion3, organizacion4);
+    	pestanaMasOpciones.setContent(horizontalLayout2);
+    	
+        // Indicamos que la pestaña salga en el centro
+        pestanaMasOpciones.center();
+        
     	// Añadimos funcionalidad al botón de más opciones
         botonMasOpcionesProducto.addClickListener(e -> {
-            
-            pestanaMasOpciones.setContent(horizontalLayout3);
-    		
-            horizontalLayout3.addComponent(prueba);
-            
-            // Indicamos que la pestaña salga en el centro
-            pestanaMasOpciones.center();
-            
             // Hacemos que aparezca la nueva pestaña
             addWindow(pestanaMasOpciones);
     	});
-        	
-		/*final VerticalLayout layout = new VerticalLayout();
-        final Panel loginPanel = new Panel("Gestión de Inventario");
-        layout.addComponent(loginPanel);
-        loginPanel.setSizeFull();
-
-        final FormLayout loginForm = new FormLayout();
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
-
-        Button button = new Button("Click Me");
-        button.addClickListener(e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue()));
-            loginForm.addComponent(new Label("Thanks " + name.getValue() 
-                    + ", it works!"));
-        });
-
-        layout.addComponents(name, button);
-        loginForm.addComponent(name);
-        loginForm.addComponent(button);
-
-        loginPanel.setContent(loginForm);
-        layout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
-        layout.setSizeFull();
-        setContent(layout);*/
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
