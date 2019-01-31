@@ -85,6 +85,10 @@ public class MyUI extends UI {
     	Button botonModificarProducto = new Button("Modificar el producto");
     	botonModificarProducto.setWidth("260px");
     	
+    	// Creamos el botón para eliminar un producto
+    	Button botonEliminarProducto = new Button("Eliminar el producto");
+    	botonEliminarProducto.setWidth("260px");
+    	
     	// Creamos el botón para ver más opciones de un producto
     	Button botonMasOpcionesProducto = new Button("Más opciones");
     	botonMasOpcionesProducto.setWidth("260px");
@@ -111,6 +115,7 @@ public class MyUI extends UI {
     			campoCosteFabProducto,
     			opcionesComponentes,
     			botonAniadirProducto,
+    			botonEliminarProducto,
     			botonModificarProducto,
     			botonMasOpcionesProducto);
     	organizacion2.addComponents(tablaDatos);
@@ -191,6 +196,13 @@ public class MyUI extends UI {
         	labelNombreProducto.setValue(productoSeleccionado.getNombreProducto());
         	labelCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+    	});
+    	
+    	// Añadimos funcionalidad al botón de eliminar
+    	botonEliminarProducto.addClickListener(e ->  {
+    		Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+    		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    		Page.getCurrent().reload();
     	});
     	
     	// Añadimos funcionalidad al botón de modificar
