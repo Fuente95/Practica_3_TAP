@@ -246,15 +246,16 @@ public class MyUI extends UI {
     	//Ventana que se abre al clicar con los campos correspondientes
     	Window pestanaMasOpciones = new Window("Opciones disponibles");
     
-    	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+    	HorizontalLayout horizontalLayout3 = new HorizontalLayout();
     	
     	Label prueba = new Label("Probando el funcionamiento de la nueva pestaña");
+    	
     	// Añadimos funcionalidad al botón de más opciones
-        	botonMasOpcionesProducto.addClickListener(e -> {
+        botonMasOpcionesProducto.addClickListener(e -> {
             
-            pestanaMasOpciones.setContent(horizontalLayout2);
+            pestanaMasOpciones.setContent(horizontalLayout3);
     		
-            horizontalLayout2.addComponent(prueba);
+            horizontalLayout3.addComponent(prueba);
             
             // Indicamos que la pestaña salga en el centro
             pestanaMasOpciones.center();
