@@ -7,6 +7,7 @@ public class Productos {
 	// Creamos las variables necesarias
 	private String nombreProducto;
 	private Integer cantidadProducto;
+	private Double precioProducto;
 	private Double preciofabProducto;
 	
 	// Creamos un arraylist con los componentes de cada producto
@@ -17,11 +18,12 @@ public class Productos {
 	}
 	
 	// Creamos el constructor
-	public Productos(String nombreProducto, Integer cantidadProducto, Double preciofabProducto,
+	public Productos(String nombreProducto, Integer cantidadProducto, Double precioProducto, Double preciofabProducto,
 			ArrayList<Productos> componentesProducto) {
 		super();
 		this.nombreProducto = nombreProducto;
 		this.cantidadProducto = cantidadProducto;
+		this.precioProducto = precioProducto;
 		this.preciofabProducto = preciofabProducto;
 		this.componentesProducto = componentesProducto;
 	}
@@ -55,6 +57,16 @@ public class Productos {
 	// Setter de la cantidad de producto
 	public void setCantidadProducto (Integer cantidadProducto) {
 		this.cantidadProducto = cantidadProducto;
+	}
+	
+	// Getter del precio del producto
+	public Double getPrecioProducto() {
+		return precioProducto;
+	}
+	
+	// Setter del precio del producto
+	public void setPrecioProducto (Double precioProducto) {
+		this.precioProducto = precioProducto;
 	}
 	
 	// Getter del precio de fabricación
