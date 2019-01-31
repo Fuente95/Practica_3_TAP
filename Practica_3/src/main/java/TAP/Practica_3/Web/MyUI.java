@@ -57,6 +57,11 @@ public class MyUI extends UI {
 		Predeterminado productosPre = new Predeterminado();
 		productosPre.Predeterminado();
 		
+		// Creamos una nueva pestaña
+		Window avisoError1 = new Window("Error");
+		Window avisoError2 = new Window("Error");
+		Window avisoError3 = new Window("Error");
+		
 		// Creamos los elementos el formulario que tiene que rellenar
 		// el usuario
 		FormLayout organizacion1 = new FormLayout();
@@ -68,8 +73,9 @@ public class MyUI extends UI {
 		Label indicacionDatos = new Label("Datos de los productos");
 		Label labelNombreProducto = new Label();
         Label labelCantidadProducto = new Label();
+        Label labelPrecioProducto = new Label();
         Label labelFabricacionProducto = new Label();
-        
+
 		// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
@@ -90,9 +96,21 @@ public class MyUI extends UI {
     	botonEliminarProducto.setWidth("260px");
     	
     	// Creamos el botón para ver más opciones de un producto
-    	Button botonMasOpcionesProducto = new Button("Más opciones");
+    	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
     	botonMasOpcionesProducto.setWidth("260px");
     	
+    	// Creamos el boton para cerrar una pestaña
+    	Button cerrarE = new Button("Cerrar pestaña");
+        cerrarE.setWidth("260px");
+        
+        // Creamos el boton para cerrar una pestaña
+        Button cerrarM = new Button("Cerrar pestaña");
+        cerrarM.setWidth("260px");
+        
+        // Creamos el boton para cerrar una pestaña
+        Button cerrarA = new Button("Cerrar pestaña");
+        cerrarA.setWidth("260px");
+        
     	// Damos un formato a los distintos campos
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
@@ -123,10 +141,11 @@ public class MyUI extends UI {
     	// Visualizamos los productos mediante la tabla
     	tablaDatos.addColumn(Productos::getNombreProducto).setCaption("Nombre del producto");
     	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
+    	tablaDatos.addColumn(Productos::getPrecioProducto).setCaption("Precio del producto");
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    	tablaDatos.setWidth("550px");
+    	tablaDatos.setWidth("655px");
     	
     	// Añadimos el formulario a horizontalLayout
     	horizontalLayout.addComponents(indicacionDatos,organizacion1, organizacion2);
@@ -170,7 +189,8 @@ public class MyUI extends UI {
     						
     						// Añadimos el producto
     						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),
-    								Integer.parseInt(campoPrecioProducto.getValue()),
+    								Integer.parseInt(campoCantidadProducto.getValue()),
+    								Double.parseDouble(campoPrecioProducto.getValue()),
     								precioFinalProducto,
     								componentesProducto);
     						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
@@ -184,8 +204,21 @@ public class MyUI extends UI {
     						Page.getCurrent().reload();
     					}
     				}
-    			}
+    			} 
+    		} else if (productoSeleccionado != null){
+    			VerticalLayout verticalLayout4 = new VerticalLayout();
+        		Label error3 = new Label("Error, no debe debe seleccionar un producto");
+        		
+        		avisoError3.center();
+        		verticalLayout4.addComponents(error3, cerrarA);
+        		avisoError3.setContent(verticalLayout4);
+        		addWindow(avisoError3);
     		}
+    	});
+    	
+    	// Añadimos funcionalidad al boton de eliminar la pestaña
+    	cerrarA.addClickListener(e -> {
+    		avisoError3.close();
     	});
 
     	//Selecion de producto por pantalla
@@ -193,57 +226,90 @@ public class MyUI extends UI {
     		productoSeleccionado = event.getItem();
         	labelNombreProducto.setValue(productoSeleccionado.getNombreProducto());
         	labelCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        	labelPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
     	});
     	
     	// Añadimos funcionalidad al botón de eliminar
     	botonEliminarProducto.addClickListener(e ->  {
-    		Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-    		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    		Page.getCurrent().reload();
+    		if (productoSeleccionado != null) {
+    			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+    			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    			Page.getCurrent().reload();
+    		} else {
+    			VerticalLayout verticalLayout2 = new VerticalLayout();
+        		Label error1 = new Label("Error, debe seleccionar un producto");
+        		
+        		avisoError1.center();
+        		verticalLayout2.addComponents(error1, cerrarE);
+        		avisoError1.setContent(verticalLayout2);
+        		addWindow(avisoError1);
+    		}
+    	});
+    	
+    	// Añadimos funcionalidad al boton de eliminar la pestaña
+    	cerrarE.addClickListener(e -> {
+    		avisoError1.close();
     	});
     	
     	// Añadimos funcionalidad al botón de modificar
     	botonModificarProducto.addClickListener(e -> {
-    		Set <String> eleccionComponentes1 = opcionesComponentes.getValue();
-			double precioEleccion1 = 0.0;
-			
-			// Creamos el array necesario
-			ArrayList<Productos> componentesProducto1 = new ArrayList<Productos>();
-			Iterator<Productos> recorrerLista4 = Almacen.getInstance().getProductosAlmacen().iterator();
-			
-			while(recorrerLista4.hasNext()) {
-				Productos siguienteComponente1 = recorrerLista4.next();
-				if(eleccionComponentes1.contains(siguienteComponente1.getNombreProducto())) {
-					componentesProducto1.add(siguienteComponente1);
-					precioEleccion1 = siguienteComponente1.getPrecioFabricacionProducto();
+    		if (productoSeleccionado != null) {
+	    		Set <String> eleccionComponentes1 = opcionesComponentes.getValue();
+				double precioEleccion1 = 0.0;
+				
+				// Creamos el array necesario
+				ArrayList<Productos> componentesProducto1 = new ArrayList<Productos>();
+				Iterator<Productos> recorrerLista4 = Almacen.getInstance().getProductosAlmacen().iterator();
+				
+				while(recorrerLista4.hasNext()) {
+					Productos siguienteComponente1 = recorrerLista4.next();
+					if(eleccionComponentes1.contains(siguienteComponente1.getNombreProducto())) {
+						componentesProducto1.add(siguienteComponente1);
+						precioEleccion1 = siguienteComponente1.getPrecioFabricacionProducto();
+					}
 				}
-			}
-			
-			Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
-			Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
-			
-			// Añadimos el producto
-			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-			Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(),
-					Integer.parseInt(campoPrecioProducto.getValue()),
-					precioFinalProducto1,
-					componentesProducto1);
-			Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
-			
-			// Limpiamos los campos rellenados
-			productoSeleccionado = null;
-			campoNombreProducto.clear();
-			campoPrecioProducto.clear();
-			campoCantidadProducto.clear();
-			campoCosteFabProducto.clear();
-			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-			Page.getCurrent().reload();
+				
+				Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
+				Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
+				
+				// Añadimos el producto
+				Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+				Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(),
+						Integer.parseInt(campoCantidadProducto.getValue()),
+						Double.parseDouble(campoPrecioProducto.getValue()),
+						precioFinalProducto1,
+						componentesProducto1);
+				Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
+				
+				// Limpiamos los campos rellenados
+				productoSeleccionado = null;
+				campoNombreProducto.clear();
+				campoPrecioProducto.clear();
+				campoCantidadProducto.clear();
+				campoCosteFabProducto.clear();
+				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+				Page.getCurrent().reload();
+    		} else {
+    			VerticalLayout verticalLayout3 = new VerticalLayout();
+        		Label error2 = new Label("Error, debe seleccionar un producto");
+        		
+        		avisoError2.center();
+        		verticalLayout3.addComponents(error2, cerrarM);
+        		avisoError2.setContent(verticalLayout3);
+        		addWindow(avisoError2);
+    		}
     	});
     	
-    	//Ventana que se abre al clicar con los campos correspondientes
+    	// Añadimos funcionalidad al boton de eliminar la pestaña
+    	cerrarM.addClickListener(e -> {
+    		avisoError2.close();
+    	});
+    	
+    	// Creamos algunas pestañas nuevas
     	Window pestanaMasOpciones = new Window("Opciones disponibles");
-    
+    	Window avisoError = new Window("Error");
+    	
     	// Creamos los layout para la nueva pestaña
     	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
     	FormLayout organizacion3 = new FormLayout();
@@ -253,26 +319,41 @@ public class MyUI extends UI {
     	
     	// Creamos los elementos de la pestaña
     	TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
-    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
-    	Label nombreProducto = new Label("Nombre del producto: ");
-    	Label cantidadProducto = new Label("Cantidad del producto: ");
-    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
+    	aniadirProducto.setWidth("260px");
     	
-    	// Creamos el boton para sumar cantidades
-    	Button aniadir = new Button("Sumar cantidad");
-    	aniadir.setWidth("260px");
+    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
+    	restarProducto.setWidth("260px");
+    	
+    	Label nombreProducto = new Label("Nombre del producto: ");
+    	Label verNombreProducto = new Label("");
+    	Label cantidadProducto = new Label("Cantidad del producto: ");
+    	Label verCantidadProducto = new Label("");
+    	Label precioProducto = new Label("Precio del producto: ");
+    	Label verPrecioProducto = new Label("");
+    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
+    	Label verPrecioFabProducto = new Label("");
+    	
+      	// Creamos el boton para sumar cantidades
+    	Button aniadirCantidad = new Button("Sumar cantidad");
+    	aniadirCantidad.setWidth("260px");
     	
     	// Creamos el boton para restar cantidades
-    	Button restar = new Button("Restar cantidad");
-    	restar.setWidth("260px");
+    	Button restarCantidad = new Button("Restar cantidad");
+    	restarCantidad.setWidth("260px");
     	
-    	// Creamos un boton para cerrar la pestaña
+    	// Creamos unos botones para cerrar las pestañas
         Button cerrar = new Button("Cerrar pestaña");
         cerrar.setWidth("260px");
         
+        Button cerrarO = new Button("Cerrar pestaña");
+        cerrar.setWidth("260px");
+        
         // Colocamos los elementos en la pestaña
-        verticalLayout.addComponents(aniadirProducto,aniadir, restarProducto, restar, cerrar);
-    	verticalLayout2.addComponents(nombreProducto, cantidadProducto, precioFabProducto);
+        verticalLayout.addComponents(aniadirProducto,aniadirCantidad, restarProducto, restarCantidad, cerrar);
+    	verticalLayout2.addComponents(nombreProducto, verNombreProducto,
+    			cantidadProducto,verCantidadProducto,
+    			precioProducto, verPrecioProducto,
+    			precioFabProducto, verPrecioFabProducto);
     	organizacion3.addComponents(verticalLayout2);
     	organizacion4.addComponents(verticalLayout);
     	
@@ -284,9 +365,40 @@ public class MyUI extends UI {
         
     	// Añadimos funcionalidad al botón de más opciones
         botonMasOpcionesProducto.addClickListener(e -> {
-            // Hacemos que aparezca la nueva pestaña
-            addWindow(pestanaMasOpciones);
+        	if(productoSeleccionado != null) {
+        		// Hacemos que aparezca la nueva pestaña
+        		addWindow(pestanaMasOpciones);
+        		
+        		verNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+        		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        		verPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
+        		verPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+        	} else {
+        		
+        		VerticalLayout verticalLayout3 = new VerticalLayout();
+        		Label error = new Label("Error, debe seleccionar un producto");
+        		
+        		avisoError.center();
+        		verticalLayout3.addComponents(error, cerrarO);
+        		avisoError.setContent(verticalLayout3);
+        		addWindow(avisoError);
+        	}
     	});
+        
+        // Añador funcionalidad al boton de cerrar la pestaña
+        cerrarO.addClickListener(e -> {
+        	avisoError.close();
+        });
+        
+        // Añadimos funcionalidad al boton de cerrar la pestaña
+        cerrar.addClickListener(e -> {
+        	pestanaMasOpciones.close();
+        });
+        
+        // Añadimos funcionalidad al boton de sumar cantidades
+        aniadirCantidad.addClickListener(e -> {
+        	
+        });
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
