@@ -58,11 +58,7 @@ public class MyUI extends UI {
 		productosPre.Predeterminado();
 		
 		// Creamos una nueva pestaña
-		Window avisoError1 = new Window("Error");
-		Window avisoError2 = new Window("Error");
-		Window avisoError3 = new Window("Error");
-		Window avisoError4 = new Window("Error");
-		Window avisoError5 = new Window("Error");
+		Window avisoError = new Window("Error");
 		
 		// Creamos los elementos el formulario que tiene que rellenar
 		// el usuario
@@ -219,16 +215,16 @@ public class MyUI extends UI {
     			VerticalLayout verticalLayout4 = new VerticalLayout();
         		Label error3 = new Label("Error, no debe debe seleccionar un producto");
         		
-        		avisoError3.center();
+        		avisoError.center();
         		verticalLayout4.addComponents(error3, cerrarA);
-        		avisoError3.setContent(verticalLayout4);
-        		addWindow(avisoError3);
+        		avisoError.setContent(verticalLayout4);
+        		addWindow(avisoError);
     		}
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	cerrarA.addClickListener(e -> {
-    		avisoError3.close();
+    		avisoError.close();
     	});
 
     	//Selecion de producto por pantalla
@@ -250,16 +246,16 @@ public class MyUI extends UI {
     			VerticalLayout verticalLayout2 = new VerticalLayout();
         		Label error1 = new Label("Error, debe seleccionar un producto");
         		
-        		avisoError1.center();
+        		avisoError.center();
         		verticalLayout2.addComponents(error1, cerrarE);
-        		avisoError1.setContent(verticalLayout2);
-        		addWindow(avisoError1);
+        		avisoError.setContent(verticalLayout2);
+        		addWindow(avisoError);
     		}
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	cerrarE.addClickListener(e -> {
-    		avisoError1.close();
+    		avisoError.close();
     	});
     	
     	// Añadimos funcionalidad al botón de modificar
@@ -304,21 +300,20 @@ public class MyUI extends UI {
     			VerticalLayout verticalLayout3 = new VerticalLayout();
         		Label error2 = new Label("Error, debe seleccionar un producto");
         		
-        		avisoError2.center();
+        		avisoError.center();
         		verticalLayout3.addComponents(error2, cerrarM);
-        		avisoError2.setContent(verticalLayout3);
-        		addWindow(avisoError2);
+        		avisoError.setContent(verticalLayout3);
+        		addWindow(avisoError);
     		}
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	cerrarM.addClickListener(e -> {
-    		avisoError2.close();
+    		avisoError.close();
     	});
     	
     	// Creamos algunas pestañas nuevas
     	Window pestanaMasOpciones = new Window("Opciones disponibles");
-    	Window avisoError = new Window("Error");
     	
     	// Creamos los layout para la nueva pestaña
     	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
@@ -425,16 +420,16 @@ public class MyUI extends UI {
         		VerticalLayout verticalLayout5 = new VerticalLayout();
         		Label error4 = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
         		
-        		avisoError4.center();
+        		avisoError.center();
         		verticalLayout5.addComponents(error4, cerrarS);
-        		avisoError4.setContent(verticalLayout5);
-        		addWindow(avisoError4);
+        		avisoError.setContent(verticalLayout5);
+        		addWindow(avisoError);
         	}
         });
         
         // Añadimos funcionalidad al boton de cerrar
         cerrarS.addClickListener(e -> {
-        	avisoError4.close();
+        	avisoError.close();
         });
         
         // Añadimos funcionalidad al boton de restar cantidad
@@ -465,16 +460,16 @@ public class MyUI extends UI {
         		VerticalLayout verticalLayout6 = new VerticalLayout();
         		Label error5 = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
         		
-        		avisoError5.center();
+        		avisoError.center();
         		verticalLayout6.addComponents(error5, cerrarR);
-        		avisoError5.setContent(verticalLayout6);
-        		addWindow(avisoError5);
+        		avisoError.setContent(verticalLayout6);
+        		addWindow(avisoError);
         	}
         });
         
         // Añadimos funcionalidad al boton de cerrar
         cerrarR.addClickListener(e -> {
-        	avisoError5.close();
+        	avisoError.close();
         });
     }
 
