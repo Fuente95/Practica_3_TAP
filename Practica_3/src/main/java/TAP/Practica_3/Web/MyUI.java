@@ -59,69 +59,101 @@ public class MyUI extends UI {
 		
 		// Creamos una nueva pestaña
 		Window avisoError = new Window("Error");
+		Window pestanaMasOpciones = new Window("Opciones disponibles");
 		
 		// Creamos los elementos el formulario que tiene que rellenar
 		// el usuario
+		FormLayout organizacion = new FormLayout();
 		FormLayout organizacion1 = new FormLayout();
 		FormLayout organizacion2 = new FormLayout();
 		TextField campoNombreProducto = new TextField("Nombre del producto:");
 		TextField campoCantidadProducto = new TextField("Cantidad del producto:");
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
-		Label indicacionDatos = new Label("Datos de los productos");
+		Label indicacionDatos = new Label("Datos de los productos:");
+		Label indicacionTransacciones = new Label("Datos de las transacciones:");
 		Label labelNombreProducto = new Label();
         Label labelCantidadProducto = new Label();
         Label labelPrecioProducto = new Label();
         Label labelFabricacionProducto = new Label();
-
-		// Creamos las tablas qué usaremos para visualizar datos
+        Label errorSinProducto = new Label("Error, debe seleccionar un producto");
+        Label errorConProducto = new Label("Error, no debe seleccionar un producto");
+        Label errorSuma = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
+        Label errorResta = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
+        
+        // Creamos los layout para la nueva pestaña
+        // Usaremos una organización en horizontal
+    	HorizontalLayout horizontalLayout = new HorizontalLayout();
+    	HorizontalLayout horizontalLayout1 = new HorizontalLayout();
+    	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
+    	FormLayout organizacion3 = new FormLayout();
+    	FormLayout organizacion4 = new FormLayout();
+    	VerticalLayout verticalLayout = new VerticalLayout();
+    	VerticalLayout verticalLayout2 = new VerticalLayout();
+    	VerticalLayout verticalLayout3 = new VerticalLayout();
+    	VerticalLayout verticalLayout4 = new VerticalLayout();
+    	VerticalLayout verticalLayout5 = new VerticalLayout();
+    	VerticalLayout verticalLayout6 = new VerticalLayout();
+    	VerticalLayout verticalLayout7 = new VerticalLayout();
+    	VerticalLayout verticalLayout8 = new VerticalLayout();
+    	
+    	// Creamos los elementos de la pestaña
+    	TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
+    	aniadirProducto.setWidth("260px");
+    	
+    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
+    	restarProducto.setWidth("260px");
+    	
+    	Label nombreProducto = new Label("Nombre del producto: ");
+    	Label verNombreProducto = new Label("");
+    	Label cantidadProducto = new Label("Cantidad del producto: ");
+    	Label verCantidadProducto = new Label("");
+    	Label precioProducto = new Label("Precio del producto: ");
+    	Label verPrecioProducto = new Label("");
+    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
+    	Label verPrecioFabProducto = new Label("");
+    	
+    	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
     	
-    	// Usaremos una organización en horizontal
-    	HorizontalLayout horizontalLayout = new HorizontalLayout();	
+      	// Creamos el boton para sumar y restar cantidades
+    	Button aniadirCantidad = new Button("Sumar cantidad");
+    	Button restarCantidad = new Button("Restar cantidad");
     	
-    	// Creamos el botón para añadir nuevos productos
+    	// Creamos los botones para añadir, modificar, eliminar y ver más opciones
     	Button botonAniadirProducto = new Button("Añadir el producto");
-    	botonAniadirProducto.setWidth("260px");
-    	
-    	// Creamos el botón para modificar un producto
     	Button botonModificarProducto = new Button("Modificar el producto");
-    	botonModificarProducto.setWidth("260px");
-    	
-    	// Creamos el botón para eliminar un producto
     	Button botonEliminarProducto = new Button("Eliminar el producto");
-    	botonEliminarProducto.setWidth("260px");
-    	
-    	// Creamos el botón para ver más opciones de un producto
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
-    	botonMasOpcionesProducto.setWidth("260px");
     	
-    	// Creamos el boton para cerrar una pestaña
+    	// Creamos lo botones para cerrar las pestañas
+        Button cerrar = new Button("Cerrar pestaña");
+        Button cerrarO = new Button("Cerrar pestaña");	
     	Button cerrarE = new Button("Cerrar pestaña");
-        cerrarE.setWidth("260px");
-        
-        // Creamos el boton para cerrar una pestaña
         Button cerrarM = new Button("Cerrar pestaña");
-        cerrarM.setWidth("260px");
-        
-        // Creamos el boton para cerrar una pestaña
         Button cerrarA = new Button("Cerrar pestaña");
-        cerrarA.setWidth("260px");
-        
-        // Creamos el boton para cerrar una pestaña
         Button cerrarS = new Button("Cerrar pestaña");
-        cerrarS.setWidth("260px");
-        
-        // Creamos el boton para ceerar una pestaña
         Button cerrarR = new Button("Cerrar pestaña");
-        cerrarR.setWidth("260px");
-
-    	// Damos un formato a los distintos campos
+        
+    	// Damos un formato a los distintos campos, botones
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
     	campoPrecioProducto.setWidth("260px");
     	campoCosteFabProducto.setWidth("260px");
+    	cerrarR.setWidth("420px");
+    	cerrarS.setWidth("420px");
+    	cerrarA.setWidth("260px");
+    	cerrarM.setWidth("260px");
+    	cerrarE.setWidth("260px");
+        cerrarO.setWidth("260px");
+        cerrar.setWidth("260px");
+        aniadirCantidad.setWidth("260px");
+        restarCantidad.setWidth("260px");
+    	botonMasOpcionesProducto.setWidth("260px");
+    	botonEliminarProducto.setWidth("260px");
+    	botonModificarProducto.setWidth("260px");
+    	botonAniadirProducto.setWidth("260px");
     	
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
@@ -133,7 +165,7 @@ public class MyUI extends UI {
     	opcionesComponentes.setItems(nombresComponentes);
     	
     	// Creamos el formulario
-    	organizacion1.addComponents(campoNombreProducto, 
+    	organizacion.addComponents(campoNombreProducto, 
     			campoCantidadProducto,
     			campoPrecioProducto,
     			campoCosteFabProducto,
@@ -152,10 +184,13 @@ public class MyUI extends UI {
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	tablaDatos.setWidth("655px");
+    	tablaDatos.setHeight("460px");
     	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponents(indicacionDatos,organizacion1, organizacion2);
-    	setContent(horizontalLayout);
+    	horizontalLayout.addComponents(indicacionDatos,organizacion, organizacion2);
+    	horizontalLayout1.addComponent(indicacionTransacciones);
+    	organizacion1.addComponents(horizontalLayout, horizontalLayout1);
+    	setContent(organizacion1);
     	
     	// Añadimos funcionalidad al botón de añadir el producto
     	botonAniadirProducto.addClickListener(e -> {
@@ -212,12 +247,9 @@ public class MyUI extends UI {
     				}
     			} 
     		} else if (productoSeleccionado != null){
-    			VerticalLayout verticalLayout4 = new VerticalLayout();
-        		Label error3 = new Label("Error, no debe debe seleccionar un producto");
-        		
         		avisoError.center();
-        		verticalLayout4.addComponents(error3, cerrarA);
-        		avisoError.setContent(verticalLayout4);
+        		verticalLayout3.addComponents(errorConProducto, cerrarA);
+        		avisoError.setContent(verticalLayout3);
         		addWindow(avisoError);
     		}
     	});
@@ -243,12 +275,9 @@ public class MyUI extends UI {
     			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     			Page.getCurrent().reload();
     		} else {
-    			VerticalLayout verticalLayout2 = new VerticalLayout();
-        		Label error1 = new Label("Error, debe seleccionar un producto");
-        		
         		avisoError.center();
-        		verticalLayout2.addComponents(error1, cerrarE);
-        		avisoError.setContent(verticalLayout2);
+        		verticalLayout4.addComponents(errorSinProducto, cerrarE);
+        		avisoError.setContent(verticalLayout4);
         		addWindow(avisoError);
     		}
     	});
@@ -297,12 +326,9 @@ public class MyUI extends UI {
 				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
 				Page.getCurrent().reload();
     		} else {
-    			VerticalLayout verticalLayout3 = new VerticalLayout();
-        		Label error2 = new Label("Error, debe seleccionar un producto");
-        		
         		avisoError.center();
-        		verticalLayout3.addComponents(error2, cerrarM);
-        		avisoError.setContent(verticalLayout3);
+        		verticalLayout5.addComponents(errorSinProducto, cerrarM);
+        		avisoError.setContent(verticalLayout5);
         		addWindow(avisoError);
     		}
     	});
@@ -311,48 +337,7 @@ public class MyUI extends UI {
     	cerrarM.addClickListener(e -> {
     		avisoError.close();
     	});
-    	
-    	// Creamos algunas pestañas nuevas
-    	Window pestanaMasOpciones = new Window("Opciones disponibles");
-    	
-    	// Creamos los layout para la nueva pestaña
-    	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
-    	FormLayout organizacion3 = new FormLayout();
-    	FormLayout organizacion4 = new FormLayout();
-    	VerticalLayout verticalLayout = new VerticalLayout();
-    	VerticalLayout verticalLayout2 = new VerticalLayout();
-    	
-    	// Creamos los elementos de la pestaña
-    	TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
-    	aniadirProducto.setWidth("260px");
-    	
-    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
-    	restarProducto.setWidth("260px");
-    	
-    	Label nombreProducto = new Label("Nombre del producto: ");
-    	Label verNombreProducto = new Label("");
-    	Label cantidadProducto = new Label("Cantidad del producto: ");
-    	Label verCantidadProducto = new Label("");
-    	Label precioProducto = new Label("Precio del producto: ");
-    	Label verPrecioProducto = new Label("");
-    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
-    	Label verPrecioFabProducto = new Label("");
-    	
-      	// Creamos el boton para sumar cantidades
-    	Button aniadirCantidad = new Button("Sumar cantidad");
-    	aniadirCantidad.setWidth("260px");
-    	
-    	// Creamos el boton para restar cantidades
-    	Button restarCantidad = new Button("Restar cantidad");
-    	restarCantidad.setWidth("260px");
-    	
-    	// Creamos unos botones para cerrar las pestañas
-        Button cerrar = new Button("Cerrar pestaña");
-        cerrar.setWidth("260px");
-        
-        Button cerrarO = new Button("Cerrar pestaña");
-        cerrarO.setWidth("260px");
-        
+
         // Colocamos los elementos en la pestaña
         verticalLayout.addComponents(aniadirProducto,aniadirCantidad, restarProducto, restarCantidad, cerrar);
     	verticalLayout2.addComponents(nombreProducto, verNombreProducto,
@@ -379,13 +364,10 @@ public class MyUI extends UI {
         		verPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         		verPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
         	} else {
-        		
-        		VerticalLayout verticalLayout3 = new VerticalLayout();
-        		Label error = new Label("Error, debe seleccionar un producto");
-        		
+  		
         		avisoError.center();
-        		verticalLayout3.addComponents(error, cerrarO);
-        		avisoError.setContent(verticalLayout3);
+        		verticalLayout6.addComponents(errorSinProducto, cerrarO);
+        		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
     	});
@@ -416,13 +398,10 @@ public class MyUI extends UI {
         		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         		aniadirProducto.clear();
         		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-        	} else {
-        		VerticalLayout verticalLayout5 = new VerticalLayout();
-        		Label error4 = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
-        		
+        	} else {		
         		avisoError.center();
-        		verticalLayout5.addComponents(error4, cerrarS);
-        		avisoError.setContent(verticalLayout5);
+        		verticalLayout7.addComponents(errorSuma, cerrarS);
+        		avisoError.setContent(verticalLayout7);
         		addWindow(avisoError);
         	}
         });
@@ -456,13 +435,10 @@ public class MyUI extends UI {
         			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
         			pestanaMasOpciones.close();
         		}
-        	} else {
-        		VerticalLayout verticalLayout6 = new VerticalLayout();
-        		Label error5 = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
-        		
+        	} else {    		
         		avisoError.center();
-        		verticalLayout6.addComponents(error5, cerrarR);
-        		avisoError.setContent(verticalLayout6);
+        		verticalLayout8.addComponents(errorResta, cerrarR);
+        		avisoError.setContent(verticalLayout8);
         		addWindow(avisoError);
         	}
         });
