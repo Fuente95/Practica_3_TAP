@@ -61,6 +61,8 @@ public class MyUI extends UI {
 		Window avisoError1 = new Window("Error");
 		Window avisoError2 = new Window("Error");
 		Window avisoError3 = new Window("Error");
+		Window avisoError4 = new Window("Error");
+		Window avisoError5 = new Window("Error");
 		
 		// Creamos los elementos el formulario que tiene que rellenar
 		// el usuario
@@ -111,6 +113,14 @@ public class MyUI extends UI {
         Button cerrarA = new Button("Cerrar pestaña");
         cerrarA.setWidth("260px");
         
+        // Creamos el boton para cerrar una pestaña
+        Button cerrarS = new Button("Cerrar pestaña");
+        cerrarS.setWidth("260px");
+        
+        // Creamos el boton para ceerar una pestaña
+        Button cerrarR = new Button("Cerrar pestaña");
+        cerrarR.setWidth("260px");
+
     	// Damos un formato a los distintos campos
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
@@ -346,7 +356,7 @@ public class MyUI extends UI {
         cerrar.setWidth("260px");
         
         Button cerrarO = new Button("Cerrar pestaña");
-        cerrar.setWidth("260px");
+        cerrarO.setWidth("260px");
         
         // Colocamos los elementos en la pestaña
         verticalLayout.addComponents(aniadirProducto,aniadirCantidad, restarProducto, restarCantidad, cerrar);
@@ -393,11 +403,78 @@ public class MyUI extends UI {
         // Añadimos funcionalidad al boton de cerrar la pestaña
         cerrar.addClickListener(e -> {
         	pestanaMasOpciones.close();
+        	Page.getCurrent().reload();
         });
         
         // Añadimos funcionalidad al boton de sumar cantidades
         aniadirCantidad.addClickListener(e -> {
+        	Integer cantidadTotal = 0;
+        	Integer cantidadSumada = 0;
         	
+        	cantidadSumada = Integer.parseInt(aniadirProducto.getValue());
+        	
+
+        	if (cantidadSumada >= 0) {
+        		cantidadTotal = productoSeleccionado.getCantidadProducto() + cantidadSumada;
+        		
+        		productoSeleccionado.setCantidadProducto(cantidadTotal);
+        		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        		aniadirProducto.clear();
+        		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        	} else {
+        		VerticalLayout verticalLayout5 = new VerticalLayout();
+        		Label error4 = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
+        		
+        		avisoError4.center();
+        		verticalLayout5.addComponents(error4, cerrarS);
+        		avisoError4.setContent(verticalLayout5);
+        		addWindow(avisoError4);
+        	}
+        });
+        
+        // Añadimos funcionalidad al boton de cerrar
+        cerrarS.addClickListener(e -> {
+        	avisoError4.close();
+        });
+        
+        // Añadimos funcionalidad al boton de restar cantidad
+        restarCantidad.addClickListener(e -> {
+        	Integer cantidadTotal = 0;
+        	Integer cantidadRestada = 0;
+        	
+        	cantidadRestada = Integer.parseInt(restarProducto.getValue());
+        	
+        	if (cantidadRestada >= 0) {
+        		cantidadTotal = productoSeleccionado.getCantidadProducto() - cantidadRestada;
+        		if (cantidadTotal > 0) {
+        		
+        			productoSeleccionado.setCantidadProducto(cantidadTotal);
+        			verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        			restarProducto.clear();
+        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        		} else if (cantidadTotal <= 0){
+        			cantidadTotal = 0;
+        			productoSeleccionado.setCantidadProducto(cantidadTotal);
+        			verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+        			restarProducto.clear();
+        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        			pestanaMasOpciones.close();
+        		}
+        	} else {
+        		VerticalLayout verticalLayout6 = new VerticalLayout();
+        		Label error5 = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
+        		
+        		avisoError5.center();
+        		verticalLayout6.addComponents(error5, cerrarR);
+        		avisoError5.setContent(verticalLayout6);
+        		addWindow(avisoError5);
+        	}
+        });
+        
+        // Añadimos funcionalidad al boton de cerrar
+        cerrarR.addClickListener(e -> {
+        	avisoError5.close();
         });
     }
 
