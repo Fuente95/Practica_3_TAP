@@ -61,8 +61,7 @@ public class MyUI extends UI {
 		Window avisoError = new Window("Error");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
 		
-		// Creamos los elementos el formulario que tiene que rellenar
-		// el usuario
+		// Creamos los elementos necesarios
 		FormLayout organizacion = new FormLayout();
 		FormLayout organizacion1 = new FormLayout();
 		FormLayout organizacion2 = new FormLayout();
@@ -70,6 +69,7 @@ public class MyUI extends UI {
 		TextField campoCantidadProducto = new TextField("Cantidad del producto:");
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
+		TextField campoIngreso = new TextField("Cantidad a ingresar: ");
 		Label indicacionDatos = new Label("Datos de los productos:");
 		Label indicacionTransacciones = new Label("Datos de las transacciones:");
 		Label labelNombreProducto = new Label();
@@ -88,6 +88,8 @@ public class MyUI extends UI {
     	HorizontalLayout horizontalLayout2 = new HorizontalLayout();
     	FormLayout organizacion3 = new FormLayout();
     	FormLayout organizacion4 = new FormLayout();
+    	FormLayout organizacion5 = new FormLayout();
+    	FormLayout organizacion6 = new FormLayout();
     	VerticalLayout verticalLayout = new VerticalLayout();
     	VerticalLayout verticalLayout2 = new VerticalLayout();
     	VerticalLayout verticalLayout3 = new VerticalLayout();
@@ -141,6 +143,7 @@ public class MyUI extends UI {
     	campoCantidadProducto.setWidth("260px");
     	campoPrecioProducto.setWidth("260px");
     	campoCosteFabProducto.setWidth("260px");
+    	campoIngreso.setWidth("260px");
     	cerrarR.setWidth("420px");
     	cerrarS.setWidth("420px");
     	cerrarA.setWidth("260px");
@@ -164,7 +167,7 @@ public class MyUI extends UI {
 			}
     	opcionesComponentes.setItems(nombresComponentes);
     	
-    	// Creamos el formulario
+    	// Creamos el formulario de datos
     	organizacion.addComponents(campoNombreProducto, 
     			campoCantidadProducto,
     			campoPrecioProducto,
@@ -176,7 +179,11 @@ public class MyUI extends UI {
     			botonMasOpcionesProducto);
     	organizacion2.addComponents(tablaDatos);
     	
-    	// Visualizamos los productos mediante la tabla
+    	// Creamos el formulario de transacciones
+    	organizacion5.addComponents(campoIngreso);
+    	organizacion6.addComponents(tablaTransacciones);
+    	
+    	// Visualizamos los productos mediante la tablaDatos
     	tablaDatos.addColumn(Productos::getNombreProducto).setCaption("Nombre del producto");
     	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
     	tablaDatos.addColumn(Productos::getPrecioProducto).setCaption("Precio del producto");
@@ -188,10 +195,14 @@ public class MyUI extends UI {
     	
     	// Añadimos el formulario a horizontalLayout
     	horizontalLayout.addComponents(indicacionDatos,organizacion, organizacion2);
-    	horizontalLayout1.addComponent(indicacionTransacciones);
+    	horizontalLayout1.addComponents(indicacionTransacciones,
+    			organizacion5,
+    			organizacion6);
     	organizacion1.addComponents(horizontalLayout, horizontalLayout1);
     	setContent(organizacion1);
     	
+    	
+    	/** FUNCIONALIDAD DE LOS PRODUCTOS **/
     	// Añadimos funcionalidad al botón de añadir el producto
     	botonAniadirProducto.addClickListener(e -> {
     		
