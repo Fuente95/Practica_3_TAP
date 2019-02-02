@@ -78,6 +78,7 @@ public class MyUI extends UI {
 		TextField campoIngreso = new TextField("Cantidad a ingresar: ");
 		TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
     	TextField restarProducto = new TextField("Restar cantidad al producto: ");
+    	TextField identificarTransaccion = new TextField("Identificación de la transacción: ");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
 		Label indicacionDatos = new Label("Datos de los productos:");
@@ -125,6 +126,7 @@ public class MyUI extends UI {
     	Button botonModificarProducto = new Button("Modificar el producto");
     	Button botonEliminarProducto = new Button("Eliminar el producto");
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
+    	Button aniadirIngreso = new Button("Ingresar cantidad en efectivo");
     	
     	// Creamos lo botones para cerrar las pestañas
         Button cerrar = new Button("Cerrar pestaña");
@@ -156,6 +158,8 @@ public class MyUI extends UI {
     	botonEliminarProducto.setWidth("260px");
     	botonModificarProducto.setWidth("260px");
     	botonAniadirProducto.setWidth("260px");
+    	aniadirIngreso.setWidth("260px");
+    	identificarTransaccion.setWidth("260px");
     	
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
@@ -179,7 +183,7 @@ public class MyUI extends UI {
     	organizacion2.addComponents(tablaDatos);
     	
     	// Creamos el formulario de transacciones
-    	organizacion5.addComponents(campoIngreso);
+    	organizacion5.addComponents(campoIngreso, identificarTransaccion, aniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -189,8 +193,15 @@ public class MyUI extends UI {
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    	tablaDatos.setWidth("655px");
+    	tablaDatos.setWidth("755px");
     	tablaDatos.setHeight("460px");
+    	
+    	// Visualizamos los datos de las transacciones
+    	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación de la transacción");
+    	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
+    	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha de la transacción");
+    	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste de la transaccion");
+    	tablaTransacciones.setWidth("755px");
     	
     	// Añadimos el formulario a horizontalLayout
     	horizontalLayout.addComponents(indicacionDatos,organizacion, organizacion2);
