@@ -1,25 +1,26 @@
 package TAP.Practica_3.Inventario;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Transacciones {
 
 	// Declaramos algunas variables
 	private Date fechaTransaccion;
-	private Integer identifacionTransaccion;
-	private Integer cantidadTransaccion;
+	private String identifacionTransaccion;
+	private Double cantidadTransaccion = 0.0;
 	private Double costeTransaccion = 0.0;
 	
 	public Transacciones() {
 		
 	}
 	// Creamos el constructor
-	public Transacciones (Date fechaTransaccion, Integer identificacionTransaccion, 
-			Integer cantidadTransaccion) {
+	public Transacciones (Date fechaTransaccion, String identificacionTransaccion, 
+			Double cantidadTransaccion, Double costeTransaccion) {
 		super();
 		this.fechaTransaccion = fechaTransaccion;
 		this.identifacionTransaccion = identificacionTransaccion;
 		this.cantidadTransaccion = cantidadTransaccion;
+		this.costeTransaccion = costeTransaccion;
 	}
 	
 	// Creamos los setters y getters
@@ -34,12 +35,12 @@ public class Transacciones {
 	}
 	
 	// Getter de la cantidad
-	public Integer getCantidadTransaccion() {
+	public Double getCantidadTransaccion() {
 		return cantidadTransaccion;
 	}
 	
 	// Setter de la cantidad
-	public void setCantidadTransaccion(Integer cantidadTransaccion) {
+	public void setCantidadTransaccion(Double cantidadTransaccion) {
 		this.cantidadTransaccion = cantidadTransaccion;
 	}
 	
@@ -54,12 +55,12 @@ public class Transacciones {
 	}
 	
 	// Getter de la identificación
-	public Integer getIdentificacionTransaccion() {
+	public String getIdentificacionTransaccion() {
 		return identifacionTransaccion;
 	}
 	
 	// Setter de la identificación
-	public void setIdentificacionTransaccion(Integer identifacionTransaccion) {
+	public void setIdentificacionTransaccion(String identifacionTransaccion) {
 		this.identifacionTransaccion = identifacionTransaccion;
 	}
 }
