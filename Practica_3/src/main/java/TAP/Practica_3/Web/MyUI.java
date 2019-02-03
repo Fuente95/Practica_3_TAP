@@ -164,7 +164,7 @@ public class MyUI extends UI {
     	aniadirIngreso.setWidth("260px");
     	campoIdentificarTransaccion.setWidth("260px");
     	campoCosteTransaccion.setWidth("260px");
-    	
+
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
     	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
