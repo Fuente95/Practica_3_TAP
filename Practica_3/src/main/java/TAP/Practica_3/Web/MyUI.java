@@ -1,6 +1,7 @@
 package TAP.Practica_3.Web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import TAP.Practica_3.Inventario.Almacen;
+import TAP.Practica_3.Inventario.Historico;
 import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
@@ -76,9 +78,10 @@ public class MyUI extends UI {
 		TextField campoPrecioProducto = new TextField("Precio del producto:");
 		TextField campoCosteFabProducto = new TextField("Coste de fabricación del producto:");
 		TextField campoIngreso = new TextField("Cantidad a ingresar: ");
-		TextField aniadirProducto = new TextField("Sumar cantidad al producto: ");
-    	TextField restarProducto = new TextField("Restar cantidad al producto: ");
-    	TextField identificarTransaccion = new TextField("Identificación de la transacción: ");
+		TextField campoAniadirProducto = new TextField("Sumar cantidad al producto: ");
+    	TextField campoRestarProducto = new TextField("Restar cantidad al producto: ");
+    	TextField campoIdentificarTransaccion = new TextField("Identificación de la transacción: ");
+    	TextField campoCosteTransaccion = new TextField("Coste de la transacción: ");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
 		Label indicacionDatos = new Label("Datos de los productos:");
@@ -143,8 +146,8 @@ public class MyUI extends UI {
     	campoPrecioProducto.setWidth("260px");
     	campoCosteFabProducto.setWidth("260px");
     	campoIngreso.setWidth("260px");
-    	aniadirProducto.setWidth("260px");
-    	restarProducto.setWidth("260px");
+    	campoAniadirProducto.setWidth("260px");
+    	campoRestarProducto.setWidth("260px");
     	cerrarR.setWidth("420px");
     	cerrarS.setWidth("420px");
     	cerrarA.setWidth("260px");
@@ -159,7 +162,8 @@ public class MyUI extends UI {
     	botonModificarProducto.setWidth("260px");
     	botonAniadirProducto.setWidth("260px");
     	aniadirIngreso.setWidth("260px");
-    	identificarTransaccion.setWidth("260px");
+    	campoIdentificarTransaccion.setWidth("260px");
+    	campoCosteTransaccion.setWidth("260px");
     	
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
@@ -183,7 +187,8 @@ public class MyUI extends UI {
     	organizacion2.addComponents(tablaDatos);
     	
     	// Creamos el formulario de transacciones
-    	organizacion5.addComponents(campoIngreso, identificarTransaccion, aniadirIngreso);
+    	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, 
+    			campoCosteTransaccion, aniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -201,7 +206,7 @@ public class MyUI extends UI {
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
     	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha de la transacción");
     	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste de la transaccion");
-    	tablaTransacciones.setWidth("755px");
+    	tablaTransacciones.setWidth("760px");
     	
     	// Añadimos el formulario a horizontalLayout
     	horizontalLayout.addComponents(indicacionDatos,organizacion, organizacion2);
@@ -365,7 +370,8 @@ public class MyUI extends UI {
     	});
 
         // Colocamos los elementos en la pestaña
-        verticalLayout.addComponents(aniadirProducto,aniadirCantidad, restarProducto, restarCantidad, cerrar);
+        verticalLayout.addComponents(campoAniadirProducto,aniadirCantidad, 
+        		campoRestarProducto, restarCantidad, cerrar);
     	verticalLayout2.addComponents(nombreProducto, verNombreProducto,
     			cantidadProducto,verCantidadProducto,
     			precioProducto, verPrecioProducto,
@@ -416,7 +422,7 @@ public class MyUI extends UI {
         	Integer cantidadSumada = 0;
         	
         	// Obtenemos la cantidad que vamos a sumar
-        	cantidadSumada = Integer.parseInt(aniadirProducto.getValue());
+        	cantidadSumada = Integer.parseInt(campoAniadirProducto.getValue());
 
         	// Si el valor que vamos a añadir es 0 o mayor
         	if (cantidadSumada >= 0) {
@@ -428,7 +434,7 @@ public class MyUI extends UI {
         		
         		// Actualizamos el valor en la visualización de los datos
         		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        		aniadirProducto.clear();
+        		campoAniadirProducto.clear();
         		
         		// Actualizamos los datos en la tabla
         		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
@@ -453,7 +459,7 @@ public class MyUI extends UI {
         	Integer cantidadRestada = 0;
         	
         	// Obtenemos lo que vamos a restar
-        	cantidadRestada = Integer.parseInt(restarProducto.getValue());
+        	cantidadRestada = Integer.parseInt(campoRestarProducto.getValue());
         	
         	// Si el valor es mayor o igual que 0
         	if (cantidadRestada >= 0) {
@@ -468,7 +474,7 @@ public class MyUI extends UI {
         			
         			// Actualizamos el valor donde se ve los datos
         			verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        			restarProducto.clear();
+        			campoRestarProducto.clear();
         			
         			// Actualizamos la tabla de datos
         			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
@@ -487,7 +493,7 @@ public class MyUI extends UI {
         			
         			// Eliminados el producto de la lista al no existir cantidades suficientes
         			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-        			restarProducto.clear();
+        			campoRestarProducto.clear();
         			
         			// Actualizamos la tabla de los datos
         			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
@@ -510,6 +516,30 @@ public class MyUI extends UI {
         });
         
         /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
+        aniadirIngreso.addClickListener(e -> {
+        	
+        	Double cantidadIngreso = 0.0;
+        	Double costeTransaccion = 0.0;
+        	String identificacion;
+        	java.util.Date fechaTrans = new Date();
+        	
+        	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
+        	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
+        	identificacion = campoIdentificarTransaccion.getValue();
+
+	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
+	        		identificacion, 
+	        		cantidadIngreso, 
+	        		costeTransaccion);
+	        	
+	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
+	        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+	        	
+	        campoIngreso.clear();
+	        campoCosteTransaccion.clear();
+	        campoIdentificarTransaccion.clear();
+        	
+        });
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
