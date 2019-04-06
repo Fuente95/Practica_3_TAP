@@ -335,6 +335,7 @@ public class MyUI extends UI {
 					}
 				}
 				
+				// Declaramos algunas variables
 				Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
 				Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
 				
