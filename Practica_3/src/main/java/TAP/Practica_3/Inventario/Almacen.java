@@ -28,7 +28,7 @@ public class Almacen {
 	public ArrayList <Productos> getProductosAlmacen() {
 		return almacen;
 	}
-	
+
 	// Setter de los productos que se encuentran en el almacen
 	public void setProductosAlmacen(ArrayList<Productos> almacen) {
 		this.almacen = almacen;

@@ -25,14 +25,14 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.components.grid.HeaderRow;
 
 import TAP.Practica_3.Inventario.Almacen;
 import TAP.Practica_3.Inventario.Historico;
 import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
-import TAP.Practica_3.Logica.CambiarDolares;
-import TAP.Practica_3.Logica.CambiarEuros;
+
 
 
 /**
@@ -47,8 +47,6 @@ public class MyUI extends UI {
 
 	// Creamos algunas variables 
 	private Productos productoSeleccionado;
-	private Transacciones transaccionSeleccionada;
-	private Double costesfabProducto = 0.0;
 	private String divisa = "Euros";
 	private static final long serialVersionUID = 1L;
 
@@ -276,7 +274,7 @@ public class MyUI extends UI {
     						campoCantidadProducto.clear();
     						campoCosteFabProducto.clear();
     						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    						Page.getCurrent().reload();
+    						
     					}
     				}
     			} 
@@ -303,6 +301,7 @@ public class MyUI extends UI {
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
     	});
     	
+
     	// Añadimos funcionalidad al botón de eliminar
     	botonEliminarProducto.addClickListener(e ->  {
     		// Comprobamos si se ha escogido un producto
@@ -310,7 +309,7 @@ public class MyUI extends UI {
     			// Se elimina el producto seleccionado
     			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
     			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    			Page.getCurrent().reload();
+    			
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -318,6 +317,7 @@ public class MyUI extends UI {
         		avisoError.setContent(verticalLayout4);
         		addWindow(avisoError);
     		}
+    		
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
@@ -422,7 +422,6 @@ public class MyUI extends UI {
         // Añadimos funcionalidad al boton de cerrar la pestaña
         cerrar.addClickListener(e -> {
         	pestanaMasOpciones.close();
-        	Page.getCurrent().reload();
         });
         
         // Añadimos funcionalidad al boton de sumar cantidades
@@ -525,6 +524,32 @@ public class MyUI extends UI {
         	avisoError.close();
         });
         
+        Almacen almacen = Almacen.getInstance();
+        		
+        // Añadimos funcionalidad al boton de cambiar divisa
+        botoncambiarDivisa.addClickListener(e -> {
+        	Double precioDolares = 1.2;
+        	
+        	if (divisa == "Euros") {
+        		divisa = "Dólares";
+        		campoDivisa.setValue(divisa);
+        		for (Productos prod : almacen.getProductosAlmacen()) {
+        			prod.setPrecioProducto(prod.getPrecioProducto()*precioDolares);
+        			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
+        		}
+        			
+        	} else {
+        		divisa = "Euros";
+        		campoDivisa.setValue(divisa);
+        		for (Productos prod : almacen.getProductosAlmacen()) {
+        			prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
+        			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
+        		}
+        	}
+        	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    		
+        		
+        });
         /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
         botonaniadirIngreso.addClickListener(e -> {
         	
@@ -551,7 +576,7 @@ public class MyUI extends UI {
         	
         });
     }
-
+	
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
