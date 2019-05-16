@@ -9,18 +9,20 @@ public class Transacciones {
 	private String identifacionTransaccion;
 	private Double cantidadTransaccion = 0.0;
 	private Double costeTransaccion = 0.0;
+	private String tipoTransaccion;
 	
 	public Transacciones() {
 		
 	}
 	// Creamos el constructor
 	public Transacciones (Date fechaTransaccion, String identificacionTransaccion, 
-			Double cantidadTransaccion, Double costeTransaccion) {
+			Double cantidadTransaccion, Double costeTransaccion, String tipoTransaccion) {
 		super();
 		this.fechaTransaccion = fechaTransaccion;
 		this.identifacionTransaccion = identificacionTransaccion;
 		this.cantidadTransaccion = cantidadTransaccion;
 		this.costeTransaccion = costeTransaccion;
+		this.tipoTransaccion = tipoTransaccion;
 	}
 	
 	// Creamos los setters y getters
@@ -62,5 +64,14 @@ public class Transacciones {
 	// Setter de la identificación
 	public void setIdentificacionTransaccion(String identifacionTransaccion) {
 		this.identifacionTransaccion = identifacionTransaccion;
+	}
+	
+	// Getter del tipo
+	public String getTipoTransaccion() {
+		return tipoTransaccion;
+	}
+	
+	public void setTipoTransaccion (String tipoTransaccion) {
+		this.tipoTransaccion = tipoTransaccion;
 	}
 }
