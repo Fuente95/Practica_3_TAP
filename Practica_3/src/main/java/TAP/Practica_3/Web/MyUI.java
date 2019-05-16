@@ -49,7 +49,7 @@ public class MyUI extends UI {
 	private Productos productoSeleccionado;
 	private Transacciones transaccionSeleccionada;
 	private Double costesfabProducto = 0.0;
-	
+	private String divisa = "Euros";
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -82,26 +82,27 @@ public class MyUI extends UI {
     	TextField campoRestarProducto = new TextField("Restar cantidad al producto: ");
     	TextField campoIdentificarTransaccion = new TextField("Identificación de la transacción: ");
     	TextField campoCosteTransaccion = new TextField("Coste de la transacción: ");
+    	TextField campoDivisa = new TextField("Divisa actual: ");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
-		Label indicacionDatos = new Label("Datos de los productos:");
+		Label labelindicacionDatos = new Label("Datos de los productos:");
 		Label indicacionTransacciones = new Label("Datos de las transacciones:");
 		Label labelNombreProducto = new Label();
         Label labelCantidadProducto = new Label();
         Label labelPrecioProducto = new Label();
         Label labelFabricacionProducto = new Label();
-        Label errorSinProducto = new Label("Error, debe seleccionar un producto");
-        Label errorConProducto = new Label("Error, no debe seleccionar un producto");
-        Label errorSuma = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
-        Label errorResta = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
-    	Label nombreProducto = new Label("Nombre del producto: ");
-    	Label verNombreProducto = new Label("");
-    	Label cantidadProducto = new Label("Cantidad del producto: ");
-    	Label verCantidadProducto = new Label("");
-    	Label precioProducto = new Label("Precio del producto: ");
-    	Label verPrecioProducto = new Label("");
-    	Label precioFabProducto = new Label("Precio de fabricación del producto: ");
-    	Label verPrecioFabProducto = new Label("");
+        Label labelerrorSinProducto = new Label("Error, debe seleccionar un producto");
+        Label labelerrorConProducto = new Label("Error, no debe seleccionar un producto");
+        Label labelerrorSuma = new Label("Error, la cantidad a sumar debe ser mayor o igual que cero");
+        Label labelerrorResta = new Label("Error, la cantidad a restar debe ser mayor o igual que cero");
+    	Label labelnombreProducto = new Label("Nombre del producto: ");
+    	Label labelverNombreProducto = new Label("");
+    	Label labelcantidadProducto = new Label("Cantidad del producto: ");
+    	Label labelverCantidadProducto = new Label("");
+    	Label labelprecioProducto = new Label("Precio del producto: ");
+    	Label labelverPrecioProducto = new Label("");
+    	Label labelprecioFabProducto = new Label("Precio de fabricación del producto: ");
+    	Label labelverPrecioFabProducto = new Label("");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -129,7 +130,8 @@ public class MyUI extends UI {
     	Button botonModificarProducto = new Button("Modificar el producto");
     	Button botonEliminarProducto = new Button("Eliminar el producto");
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
-    	Button aniadirIngreso = new Button("Ingresar cantidad en efectivo");
+    	Button botonaniadirIngreso = new Button("Ingresar cantidad en efectivo");
+    	Button botoncambiarDivisa = new Button("Cambiar entre divisas");
     	
     	// Creamos lo botones para cerrar las pestañas
         Button cerrar = new Button("Cerrar pestaña");
@@ -161,10 +163,15 @@ public class MyUI extends UI {
     	botonEliminarProducto.setWidth("260px");
     	botonModificarProducto.setWidth("260px");
     	botonAniadirProducto.setWidth("260px");
-    	aniadirIngreso.setWidth("260px");
+    	botonaniadirIngreso.setWidth("260px");
+    	botoncambiarDivisa.setWidth("260px");
     	campoIdentificarTransaccion.setWidth("260px");
     	campoCosteTransaccion.setWidth("260px");
-
+    	campoDivisa.setWidth("260px");
+    	
+    	campoDivisa.setReadOnly(true);
+    	campoDivisa.setValue(divisa);
+    	
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
     	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
@@ -180,15 +187,17 @@ public class MyUI extends UI {
     			campoPrecioProducto,
     			campoCosteFabProducto,
     			opcionesComponentes,
+    			campoDivisa,
     			botonAniadirProducto,
     			botonEliminarProducto,
     			botonModificarProducto,
-    			botonMasOpcionesProducto);
+    			botonMasOpcionesProducto, 
+    			botoncambiarDivisa);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Creamos el formulario de transacciones
     	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, 
-    			campoCosteTransaccion, aniadirIngreso);
+    			campoCosteTransaccion, botonaniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -199,8 +208,8 @@ public class MyUI extends UI {
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	tablaDatos.setWidth("755px");
-    	tablaDatos.setHeight("460px");
-    	
+    	tablaDatos.setHeight("493px");
+    
     	// Visualizamos los datos de las transacciones
     	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación de la transacción");
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
@@ -209,7 +218,7 @@ public class MyUI extends UI {
     	tablaTransacciones.setWidth("760px");
     	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponents(indicacionDatos,organizacion, organizacion2);
+    	horizontalLayout.addComponents(labelindicacionDatos,organizacion, organizacion2);
     	horizontalLayout1.addComponents(indicacionTransacciones,
     			organizacion5,
     			organizacion6);
@@ -274,7 +283,7 @@ public class MyUI extends UI {
     		} else if (productoSeleccionado != null){
     			// Creamos la pestaña indicando el error
         		avisoError.center();
-        		verticalLayout3.addComponents(errorConProducto, cerrarA);
+        		verticalLayout3.addComponents(labelerrorConProducto, cerrarA);
         		avisoError.setContent(verticalLayout3);
         		addWindow(avisoError);
     		}
@@ -305,7 +314,7 @@ public class MyUI extends UI {
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout4.addComponents(errorSinProducto, cerrarE);
+        		verticalLayout4.addComponents(labelerrorSinProducto, cerrarE);
         		avisoError.setContent(verticalLayout4);
         		addWindow(avisoError);
     		}
@@ -359,7 +368,7 @@ public class MyUI extends UI {
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout5.addComponents(errorSinProducto, cerrarM);
+        		verticalLayout5.addComponents(labelerrorSinProducto, cerrarM);
         		avisoError.setContent(verticalLayout5);
         		addWindow(avisoError);
     		}
@@ -373,10 +382,10 @@ public class MyUI extends UI {
         // Colocamos los elementos en la pestaña
         verticalLayout.addComponents(campoAniadirProducto,aniadirCantidad, 
         		campoRestarProducto, restarCantidad, cerrar);
-    	verticalLayout2.addComponents(nombreProducto, verNombreProducto,
-    			cantidadProducto,verCantidadProducto,
-    			precioProducto, verPrecioProducto,
-    			precioFabProducto, verPrecioFabProducto);
+    	verticalLayout2.addComponents(labelnombreProducto, labelverNombreProducto,
+    			labelcantidadProducto,labelverCantidadProducto,
+    			labelprecioProducto, labelverPrecioProducto,
+    			labelprecioFabProducto, labelverPrecioFabProducto);
     	organizacion3.addComponents(verticalLayout2);
     	organizacion4.addComponents(verticalLayout);
     	
@@ -392,14 +401,14 @@ public class MyUI extends UI {
         		// Hacemos que aparezca la nueva pestaña
         		addWindow(pestanaMasOpciones);
         		
-        		verNombreProducto.setValue(productoSeleccionado.getNombreProducto());
-        		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        		verPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
-        		verPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+        		labelverNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+        		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        		labelverPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
+        		labelverPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout6.addComponents(errorSinProducto, cerrarO);
+        		verticalLayout6.addComponents(labelerrorSinProducto, cerrarO);
         		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
@@ -434,7 +443,7 @@ public class MyUI extends UI {
         		productoSeleccionado.setCantidadProducto(cantidadTotal);
         		
         		// Actualizamos el valor en la visualización de los datos
-        		verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         		campoAniadirProducto.clear();
         		
         		// Actualizamos los datos en la tabla
@@ -442,7 +451,7 @@ public class MyUI extends UI {
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout7.addComponents(errorSuma, cerrarS);
+        		verticalLayout7.addComponents(labelerrorSuma, cerrarS);
         		avisoError.setContent(verticalLayout7);
         		addWindow(avisoError);
         	}
@@ -474,7 +483,7 @@ public class MyUI extends UI {
         			productoSeleccionado.setCantidadProducto(cantidadTotal);
         			
         			// Actualizamos el valor donde se ve los datos
-        			verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         			campoRestarProducto.clear();
         			
         			// Actualizamos la tabla de datos
@@ -490,7 +499,7 @@ public class MyUI extends UI {
         			productoSeleccionado.setCantidadProducto(cantidadTotal);
         			
         			// Actualizamos el valor para visualizar los datos
-        			verCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         			
         			// Eliminados el producto de la lista al no existir cantidades suficientes
         			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
@@ -505,7 +514,7 @@ public class MyUI extends UI {
         	} else {    		
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout8.addComponents(errorResta, cerrarR);
+        		verticalLayout8.addComponents(labelerrorResta, cerrarR);
         		avisoError.setContent(verticalLayout8);
         		addWindow(avisoError);
         	}
@@ -517,7 +526,7 @@ public class MyUI extends UI {
         });
         
         /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
-        aniadirIngreso.addClickListener(e -> {
+        botonaniadirIngreso.addClickListener(e -> {
         	
         	Double cantidadIngreso = 0.0;
         	Double costeTransaccion = 0.0;
