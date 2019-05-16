@@ -81,6 +81,7 @@ public class MyUI extends UI {
     	TextField campoIdentificarTransaccion = new TextField("Identificación de la transacción: ");
     	TextField campoCosteTransaccion = new TextField("Coste de la transacción: ");
     	TextField campoDivisa = new TextField("Divisa actual: ");
+    	TextField campoTipoTransacciones = new TextField("Tipo de transacción: ");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
 		Label labelindicacionDatos = new Label("Datos de los productos:");
@@ -128,8 +129,8 @@ public class MyUI extends UI {
     	Button botonModificarProducto = new Button("Modificar el producto");
     	Button botonEliminarProducto = new Button("Eliminar el producto");
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
-    	Button botonaniadirIngreso = new Button("Ingresar cantidad en efectivo");
-    	Button botoncambiarDivisa = new Button("Cambiar entre divisas");
+    	Button botonaniadirIngreso = new Button("Insertar transacción");
+    	Button botoncambiarDivisa = new Button("Cambiar entre Euros/Dólares");
     	
     	// Creamos lo botones para cerrar las pestañas
         Button cerrar = new Button("Cerrar pestaña");
@@ -166,6 +167,7 @@ public class MyUI extends UI {
     	campoIdentificarTransaccion.setWidth("260px");
     	campoCosteTransaccion.setWidth("260px");
     	campoDivisa.setWidth("260px");
+    	campoTipoTransacciones.setWidth("260px");
     	
     	campoDivisa.setReadOnly(true);
     	campoDivisa.setValue(divisa);
@@ -195,7 +197,7 @@ public class MyUI extends UI {
     	
     	// Creamos el formulario de transacciones
     	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, 
-    			campoCosteTransaccion, botonaniadirIngreso);
+    			campoCosteTransaccion, campoTipoTransacciones, botonaniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -205,14 +207,15 @@ public class MyUI extends UI {
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    	tablaDatos.setWidth("755px");
-    	tablaDatos.setHeight("493px");
+    	tablaDatos.setWidth("760px");
+    	tablaDatos.setHeight("553px");
     
     	// Visualizamos los datos de las transacciones
-    	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación de la transacción");
+    	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación");
+    	tablaTransacciones.addColumn(Transacciones::getTipoTransaccion).setCaption("Tipo");
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
-    	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha de la transacción");
-    	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste de la transaccion");
+    	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha");
+    	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste");
     	tablaTransacciones.setWidth("760px");
     	
     	// Añadimos el formulario a horizontalLayout
@@ -567,18 +570,21 @@ public class MyUI extends UI {
         	Double cantidadIngreso = 0.0;
         	Double costeTransaccion = 0.0;
         	String identificacion;
+        	String tipo;
         	java.util.Date fechaTrans = new Date();
         	
         	// Damos valores a las variables creadas
         	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
         	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
         	identificacion = campoIdentificarTransaccion.getValue();
-
+        	tipo = campoTipoTransacciones.getValue();
+        	
         	// Insertamos la nueva transacción
 	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
-	        		identificacion, 
+	        		identificacion,
 	        		cantidadIngreso, 
-	        		costeTransaccion);
+	        		costeTransaccion,
+	        		tipo);
 	        	
 	        // Añadimos la transacción al histórico y actualizamos la tabla
 	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
