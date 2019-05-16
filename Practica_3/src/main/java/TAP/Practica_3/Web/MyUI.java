@@ -524,20 +524,28 @@ public class MyUI extends UI {
         	avisoError.close();
         });
         
+        // Creamos una instancia al almacen de productos
         Almacen almacen = Almacen.getInstance();
         		
         // Añadimos funcionalidad al boton de cambiar divisa
         botoncambiarDivisa.addClickListener(e -> {
+        	// Indicamos el cambio entre dólares y euros
         	Double precioDolares = 1.2;
         	
+        	// Si la divisa actual es euros
         	if (divisa == "Euros") {
+        		
+        		// Cambiamos la divisa a dólares, indicándolo por pantalla
         		divisa = "Dólares";
         		campoDivisa.setValue(divisa);
+        		
+        		// Recorremos la tabla cambiando los precios
         		for (Productos prod : almacen.getProductosAlmacen()) {
         			prod.setPrecioProducto(prod.getPrecioProducto()*precioDolares);
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
         		}
         			
+        	// Si son dólares, cambiamos a euros y hacemos lo mismo
         	} else {
         		divisa = "Euros";
         		campoDivisa.setValue(divisa);
@@ -546,6 +554,8 @@ public class MyUI extends UI {
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
         		}
         	}
+        	
+        	// Actualizamos la lista para ver los precios cambiados
         	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     		
         		
@@ -553,23 +563,28 @@ public class MyUI extends UI {
         /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
         botonaniadirIngreso.addClickListener(e -> {
         	
+        	// Inicializamos algunas variables
         	Double cantidadIngreso = 0.0;
         	Double costeTransaccion = 0.0;
         	String identificacion;
         	java.util.Date fechaTrans = new Date();
         	
+        	// Damos valores a las variables creadas
         	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
         	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
         	identificacion = campoIdentificarTransaccion.getValue();
 
+        	// Insertamos la nueva transacción
 	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
 	        		identificacion, 
 	        		cantidadIngreso, 
 	        		costeTransaccion);
 	        	
+	        // Añadimos la transacción al histórico y actualizamos la tabla
 	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
 	        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
 	        	
+	        // Vaciamos los campos
 	        campoIngreso.clear();
 	        campoCosteTransaccion.clear();
 	        campoIdentificarTransaccion.clear();
