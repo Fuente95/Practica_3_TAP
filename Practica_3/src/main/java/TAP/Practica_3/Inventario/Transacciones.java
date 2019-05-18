@@ -14,6 +14,7 @@ public class Transacciones {
 	public Transacciones() {
 		
 	}
+
 	// Creamos el constructor
 	public Transacciones (Date fechaTransaccion, String identificacionTransaccion, 
 			Double cantidadTransaccion, Double costeTransaccion, String tipoTransaccion) {

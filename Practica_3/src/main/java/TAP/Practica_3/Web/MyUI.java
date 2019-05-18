@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.activity.InvalidActivityException;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -57,7 +58,13 @@ public class MyUI extends UI {
 		Predeterminado productosPre = new Predeterminado();
 		productosPre.Predeterminado();
 		
-		// Creamos una nueva pestaña
+		// Indicamos el cambio entre dólares y euros
+    	Double precioDolares = 1.2;
+    	
+        // Creamos una instancia al almacen de productos
+        Almacen almacen = Almacen.getInstance();
+		
+		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Error");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
 		
@@ -123,23 +130,23 @@ public class MyUI extends UI {
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
     	
       	// Creamos los botones necesarios para usar las funcionalidades
-    	Button aniadirCantidad = new Button("Sumar cantidad");
-    	Button restarCantidad = new Button("Restar cantidad");
+    	Button botonAniadirCantidad = new Button("Sumar cantidad");
+    	Button botonRestarCantidad = new Button("Restar cantidad");
     	Button botonAniadirProducto = new Button("Añadir el producto");
     	Button botonModificarProducto = new Button("Modificar el producto");
     	Button botonEliminarProducto = new Button("Eliminar el producto");
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
-    	Button botonaniadirIngreso = new Button("Insertar transacción");
-    	Button botoncambiarDivisa = new Button("Cambiar entre Euros/Dólares");
+    	Button botonAniadirIngreso = new Button("Insertar transacción");
+    	Button botonCambiarDivisa = new Button("Cambiar entre Euros/Dólares");
     	
     	// Creamos lo botones para cerrar las pestañas
-        Button cerrar = new Button("Cerrar pestaña");
-        Button cerrarO = new Button("Cerrar pestaña");	
-    	Button cerrarE = new Button("Cerrar pestaña");
-        Button cerrarM = new Button("Cerrar pestaña");
-        Button cerrarA = new Button("Cerrar pestaña");
-        Button cerrarS = new Button("Cerrar pestaña");
-        Button cerrarR = new Button("Cerrar pestaña");
+        Button botonCerrar = new Button("Cerrar pestaña");
+        Button botonCerrarO = new Button("Cerrar pestaña");	
+    	Button botonCerrarE = new Button("Cerrar pestaña");
+        Button botonCerrarM = new Button("Cerrar pestaña");
+        Button botonCerrarA = new Button("Cerrar pestaña");
+        Button botonCerrarS = new Button("Cerrar pestaña");
+        Button botonCerrarR = new Button("Cerrar pestaña");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -149,21 +156,21 @@ public class MyUI extends UI {
     	campoIngreso.setWidth("260px");
     	campoAniadirProducto.setWidth("260px");
     	campoRestarProducto.setWidth("260px");
-    	cerrarR.setWidth("420px");
-    	cerrarS.setWidth("420px");
-    	cerrarA.setWidth("260px");
-    	cerrarM.setWidth("260px");
-    	cerrarE.setWidth("260px");
-        cerrarO.setWidth("260px");
-        cerrar.setWidth("260px");
-        aniadirCantidad.setWidth("260px");
-        restarCantidad.setWidth("260px");
+    	botonCerrarR.setWidth("420px");
+    	botonCerrarS.setWidth("420px");
+    	botonCerrarA.setWidth("260px");
+    	botonCerrarM.setWidth("260px");
+    	botonCerrarE.setWidth("260px");
+    	botonCerrarO.setWidth("260px");
+        botonCerrar.setWidth("260px");
+        botonAniadirCantidad.setWidth("260px");
+        botonRestarCantidad.setWidth("260px");
     	botonMasOpcionesProducto.setWidth("260px");
     	botonEliminarProducto.setWidth("260px");
     	botonModificarProducto.setWidth("260px");
     	botonAniadirProducto.setWidth("260px");
-    	botonaniadirIngreso.setWidth("260px");
-    	botoncambiarDivisa.setWidth("260px");
+    	botonAniadirIngreso.setWidth("260px");
+    	botonCambiarDivisa.setWidth("260px");
     	campoIdentificarTransaccion.setWidth("260px");
     	campoCosteTransaccion.setWidth("260px");
     	campoDivisa.setWidth("260px");
@@ -192,12 +199,12 @@ public class MyUI extends UI {
     			botonEliminarProducto,
     			botonModificarProducto,
     			botonMasOpcionesProducto, 
-    			botoncambiarDivisa);
+    			botonCambiarDivisa);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Creamos el formulario de transacciones
     	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, 
-    			campoCosteTransaccion, campoTipoTransacciones, botonaniadirIngreso);
+    			campoCosteTransaccion, campoTipoTransacciones, botonAniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -284,14 +291,14 @@ public class MyUI extends UI {
     		} else if (productoSeleccionado != null){
     			// Creamos la pestaña indicando el error
         		avisoError.center();
-        		verticalLayout3.addComponents(labelerrorConProducto, cerrarA);
+        		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarA);
         		avisoError.setContent(verticalLayout3);
         		addWindow(avisoError);
     		}
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	cerrarA.addClickListener(e -> {
+    	botonCerrarA.addClickListener(e -> {
     		avisoError.close();
     	});
 
@@ -316,15 +323,30 @@ public class MyUI extends UI {
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout4.addComponents(labelerrorSinProducto, cerrarE);
+        		verticalLayout4.addComponents(labelerrorSinProducto, botonCerrarE);
         		avisoError.setContent(verticalLayout4);
         		addWindow(avisoError);
     		}
     		
+    		if (divisa == "Euros") {
+				campoDivisa.setValue(divisa);
+				for (Productos prod : almacen.getProductosAlmacen()) {
+					prod.setPrecioProducto(prod.getPrecioProducto());
+					prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto());
+				}
+    		} else {
+    			divisa = "Dólares";
+    			campoDivisa.setValue(divisa);
+				for (Productos prod : almacen.getProductosAlmacen()) {
+					prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
+					prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
+				}
+    		}
+    		Page.getCurrent().reload();
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	cerrarE.addClickListener(e -> {
+    	botonCerrarE.addClickListener(e -> {
     		avisoError.close();
     	});
     	
@@ -371,20 +393,20 @@ public class MyUI extends UI {
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout5.addComponents(labelerrorSinProducto, cerrarM);
+        		verticalLayout5.addComponents(labelerrorSinProducto, botonCerrarM);
         		avisoError.setContent(verticalLayout5);
         		addWindow(avisoError);
     		}
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	cerrarM.addClickListener(e -> {
+    	botonCerrarM.addClickListener(e -> {
     		avisoError.close();
     	});
 
         // Colocamos los elementos en la pestaña
-        verticalLayout.addComponents(campoAniadirProducto,aniadirCantidad, 
-        		campoRestarProducto, restarCantidad, cerrar);
+        verticalLayout.addComponents(campoAniadirProducto,botonAniadirCantidad, 
+        		campoRestarProducto, botonRestarCantidad, botonCerrar);
     	verticalLayout2.addComponents(labelnombreProducto, labelverNombreProducto,
     			labelcantidadProducto,labelverCantidadProducto,
     			labelprecioProducto, labelverPrecioProducto,
@@ -411,24 +433,24 @@ public class MyUI extends UI {
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout6.addComponents(labelerrorSinProducto, cerrarO);
+        		verticalLayout6.addComponents(labelerrorSinProducto, botonCerrarO);
         		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
     	});
         
         // Añador funcionalidad al boton de cerrar la pestaña
-        cerrarO.addClickListener(e -> {
+        botonCerrarO.addClickListener(e -> {
         	avisoError.close();
         });
         
         // Añadimos funcionalidad al boton de cerrar la pestaña
-        cerrar.addClickListener(e -> {
+        botonCerrar.addClickListener(e -> {
         	pestanaMasOpciones.close();
         });
         
         // Añadimos funcionalidad al boton de sumar cantidades
-        aniadirCantidad.addClickListener(e -> {
+        botonAniadirCantidad.addClickListener(e -> {
         	// Declaramos algunas variables
         	Integer cantidadTotal = 0;
         	Integer cantidadSumada = 0;
@@ -453,19 +475,19 @@ public class MyUI extends UI {
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout7.addComponents(labelerrorSuma, cerrarS);
+        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarS);
         		avisoError.setContent(verticalLayout7);
         		addWindow(avisoError);
         	}
         });
         
         // Añadimos funcionalidad al boton de cerrar
-        cerrarS.addClickListener(e -> {
+        botonCerrarS.addClickListener(e -> {
         	avisoError.close();
         });
         
         // Añadimos funcionalidad al boton de restar cantidad
-        restarCantidad.addClickListener(e -> {
+        botonRestarCantidad.addClickListener(e -> {
         	// Declaramos algunas variables
         	Integer cantidadTotal = 0;
         	Integer cantidadRestada = 0;
@@ -516,24 +538,19 @@ public class MyUI extends UI {
         	} else {    		
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout8.addComponents(labelerrorResta, cerrarR);
+        		verticalLayout8.addComponents(labelerrorResta, botonCerrarR);
         		avisoError.setContent(verticalLayout8);
         		addWindow(avisoError);
         	}
         });
         
         // Añadimos funcionalidad al boton de cerrar
-        cerrarR.addClickListener(e -> {
+        botonCerrarR.addClickListener(e -> {
         	avisoError.close();
         });
-        
-        // Creamos una instancia al almacen de productos
-        Almacen almacen = Almacen.getInstance();
         		
         // Añadimos funcionalidad al boton de cambiar divisa
-        botoncambiarDivisa.addClickListener(e -> {
-        	// Indicamos el cambio entre dólares y euros
-        	Double precioDolares = 1.2;
+        botonCambiarDivisa.addClickListener(e -> {
         	
         	// Si la divisa actual es euros
         	if (divisa == "Euros") {
@@ -564,7 +581,7 @@ public class MyUI extends UI {
         		
         });
         /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
-        botonaniadirIngreso.addClickListener(e -> {
+        botonAniadirIngreso.addClickListener(e -> {
         	
         	// Inicializamos algunas variables
         	Double cantidadIngreso = 0.0;
@@ -578,6 +595,7 @@ public class MyUI extends UI {
         	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
         	identificacion = campoIdentificarTransaccion.getValue();
         	tipo = campoTipoTransacciones.getValue();
+
         	
         	// Insertamos la nueva transacción
 	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
@@ -597,7 +615,7 @@ public class MyUI extends UI {
         	
         });
     }
-	
+
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
