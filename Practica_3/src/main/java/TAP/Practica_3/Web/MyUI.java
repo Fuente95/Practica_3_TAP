@@ -243,7 +243,7 @@ public class MyUI extends UI {
     	
     	// Añadimos funcionalidad al botón de deseleccionar el producto
     	botonDeseleccionar.addClickListener(e -> {
-    		// Si no hay producto seleccionado, lo indicamos
+    		// Si no hay producto seleccionado, lo indicamos con una pestaña
     		if (productoSeleccionado == null) {
     			pestanaDeseleccion.center();
     			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarD);
@@ -261,7 +261,7 @@ public class MyUI extends UI {
         		addWindow(pestanaDeseleccion);
     		}
     	});
-
+    	
     	// Añadimos funcionalidad al botón de cerrar la pestaña
     	botonCerrarD.addClickListener(e -> {
     		pestanaDeseleccion.close();
@@ -300,6 +300,7 @@ public class MyUI extends UI {
     								componentesProducto.add(siguienteComponente);
     								precioEleccion = siguienteComponente.getPrecioFabricacionProducto();
     							}
+    							siguienteComponente.setCantidadProducto(siguienteComponente.getCantidadProducto()-1);
     						}
     						
     						// Damos valores a algunas variables
@@ -311,12 +312,14 @@ public class MyUI extends UI {
     								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
     						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
     						
-    						// Limpiamos los campos rellenados
+    						// Limpiamos los campos rellenados y las opciones de los componentes
     						campoNombreProducto.clear();
     						campoPrecioProducto.clear();
     						campoCantidadProducto.clear();
     						campoCosteFabProducto.clear();
+    						opcionesComponentes.deselectAll();
     						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    						Page.getCurrent().reload();
     					}
     				}
     			} 
