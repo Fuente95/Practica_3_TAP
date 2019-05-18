@@ -21,12 +21,15 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.SingleSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.HeaderRow;
+import com.vaadin.ui.components.grid.SingleSelectionModel;
 
 import TAP.Practica_3.Inventario.Almacen;
 import TAP.Practica_3.Inventario.Historico;
@@ -105,7 +108,7 @@ public class MyUI extends UI {
     	Label labelverCantidadProducto = new Label("");
     	Label labelprecioProducto = new Label("Precio del producto: ");
     	Label labelverPrecioProducto = new Label("");
-    	Label labelprecioFabProducto = new Label("Precio de fabricación del producto: ");
+    	Label labelprecioFabProducto = new Label("Coste de fabricación del producto: ");
     	Label labelverPrecioFabProducto = new Label("");
     	
         // Creamos los horizontallayout necesarios
@@ -122,7 +125,7 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout6 = new VerticalLayout();
     	VerticalLayout verticalLayout7 = new VerticalLayout();
     	VerticalLayout verticalLayout8 = new VerticalLayout();
-    
+    	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
     	Grid<Transacciones> tablaTransacciones = new Grid<Transacciones>();
@@ -145,6 +148,7 @@ public class MyUI extends UI {
         Button botonCerrarA = new Button("Cerrar pestaña");
         Button botonCerrarS = new Button("Cerrar pestaña");
         Button botonCerrarR = new Button("Cerrar pestaña");
+        Button botonDeseleccionar = new Button("Deseleccionar producto");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -173,6 +177,7 @@ public class MyUI extends UI {
     	campoCosteTransaccion.setWidth("260px");
     	campoDivisa.setWidth("260px");
     	campoTipoTransacciones.setWidth("260px");
+    	botonDeseleccionar.setWidth("260px");
     	
     	campoDivisa.setReadOnly(true);
     	campoDivisa.setValue(divisa);
@@ -187,22 +192,13 @@ public class MyUI extends UI {
     	opcionesComponentes.setItems(nombresComponentes);
     	
     	// Creamos el formulario de datos
-    	organizacion.addComponents(campoNombreProducto, 
-    			campoCantidadProducto,
-    			campoPrecioProducto,
-    			campoCosteFabProducto,
-    			opcionesComponentes,
-    			campoDivisa,
-    			botonAniadirProducto,
-    			botonEliminarProducto,
-    			botonModificarProducto,
-    			botonMasOpcionesProducto, 
+    	organizacion.addComponents(campoNombreProducto, campoCantidadProducto,campoPrecioProducto, campoCosteFabProducto, opcionesComponentes,
+    			campoDivisa, botonAniadirProducto, botonEliminarProducto, botonModificarProducto, botonMasOpcionesProducto, botonDeseleccionar,
     			botonCambiarDivisa);
     	organizacion2.addComponents(tablaDatos);
     	
     	// Creamos el formulario de transacciones
-    	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, 
-    			campoCosteTransaccion, campoTipoTransacciones, botonAniadirIngreso);
+    	organizacion5.addComponents(campoIngreso, campoIdentificarTransaccion, campoCosteTransaccion, campoTipoTransacciones, botonAniadirIngreso);
     	organizacion6.addComponents(tablaTransacciones);
     	
     	// Visualizamos los productos mediante la tablaDatos
@@ -213,7 +209,7 @@ public class MyUI extends UI {
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	tablaDatos.setWidth("760px");
-    	tablaDatos.setHeight("553px");
+    	tablaDatos.setHeight("594px");
     
     	// Visualizamos los datos de las transacciones
     	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación");
@@ -225,14 +221,17 @@ public class MyUI extends UI {
     	
     	// Añadimos el formulario a horizontalLayout
     	horizontalLayout.addComponents(labelindicacionDatos,organizacion, organizacion2);
-    	horizontalLayout1.addComponents(indicacionTransacciones,
-    			organizacion5,
-    			organizacion6);
+    	horizontalLayout1.addComponents(indicacionTransacciones, organizacion5,organizacion6);
     	organizacion1.addComponents(horizontalLayout, horizontalLayout1);
     	setContent(organizacion1);
-    	
+
     	
     	/******* FUNCIONALIDAD DE LOS PRODUCTOS *********/
+    	botonDeseleccionar.addClickListener(e -> {
+    		tablaDatos.deselectAll();
+    		productoSeleccionado = null;
+    	});
+    	
     	// Añadimos funcionalidad al botón de añadir el producto
     	botonAniadirProducto.addClickListener(e -> {
     		// Comprobamos si se ha seleccionado un producto en la tabla
@@ -406,12 +405,9 @@ public class MyUI extends UI {
     	});
 
         // Colocamos los elementos en la pestaña
-        verticalLayout.addComponents(campoAniadirProducto,botonAniadirCantidad, 
-        		campoRestarProducto, botonRestarCantidad, botonCerrar);
-    	verticalLayout2.addComponents(labelnombreProducto, labelverNombreProducto,
-    			labelcantidadProducto,labelverCantidadProducto,
-    			labelprecioProducto, labelverPrecioProducto,
-    			labelprecioFabProducto, labelverPrecioFabProducto);
+        verticalLayout.addComponents(campoAniadirProducto,botonAniadirCantidad, campoRestarProducto, botonRestarCantidad, botonCerrar);
+    	verticalLayout2.addComponents(labelnombreProducto, labelverNombreProducto, labelcantidadProducto,labelverCantidadProducto,
+    			labelprecioProducto, labelverPrecioProducto, labelprecioFabProducto, labelverPrecioFabProducto);
     	organizacion3.addComponents(verticalLayout2);
     	organizacion4.addComponents(verticalLayout);
     	
@@ -431,6 +427,7 @@ public class MyUI extends UI {
         		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         		labelverPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         		labelverPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -438,7 +435,6 @@ public class MyUI extends UI {
         		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
-        	productoSeleccionado = null;
     	});
         
         // Añador funcionalidad al boton de cerrar la pestaña
@@ -474,6 +470,7 @@ public class MyUI extends UI {
         		
         		// Actualizamos los datos en la tabla
         		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -598,14 +595,13 @@ public class MyUI extends UI {
         	identificacion = campoIdentificarTransaccion.getValue();
         	tipo = campoTipoTransacciones.getValue();
 
-        	
-        	// Insertamos la nueva transacción
+	    	// Insertamos la nueva transacción
 	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
 	        		identificacion,
 	        		cantidadIngreso, 
 	        		costeTransaccion,
 	        		tipo);
-	        	
+	
 	        // Añadimos la transacción al histórico y actualizamos la tabla
 	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
 	        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
@@ -614,7 +610,6 @@ public class MyUI extends UI {
 	        campoIngreso.clear();
 	        campoCosteTransaccion.clear();
 	        campoIdentificarTransaccion.clear();
-        	
         });
     }
 
