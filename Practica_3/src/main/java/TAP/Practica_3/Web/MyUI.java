@@ -34,8 +34,6 @@ import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
 
-
-
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
  * (or tab) or some part of an HTML page where a Vaadin application is embedded.
@@ -319,6 +317,8 @@ public class MyUI extends UI {
     			// Se elimina el producto seleccionado
     			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
     			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    			productoSeleccionado = null;
+    			Page.getCurrent().reload();
     			
     		} else {
     			// Creamos una pestaña indicando el error
@@ -342,7 +342,6 @@ public class MyUI extends UI {
 					prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
 				}
     		}
-    		Page.getCurrent().reload();
     	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
@@ -389,7 +388,9 @@ public class MyUI extends UI {
 				campoCantidadProducto.clear();
 				campoCosteFabProducto.clear();
 				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+				productoSeleccionado = null;
 				Page.getCurrent().reload();
+				
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -437,6 +438,7 @@ public class MyUI extends UI {
         		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
+        	productoSeleccionado = null;
     	});
         
         // Añador funcionalidad al boton de cerrar la pestaña
