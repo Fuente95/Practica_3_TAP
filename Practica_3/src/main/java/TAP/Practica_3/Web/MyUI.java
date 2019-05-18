@@ -62,7 +62,8 @@ public class MyUI extends UI {
 		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Error");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
-		
+		Window pestanaDeseleccion = new Window("Aviso");
+
 		// Creamos los FormLayout necesarios
 		FormLayout organizacion = new FormLayout();
 		FormLayout organizacion1 = new FormLayout();
@@ -104,6 +105,8 @@ public class MyUI extends UI {
     	Label labelverPrecioProducto = new Label("");
     	Label labelprecioFabProducto = new Label("Coste de fabricación del producto: ");
     	Label labelverPrecioFabProducto = new Label("");
+    	Label labelDeseleccion = new Label("Se ha deseleccionado el producto");
+    	Label labelDeseleccion2 = new Label("Debe seleccionar un producto");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -119,6 +122,8 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout6 = new VerticalLayout();
     	VerticalLayout verticalLayout7 = new VerticalLayout();
     	VerticalLayout verticalLayout8 = new VerticalLayout();
+    	VerticalLayout verticalLayout9 = new VerticalLayout();
+    	VerticalLayout verticalLayout10 = new VerticalLayout();
     	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -143,6 +148,8 @@ public class MyUI extends UI {
         Button botonCerrarS = new Button("Cerrar pestaña");
         Button botonCerrarR = new Button("Cerrar pestaña");
         Button botonDeseleccionar = new Button("Deseleccionar producto");
+        Button botonCerrarD = new Button("Cerrar pestaña");
+        Button botonCerrarD2 = new Button("Cerrar pestaña");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -159,6 +166,7 @@ public class MyUI extends UI {
     	botonCerrarE.setWidth("260px");
     	botonCerrarO.setWidth("260px");
         botonCerrar.setWidth("260px");
+        botonCerrarD.setWidth("260px");
         botonAniadirCantidad.setWidth("260px");
         botonRestarCantidad.setWidth("260px");
     	botonMasOpcionesProducto.setWidth("260px");
@@ -228,17 +236,35 @@ public class MyUI extends UI {
     	organizacion1.addComponents(horizontalLayout, horizontalLayout1);
     	setContent(organizacion1);
 
+    	
     	/*******************************************************************************/
     	/******************** FUNCIONALIDAD DE LOS PRODUCTOS ***************************/
     	/*******************************************************************************/
     	
     	// Añadimos funcionalidad al botón de deseleccionar el producto
     	botonDeseleccionar.addClickListener(e -> {
-    		// Deseleccionamos todos los datos de la tabla
-    		tablaDatos.deselectAll();
-    		
-    		// Indicamos que no se selecciona ningún producto
-    		productoSeleccionado = null;
+    		// Si no hay producto seleccionado, lo indicamos
+    		if (productoSeleccionado == null) {
+    			pestanaDeseleccion.center();
+    			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarD);
+    			pestanaDeseleccion.setContent(verticalLayout10);
+        		addWindow(pestanaDeseleccion);
+    		} else {
+    			// Deseleccionamos todos los datos de la tabla
+        		tablaDatos.deselectAll();
+        		
+        		// Indicamos que no se selecciona ningún producto
+        		productoSeleccionado = null;
+    			pestanaDeseleccion.center();
+    			verticalLayout9.addComponents(labelDeseleccion, botonCerrarD);
+    			pestanaDeseleccion.setContent(verticalLayout9);
+        		addWindow(pestanaDeseleccion);
+    		}
+    	});
+
+    	// Añadimos funcionalidad al botón de cerrar la pestaña
+    	botonCerrarD.addClickListener(e -> {
+    		pestanaDeseleccion.close();
     	});
     	
     	// Añadimos funcionalidad al botón de añadir el producto
