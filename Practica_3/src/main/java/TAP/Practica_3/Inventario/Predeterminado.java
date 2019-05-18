@@ -15,7 +15,7 @@ public class Predeterminado {
 			Integer cantidad1 = 3;
 			Integer cantidad2 = 2;
 			Double precioF1 = (double) 2;
-			Double precioF2 = 4.5;
+			Double precioF2 = 0.5;
 			
 			// Un ArrayList para añadir los productos predeterminado
 			ArrayList<Productos> predeterminado = new ArrayList<Productos>();
