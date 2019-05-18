@@ -37,13 +37,6 @@ import TAP.Practica_3.Inventario.Predeterminado;
 import TAP.Practica_3.Inventario.Productos;
 import TAP.Practica_3.Inventario.Transacciones;
 
-/**
- * This UI is the application entry point. A UI may either represent a browser window 
- * (or tab) or some part of an HTML page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
- * overridden to add  component to the user interface and initialize non-component functionality.
- */
 @Theme("mytheme")
 public class MyUI extends UI {
 
@@ -60,6 +53,7 @@ public class MyUI extends UI {
 		productosPre.Predeterminado();
 		
 		// Indicamos el cambio entre dólares y euros
+		// 1 Euro es un 1.2 Dólares
     	Double precioDolares = 1.2;
     	
         // Creamos una instancia al almacen de productos
@@ -92,8 +86,8 @@ public class MyUI extends UI {
     	TextField campoTipoTransacciones = new TextField("Tipo de transacción: ");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
-		Label labelindicacionDatos = new Label("Datos de los productos:");
-		Label indicacionTransacciones = new Label("Datos de las transacciones:");
+		Label labelIndicacionDatos = new Label("Datos de los productos:");
+		Label labelIndicacionTransacciones = new Label("Datos de las transacciones:");
 		Label labelNombreProducto = new Label();
         Label labelCantidadProducto = new Label();
         Label labelPrecioProducto = new Label();
@@ -179,6 +173,7 @@ public class MyUI extends UI {
     	campoTipoTransacciones.setWidth("260px");
     	botonDeseleccionar.setWidth("260px");
     	
+    	// Indicamos que en este campo es solo de lectura
     	campoDivisa.setReadOnly(true);
     	campoDivisa.setValue(divisa);
     	
@@ -187,8 +182,8 @@ public class MyUI extends UI {
     	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
     	ArrayList<String> nombresComponentes = new ArrayList<String>() ;
 		while (recorrerLista1.hasNext()) {
-				nombresComponentes.add(recorrerLista1.next().getNombreProducto());
-			}
+			nombresComponentes.add(recorrerLista1.next().getNombreProducto());
+		}
     	opcionesComponentes.setItems(nombresComponentes);
     	
     	// Creamos el formulario de datos
@@ -206,8 +201,14 @@ public class MyUI extends UI {
     	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
     	tablaDatos.addColumn(Productos::getPrecioProducto).setCaption("Precio del producto");
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
+    	
+    	// Indicamos que solo se puede seleccionar un producto a la vez
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
+    	
+    	// Indicamos que los datos de la tabla se encuentra en el array Productos
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    	
+    	// Establecemos el tamaño de la tabla
     	tablaDatos.setWidth("760px");
     	tablaDatos.setHeight("594px");
     
@@ -217,18 +218,26 @@ public class MyUI extends UI {
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
     	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha");
     	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste");
+    	
+    	// Indicamos el tamaño de la tabla
     	tablaTransacciones.setWidth("760px");
     	
     	// Añadimos el formulario a horizontalLayout
-    	horizontalLayout.addComponents(labelindicacionDatos,organizacion, organizacion2);
-    	horizontalLayout1.addComponents(indicacionTransacciones, organizacion5,organizacion6);
+    	horizontalLayout.addComponents(labelIndicacionDatos,organizacion, organizacion2);
+    	horizontalLayout1.addComponents(labelIndicacionTransacciones, organizacion5,organizacion6);
     	organizacion1.addComponents(horizontalLayout, horizontalLayout1);
     	setContent(organizacion1);
 
+    	/*******************************************************************************/
+    	/******************** FUNCIONALIDAD DE LOS PRODUCTOS ***************************/
+    	/*******************************************************************************/
     	
-    	/******* FUNCIONALIDAD DE LOS PRODUCTOS *********/
+    	// Añadimos funcionalidad al botón de deseleccionar el producto
     	botonDeseleccionar.addClickListener(e -> {
+    		// Deseleccionamos todos los datos de la tabla
     		tablaDatos.deselectAll();
+    		
+    		// Indicamos que no se selecciona ningún producto
     		productoSeleccionado = null;
     	});
     	
@@ -250,12 +259,15 @@ public class MyUI extends UI {
     					if (existe == null) {
     						// Cogemos los componentes
     						Set <String> eleccionComponentes = opcionesComponentes.getValue();
+    						
+    						// Indicmaos el precio inicial
     						double precioEleccion = 0.0;
     						
     						// Creamos el array necesario
     						ArrayList<Productos> componentesProducto = new ArrayList<Productos>();
     						Iterator<Productos> recorrerLista3 = Almacen.getInstance().getProductosAlmacen().iterator();
     						
+    						// Recorremos la lista con los datos
     						while(recorrerLista3.hasNext()) {
     							Productos siguienteComponente = recorrerLista3.next();
     							if(eleccionComponentes.contains(siguienteComponente.getNombreProducto())) {
@@ -264,15 +276,13 @@ public class MyUI extends UI {
     							}
     						}
     						
+    						// Damos valores a algunas variables
     						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
     						Double precioFinalProducto = precioEleccion + precioIntroducido;
     						
-    						// Añadimos el producto
-    						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),
-    								Integer.parseInt(campoCantidadProducto.getValue()),
-    								Double.parseDouble(campoPrecioProducto.getValue()),
-    								precioFinalProducto,
-    								componentesProducto);
+    						// Añadimos el producto a la tabla
+    						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
+    								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
     						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
     						
     						// Limpiamos los campos rellenados
@@ -281,7 +291,6 @@ public class MyUI extends UI {
     						campoCantidadProducto.clear();
     						campoCosteFabProducto.clear();
     						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    						
     					}
     				}
     			} 
@@ -307,7 +316,6 @@ public class MyUI extends UI {
         	labelPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
     	});
-    	
 
     	// Añadimos funcionalidad al botón de eliminar
     	botonEliminarProducto.addClickListener(e ->  {
@@ -327,18 +335,20 @@ public class MyUI extends UI {
         		addWindow(avisoError);
     		}
     		
+    		// Si la divisa es euros, mantenemos el precio
     		if (divisa == "Euros") {
 				campoDivisa.setValue(divisa);
-				for (Productos prod : almacen.getProductosAlmacen()) {
-					prod.setPrecioProducto(prod.getPrecioProducto());
-					prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto());
+				for (Productos productos : almacen.getProductosAlmacen()) {
+					productos.setPrecioProducto(productos.getPrecioProducto());
+					productos.setPrecioFabricacionProducto(productos.getPrecioFabricacionProducto());
 				}
     		} else {
+    			// Si es dólares, realizamos el cambio
     			divisa = "Dólares";
     			campoDivisa.setValue(divisa);
-				for (Productos prod : almacen.getProductosAlmacen()) {
-					prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
-					prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
+				for (Productos productos : almacen.getProductosAlmacen()) {
+					productos.setPrecioProducto(productos.getPrecioProducto()/precioDolares);
+					productos.setPrecioFabricacionProducto(productos.getPrecioFabricacionProducto()/precioDolares);
 				}
     		}
     	});
@@ -373,11 +383,8 @@ public class MyUI extends UI {
 				
 				// Añadimos el producto
 				Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-				Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(),
-						Integer.parseInt(campoCantidadProducto.getValue()),
-						Double.parseDouble(campoPrecioProducto.getValue()),
-						precioFinalProducto1,
-						componentesProducto1);
+				Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(), Integer.parseInt(campoCantidadProducto.getValue()),
+						Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto1, componentesProducto1);
 				Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
 				
 				// Limpiamos los campos rellenados
@@ -386,7 +393,11 @@ public class MyUI extends UI {
 				campoPrecioProducto.clear();
 				campoCantidadProducto.clear();
 				campoCosteFabProducto.clear();
+				
+				// Establecemos los nuevos datos
 				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+				
+				//Indicamos que ya no se selecciona ningún producto
 				productoSeleccionado = null;
 				Page.getCurrent().reload();
 				
@@ -576,10 +587,13 @@ public class MyUI extends UI {
         	
         	// Actualizamos la lista para ver los precios cambiados
         	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    		
-        		
         });
-        /******** FUNIONCALIDAD DE LAS TRANSACCIONES ********/
+        
+        /***********************************************************************************/
+    	/******************** FUNCIONALIDAD DE LOS TRANSACCIONES ***************************/
+    	/***********************************************************************************/
+        
+        // Añadimos funcionalidad al boton de introducir la transacción
         botonAniadirIngreso.addClickListener(e -> {
         	
         	// Inicializamos algunas variables
@@ -587,6 +601,8 @@ public class MyUI extends UI {
         	Double costeTransaccion = 0.0;
         	String identificacion;
         	String tipo;
+        	
+        	// Obtenemos la fecha
         	java.util.Date fechaTrans = new Date();
         	
         	// Damos valores a las variables creadas
@@ -596,11 +612,7 @@ public class MyUI extends UI {
         	tipo = campoTipoTransacciones.getValue();
 
 	    	// Insertamos la nueva transacción
-	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans,
-	        		identificacion,
-	        		cantidadIngreso, 
-	        		costeTransaccion,
-	        		tipo);
+	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
 	
 	        // Añadimos la transacción al histórico y actualizamos la tabla
 	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
