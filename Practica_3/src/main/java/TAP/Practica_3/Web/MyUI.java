@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.activity.InvalidActivityException;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -13,7 +12,6 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.FormLayout;
@@ -22,14 +20,10 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.SingleSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.components.grid.HeaderRow;
-import com.vaadin.ui.components.grid.SingleSelectionModel;
 
 import TAP.Practica_3.Inventario.Almacen;
 import TAP.Practica_3.Inventario.Historico;
@@ -39,7 +33,7 @@ import TAP.Practica_3.Inventario.Transacciones;
 
 @Theme("mytheme")
 public class MyUI extends UI {
-
+	
 	// Creamos algunas variables 
 	private Productos productoSeleccionado;
 	private String divisa = "Euros";
@@ -149,7 +143,6 @@ public class MyUI extends UI {
         Button botonCerrarR = new Button("Cerrar pestaña");
         Button botonDeseleccionar = new Button("Deseleccionar producto");
         Button botonCerrarD = new Button("Cerrar pestaña");
-        Button botonCerrarD2 = new Button("Cerrar pestaña");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -249,6 +242,9 @@ public class MyUI extends UI {
     			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarD);
     			pestanaDeseleccion.setContent(verticalLayout10);
         		addWindow(pestanaDeseleccion);
+        		
+        		// Indicamos que no se puede deseleccionar el producto
+        		System.out.println("No se puede deseleccionar el producto...");
     		} else {
     			// Deseleccionamos todos los datos de la tabla
         		tablaDatos.deselectAll();
@@ -259,12 +255,18 @@ public class MyUI extends UI {
     			verticalLayout9.addComponents(labelDeseleccion, botonCerrarD);
     			pestanaDeseleccion.setContent(verticalLayout9);
         		addWindow(pestanaDeseleccion);
+        		
+        		// Indicamos que se deselecciona el producto
+        		System.out.println("Se ha deseleccionado el producto...");
     		}
     	});
     	
     	// Añadimos funcionalidad al botón de cerrar la pestaña
     	botonCerrarD.addClickListener(e -> {
     		pestanaDeseleccion.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
     	});
     	
     	// Añadimos funcionalidad al botón de añadir el producto
@@ -280,61 +282,70 @@ public class MyUI extends UI {
     			while (recorrerLista2.hasNext()) {
     				if(recorrerLista2.next().getNombreProducto().equals(campoNombreProducto.getValue())) {
     					existe = true;
-    				} else {
-    					// Si no existe, lo añadimos a la lista
-    					if (existe == null) {
-    						// Cogemos los componentes
-    						Set <String> eleccionComponentes = opcionesComponentes.getValue();
-    						
-    						// Indicmaos el precio inicial
-    						double precioEleccion = 0.0;
-    						
-    						// Creamos el array necesario
-    						ArrayList<Productos> componentesProducto = new ArrayList<Productos>();
-    						Iterator<Productos> recorrerLista3 = Almacen.getInstance().getProductosAlmacen().iterator();
-    						
-    						// Recorremos la lista con los datos
-    						while(recorrerLista3.hasNext()) {
-    							Productos siguienteComponente = recorrerLista3.next();
-    							if(eleccionComponentes.contains(siguienteComponente.getNombreProducto())) {
-    								componentesProducto.add(siguienteComponente);
-    								precioEleccion = siguienteComponente.getPrecioFabricacionProducto();
-    							}
-    							siguienteComponente.setCantidadProducto(siguienteComponente.getCantidadProducto()-1);
-    						}
-    						
-    						// Damos valores a algunas variables
-    						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
-    						Double precioFinalProducto = precioEleccion + precioIntroducido;
-    						
-    						// Añadimos el producto a la tabla
-    						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
-    								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
-    						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
-    						
-    						// Limpiamos los campos rellenados y las opciones de los componentes
-    						campoNombreProducto.clear();
-    						campoPrecioProducto.clear();
-    						campoCantidadProducto.clear();
-    						campoCosteFabProducto.clear();
-    						opcionesComponentes.deselectAll();
-    						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-    						Page.getCurrent().reload();
-    					}
-    				}
-    			} 
-    		} else if (productoSeleccionado != null){
-    			// Creamos la pestaña indicando el error
-        		avisoError.center();
-        		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarA);
-        		avisoError.setContent(verticalLayout3);
-        		addWindow(avisoError);
-    		}
-    	});
+    				} 
+    			}
+    			
+				// Si no existe, lo añadimos a la lista
+				if (existe == null) {
+					// Cogemos los componentes
+					Set <String> eleccionComponentes = opcionesComponentes.getValue();
+						
+					// Indicmaos el precio inicial
+					double precioEleccion = 0.0;
+						
+					// Creamos el array necesario
+					ArrayList<Productos> componentesProducto = new ArrayList<Productos>();
+					Iterator<Productos> recorrerLista3 = Almacen.getInstance().getProductosAlmacen().iterator();
+					
+					// Recorremos la lista con los datos
+					while(recorrerLista3.hasNext()) {
+						Productos siguienteComponente = recorrerLista3.next();
+						if(eleccionComponentes.contains(siguienteComponente.getNombreProducto())) {
+							componentesProducto.add(siguienteComponente);
+							precioEleccion = siguienteComponente.getPrecioFabricacionProducto();
+						}
+					}
+						
+					// Damos valores a algunas variables
+					Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
+					Double precioFinalProducto = precioEleccion + precioIntroducido;
+					
+					// Añadimos el producto a la tabla
+					Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
+							Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
+					Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
+					
+					// Limpiamos los campos rellenados y las opciones de los componentes
+					campoNombreProducto.clear();
+					campoPrecioProducto.clear();
+					campoCantidadProducto.clear();
+					campoCosteFabProducto.clear();
+					
+					// Deseleccionamos los componentes
+					opcionesComponentes.deselectAll();
+					
+					// Actualizamos el contenido de la tabla y recargamos la página
+					tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+					Page.getCurrent().reload();
+					
+					// Indicamos el producto que se ha añadido
+					System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
+				}
+	    	} else if (productoSeleccionado != null) {
+				// Creamos la pestaña indicando el error
+	    		avisoError.center();
+	    		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarA);
+	    		avisoError.setContent(verticalLayout3);
+	    		addWindow(avisoError);
+			}
+		});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	botonCerrarA.addClickListener(e -> {
     		avisoError.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
     	});
 
     	//Selecion de producto por pantalla de la tabla datos
@@ -353,6 +364,10 @@ public class MyUI extends UI {
     			// Se elimina el producto seleccionado
     			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
     			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    			
+    			// Indicamos que se ha eliminado el producto
+    			System.out.println("El producto se ha eliminado del almacen");
+    			
     			productoSeleccionado = null;
     			Page.getCurrent().reload();
     			
@@ -385,6 +400,9 @@ public class MyUI extends UI {
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	botonCerrarE.addClickListener(e -> {
     		avisoError.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
     	});
     	
     	// Añadimos funcionalidad al botón de modificar
@@ -416,7 +434,7 @@ public class MyUI extends UI {
 						Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto1, componentesProducto1);
 				Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
 				
-				// Limpiamos los campos rellenados
+				// Limpiamos los campos rellenados e indicamos que no se ha escogido ningún producto
 				productoSeleccionado = null;
 				campoNombreProducto.clear();
 				campoPrecioProducto.clear();
@@ -425,11 +443,12 @@ public class MyUI extends UI {
 				
 				// Establecemos los nuevos datos
 				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-				
-				//Indicamos que ya no se selecciona ningún producto
-				productoSeleccionado = null;
+
+				// Recargamos la página
 				Page.getCurrent().reload();
 				
+				// Indicamos que se ha modificado el producto
+				System.out.println("Se ha modifcado el producto...");
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -442,6 +461,9 @@ public class MyUI extends UI {
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	botonCerrarM.addClickListener(e -> {
     		avisoError.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
     	});
 
         // Colocamos los elementos en la pestaña
@@ -480,11 +502,17 @@ public class MyUI extends UI {
         // Añador funcionalidad al boton de cerrar la pestaña
         botonCerrarO.addClickListener(e -> {
         	avisoError.close();
+        	
+        	// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
         });
         
         // Añadimos funcionalidad al boton de cerrar la pestaña
         botonCerrar.addClickListener(e -> {
         	pestanaMasOpciones.close();
+        	
+        	// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
         });
         
         // Añadimos funcionalidad al boton de sumar cantidades
@@ -523,6 +551,9 @@ public class MyUI extends UI {
         // Añadimos funcionalidad al boton de cerrar
         botonCerrarS.addClickListener(e -> {
         	avisoError.close();
+        	
+        	// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
         });
         
         // Añadimos funcionalidad al boton de restar cantidad
@@ -586,6 +617,9 @@ public class MyUI extends UI {
         // Añadimos funcionalidad al boton de cerrar
         botonCerrarR.addClickListener(e -> {
         	avisoError.close();
+        	
+        	// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
         });
         		
         // Añadimos funcionalidad al boton de cambiar divisa
@@ -604,6 +638,9 @@ public class MyUI extends UI {
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
         		}
         			
+        		// Indicamos que se ha cambiado a dólares
+        		System.out.println("Se ha cambiado la divisa a dólares");
+        		
         	// Si son dólares, cambiamos a euros y hacemos lo mismo
         	} else {
         		divisa = "Euros";
@@ -612,6 +649,9 @@ public class MyUI extends UI {
         			prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
         		}
+        		
+        		// Indicamos que se ha cambiado a dólares
+        		System.out.println("Se ha cambiado la divisa a euros");
         	}
         	
         	// Actualizamos la lista para ver los precios cambiados
@@ -651,8 +691,13 @@ public class MyUI extends UI {
 	        campoIngreso.clear();
 	        campoCosteTransaccion.clear();
 	        campoIdentificarTransaccion.clear();
+	        campoTipoTransacciones.clear();
+	        
+	        // Indicamos que se ha insertado la transacción
+	        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
         });
     }
+
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
