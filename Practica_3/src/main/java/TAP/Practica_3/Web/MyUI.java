@@ -132,18 +132,11 @@ public class MyUI extends UI {
     	Button botonMasOpcionesProducto = new Button("Más opciones del producto");
     	Button botonAniadirIngreso = new Button("Insertar transacción");
     	Button botonCambiarDivisa = new Button("Cambiar entre Euros/Dólares");
+    	Button botonDeseleccionar = new Button("Deseleccionar producto");
     	
     	// Creamos lo botones para cerrar las pestañas
         Button botonCerrar = new Button("Cerrar pestaña");
-        Button botonCerrarO = new Button("Cerrar pestaña");	
-    	Button botonCerrarE = new Button("Cerrar pestaña");
-        Button botonCerrarM = new Button("Cerrar pestaña");
-        Button botonCerrarA = new Button("Cerrar pestaña");
-        Button botonCerrarS = new Button("Cerrar pestaña");
-        Button botonCerrarR = new Button("Cerrar pestaña");
-        Button botonDeseleccionar = new Button("Deseleccionar producto");
-        Button botonCerrarD = new Button("Cerrar pestaña");
-        Button botonCerrarFd = new Button("Cerrar pestaña");
+        Button botonCerrarP = new Button("Cerrar pestaña");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -153,14 +146,8 @@ public class MyUI extends UI {
     	campoIngreso.setWidth("260px");
     	campoAniadirProducto.setWidth("260px");
     	campoRestarProducto.setWidth("260px");
-    	botonCerrarR.setWidth("420px");
-    	botonCerrarS.setWidth("420px");
-    	botonCerrarA.setWidth("260px");
-    	botonCerrarM.setWidth("260px");
-    	botonCerrarE.setWidth("260px");
-    	botonCerrarO.setWidth("260px");
+    	botonCerrarP.setWidth("260px");
         botonCerrar.setWidth("260px");
-        botonCerrarD.setWidth("260px");
         botonAniadirCantidad.setWidth("260px");
         botonRestarCantidad.setWidth("260px");
     	botonMasOpcionesProducto.setWidth("260px");
@@ -174,7 +161,6 @@ public class MyUI extends UI {
     	campoDivisa.setWidth("260px");
     	campoTipoTransacciones.setWidth("260px");
     	botonDeseleccionar.setWidth("260px");
-    	botonCerrarFd.setWidth("260px");
     	
     	// Indicamos que en este campo es solo de lectura
     	campoDivisa.setReadOnly(true);
@@ -241,7 +227,7 @@ public class MyUI extends UI {
     		// Si no hay producto seleccionado, lo indicamos con una pestaña
     		if (productoSeleccionado == null) {
     			avisoError.center();
-    			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarD);
+    			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarP);
     			avisoError.setContent(verticalLayout10);
         		addWindow(avisoError);
         		
@@ -254,21 +240,13 @@ public class MyUI extends UI {
         		// Indicamos que no se selecciona ningún producto
         		productoSeleccionado = null;
         		avisoError.center();
-    			verticalLayout9.addComponents(labelDeseleccion, botonCerrarD);
+    			verticalLayout9.addComponents(labelDeseleccion, botonCerrarP);
     			avisoError.setContent(verticalLayout9);
         		addWindow(avisoError);
         		
         		// Indicamos que se deselecciona el producto
         		System.out.println("Se ha deseleccionado el producto...");
     		}
-    	});
-    	
-    	// Añadimos funcionalidad al botón de cerrar la pestaña
-    	botonCerrarD.addClickListener(e -> {
-    		avisoError.close();
-    		
-    		// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
     	});
     	
     	// Añadimos funcionalidad al botón de añadir el producto
@@ -317,7 +295,7 @@ public class MyUI extends UI {
 						
 						// Creamos la pestaña indicando el error
 			    		avisoError.center();
-			    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarFd);
+			    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
 			    		avisoError.setContent(verticalLayout11);
 			    		addWindow(avisoError);
 						
@@ -352,26 +330,12 @@ public class MyUI extends UI {
 	    	} else if (productoSeleccionado != null) {
 				// Creamos la pestaña indicando el error
 	    		avisoError.center();
-	    		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarA);
+	    		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarP);
 	    		avisoError.setContent(verticalLayout3);
 	    		addWindow(avisoError);
 			}
 		});
-    	
-    	botonCerrarFd.addClickListener(e -> {
-    		avisoError.close();
-    		
-    		// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
-    	});
-    	
-    	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	botonCerrarA.addClickListener(e -> {
-    		avisoError.close();
-    		
-    		// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
-    	});
+
 
     	//Selecion de producto por pantalla de la tabla datos
     	tablaDatos.addItemClickListener(event -> {
@@ -399,7 +363,7 @@ public class MyUI extends UI {
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout4.addComponents(labelerrorSinProducto, botonCerrarE);
+        		verticalLayout4.addComponents(labelerrorSinProducto, botonCerrarP);
         		avisoError.setContent(verticalLayout4);
         		addWindow(avisoError);
     		}
@@ -421,15 +385,7 @@ public class MyUI extends UI {
 				}
     		}
     	});
-    	
-    	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	botonCerrarE.addClickListener(e -> {
-    		avisoError.close();
-    		
-    		// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
-    	});
-    	
+
     	// Añadimos funcionalidad al botón de modificar
     	botonModificarProducto.addClickListener(e -> {
     		// Comprobamos si se ha escogido un producto
@@ -473,22 +429,14 @@ public class MyUI extends UI {
 				Page.getCurrent().reload();
 				
 				// Indicamos que se ha modificado el producto
-				System.out.println("Se ha modifcado el producto...");
+				System.out.println("Se ha modificado el producto...");
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout5.addComponents(labelerrorSinProducto, botonCerrarM);
+        		verticalLayout5.addComponents(labelerrorSinProducto, botonCerrarP);
         		avisoError.setContent(verticalLayout5);
         		addWindow(avisoError);
     		}
-    	});
-    	
-    	// Añadimos funcionalidad al boton de eliminar la pestaña
-    	botonCerrarM.addClickListener(e -> {
-    		avisoError.close();
-    		
-    		// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
     	});
 
         // Colocamos los elementos en la pestaña
@@ -515,22 +463,17 @@ public class MyUI extends UI {
         		labelverPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         		labelverPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
 
+        		
+        		// Indicamos que se ha modificado el producto
+        		System.out.println("Se ha modificado el producto...");
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout6.addComponents(labelerrorSinProducto, botonCerrarO);
+        		verticalLayout6.addComponents(labelerrorSinProducto, botonCerrarP);
         		avisoError.setContent(verticalLayout6);
         		addWindow(avisoError);
         	}
     	});
-        
-        // Añador funcionalidad al boton de cerrar la pestaña
-        botonCerrarO.addClickListener(e -> {
-        	avisoError.close();
-        	
-        	// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
-        });
         
         // Añadimos funcionalidad al boton de cerrar la pestaña
         botonCerrar.addClickListener(e -> {
@@ -567,18 +510,10 @@ public class MyUI extends UI {
         	} else {
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarS);
+        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarP);
         		avisoError.setContent(verticalLayout7);
         		addWindow(avisoError);
         	}
-        });
-        
-        // Añadimos funcionalidad al boton de cerrar
-        botonCerrarS.addClickListener(e -> {
-        	avisoError.close();
-        	
-        	// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
         });
         
         // Añadimos funcionalidad al boton de restar cantidad
@@ -629,24 +564,18 @@ public class MyUI extends UI {
         			
         			// Actualizamos la página
         			pestanaMasOpciones.close();
+        			
+        			Page.getCurrent().reload();
         		}
         	} else {    		
         		// Creamos una pestaña indicando el error
         		avisoError.center();
-        		verticalLayout8.addComponents(labelerrorResta, botonCerrarR);
+        		verticalLayout8.addComponents(labelerrorResta, botonCerrarP);
         		avisoError.setContent(verticalLayout8);
         		addWindow(avisoError);
         	}
         });
-        
-        // Añadimos funcionalidad al boton de cerrar
-        botonCerrarR.addClickListener(e -> {
-        	avisoError.close();
-        	
-        	// Indicamos que se ha cerrado la pestaña
-    		System.out.println("Se ha cerrado la pestaña...");
-        });
-        		
+
         // Añadimos funcionalidad al boton de cambiar divisa
         botonCambiarDivisa.addClickListener(e -> {
         	
@@ -683,6 +612,15 @@ public class MyUI extends UI {
         	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
         });
         
+        // Añadimos funcionalidad al botón de cerrar la pestaña
+    	botonCerrarP.addClickListener(e -> {
+    		avisoError.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
+    	});
+    	
+        
         /***********************************************************************************/
     	/******************** FUNCIONALIDAD DE LOS TRANSACCIONES ***************************/
     	/***********************************************************************************/
@@ -707,7 +645,7 @@ public class MyUI extends UI {
 				
 				// Creamos la pestaña indicando el error
 	    		avisoError.center();
-	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarFd);
+	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
 	    		avisoError.setContent(verticalLayout11);
 	    		addWindow(avisoError);
 	    		
@@ -736,7 +674,6 @@ public class MyUI extends UI {
 			}
         });
     }
-
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
