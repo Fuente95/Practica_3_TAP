@@ -199,7 +199,7 @@ public class MyUI extends UI {
     	
     	// Establecemos el tamaño de la tabla
     	tablaDatos.setWidth("760px");
-    	tablaDatos.setHeight("594px");
+    	tablaDatos.setHeight("623px");
     
     	// Visualizamos los datos de las transacciones
     	tablaTransacciones.addColumn(Transacciones::getIdentificacionTransaccion).setCaption("Identificación");
@@ -335,7 +335,6 @@ public class MyUI extends UI {
 	    		addWindow(avisoError);
 			}
 		});
-
 
     	//Selecion de producto por pantalla de la tabla datos
     	tablaDatos.addItemClickListener(event -> {
@@ -485,94 +484,118 @@ public class MyUI extends UI {
         
         // Añadimos funcionalidad al boton de sumar cantidades
         botonAniadirCantidad.addClickListener(e -> {
-        	// Declaramos algunas variables
-        	Integer cantidadTotal = 0;
-        	Integer cantidadSumada = 0;
-        	
-        	// Obtenemos la cantidad que vamos a sumar
-        	cantidadSumada = Integer.parseInt(campoAniadirProducto.getValue());
-
-        	// Si el valor que vamos a añadir es 0 o mayor
-        	if (cantidadSumada >= 0) {
-        		// Calculamos la cantidad total del producto seleccionado
-        		cantidadTotal = productoSeleccionado.getCantidadProducto() + cantidadSumada;
-        		
-        		// Establecemos la nueva cantidad
-        		productoSeleccionado.setCantidadProducto(cantidadTotal);
-        		
-        		// Actualizamos el valor en la visualización de los datos
-        		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        		campoAniadirProducto.clear();
-        		
-        		// Actualizamos los datos en la tabla
-        		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-
+        	// Comprobamos si el textfield esta vacío
+        	if (campoAniadirProducto.getValue().isEmpty()) {
+        		System.out.println("No se puede realizar la operación ya que faltan datos...");
+				
+				// Creamos la pestaña indicando el error
+	    		avisoError.center();
+	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
+	    		avisoError.setContent(verticalLayout11);
+	    		addWindow(avisoError);
+	    		
         	} else {
-        		// Creamos una pestaña indicando el error
-        		avisoError.center();
-        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarP);
-        		avisoError.setContent(verticalLayout7);
-        		addWindow(avisoError);
+        		// Declaramos algunas variables
+	        	Integer cantidadTotal = 0;
+	        	Integer cantidadSumada = 0;
+	        	
+	        	// Obtenemos la cantidad que vamos a sumar
+	        	cantidadSumada = Integer.parseInt(campoAniadirProducto.getValue());
+	
+	        	// Si el valor que vamos a añadir es 0 o mayor
+	        	if (cantidadSumada >= 0) {
+	        		// Calculamos la cantidad total del producto seleccionado
+	        		cantidadTotal = productoSeleccionado.getCantidadProducto() + cantidadSumada;
+	        		
+	        		// Establecemos la nueva cantidad
+	        		productoSeleccionado.setCantidadProducto(cantidadTotal);
+	        		
+	        		// Actualizamos el valor en la visualización de los datos
+	        		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+	        		campoAniadirProducto.clear();
+	        		
+	        		// Actualizamos los datos en la tabla
+	        		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	
+	        	} else {
+	        		// Creamos una pestaña indicando el error
+	        		avisoError.center();
+	        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarP);
+	        		avisoError.setContent(verticalLayout7);
+	        		addWindow(avisoError);
+	        	}
         	}
         });
         
         // Añadimos funcionalidad al boton de restar cantidad
         botonRestarCantidad.addClickListener(e -> {
-        	// Declaramos algunas variables
-        	Integer cantidadTotal = 0;
-        	Integer cantidadRestada = 0;
-        	
-        	// Obtenemos lo que vamos a restar
-        	cantidadRestada = Integer.parseInt(campoRestarProducto.getValue());
-        	
-        	// Si el valor es mayor o igual que 0
-        	if (cantidadRestada >= 0) {
-        		
-        		// Calculamos el resultado
-        		cantidadTotal = productoSeleccionado.getCantidadProducto() - cantidadRestada;
-        		
-        		// Si el resultado es mayor que 0
-        		if (cantidadTotal > 0) {
-        			// Establecemos la nueva cantidad del producto
-        			productoSeleccionado.setCantidadProducto(cantidadTotal);
-        			
-        			// Actualizamos el valor donde se ve los datos
-        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        			campoRestarProducto.clear();
-        			
-        			// Actualizamos la tabla de datos
-        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-        			
-        		// Si el resultado es menor o igual que 0
-        		} else if (cantidadTotal <= 0){
-        			
-        			// Como no existen cantidades negativas, lo dejamos en 0
-        			cantidadTotal = 0;
-        			
-        			// Establecemos la cantidad a 0
-        			productoSeleccionado.setCantidadProducto(cantidadTotal);
-        			
-        			// Actualizamos el valor para visualizar los datos
-        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
-        			
-        			// Eliminados el producto de la lista al no existir cantidades suficientes
-        			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-        			campoRestarProducto.clear();
-        			
-        			// Actualizamos la tabla de los datos
-        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-        			
-        			// Actualizamos la página
-        			pestanaMasOpciones.close();
-        			
-        			Page.getCurrent().reload();
-        		}
-        	} else {    		
-        		// Creamos una pestaña indicando el error
-        		avisoError.center();
-        		verticalLayout8.addComponents(labelerrorResta, botonCerrarP);
-        		avisoError.setContent(verticalLayout8);
-        		addWindow(avisoError);
+        	// Comprobamos si el textfield esta vacío
+        	if (campoRestarProducto.getValue().isEmpty()) {
+        		System.out.println("No se puede realizar la operación ya que faltan datos...");
+				
+				// Creamos la pestaña indicando el error
+	    		avisoError.center();
+	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
+	    		avisoError.setContent(verticalLayout11);
+	    		addWindow(avisoError);
+	    		
+        	} else {
+	        	// Declaramos algunas variables
+	        	Integer cantidadTotal = 0;
+	        	Integer cantidadRestada = 0;
+	        	
+	        	// Obtenemos lo que vamos a restar
+	        	cantidadRestada = Integer.parseInt(campoRestarProducto.getValue());
+	        	
+	        	// Si el valor es mayor o igual que 0
+	        	if (cantidadRestada >= 0) {
+	        		
+	        		// Calculamos el resultado
+	        		cantidadTotal = productoSeleccionado.getCantidadProducto() - cantidadRestada;
+	        		
+	        		// Si el resultado es mayor que 0
+	        		if (cantidadTotal > 0) {
+	        			// Establecemos la nueva cantidad del producto
+	        			productoSeleccionado.setCantidadProducto(cantidadTotal);
+	        			
+	        			// Actualizamos el valor donde se ve los datos
+	        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+	        			campoRestarProducto.clear();
+	        			
+	        			// Actualizamos la tabla de datos
+	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        			
+	        		// Si el resultado es menor o igual que 0
+	        		} else if (cantidadTotal <= 0){
+	        			
+	        			// Como no existen cantidades negativas, lo dejamos en 0
+	        			cantidadTotal = 0;
+	        			
+	        			// Establecemos la cantidad a 0
+	        			productoSeleccionado.setCantidadProducto(cantidadTotal);
+	        			
+	        			// Actualizamos el valor para visualizar los datos
+	        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
+	        			
+	        			// Eliminados el producto de la lista al no existir cantidades suficientes
+	        			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+	        			campoRestarProducto.clear();
+	        			
+	        			// Actualizamos la tabla de los datos
+	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        			
+	        			// Actualizamos la página
+	        			pestanaMasOpciones.close();
+	        			
+	        			Page.getCurrent().reload();
+	        		}
+	        	} else {    		
+	        		// Creamos una pestaña indicando el error
+	        		avisoError.center();
+	        		verticalLayout8.addComponents(labelerrorResta, botonCerrarP);
+	        		avisoError.setContent(verticalLayout8);
+	        		addWindow(avisoError);
+	        	}
         	}
         });
 
