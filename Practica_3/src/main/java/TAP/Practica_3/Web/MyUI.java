@@ -19,7 +19,6 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -56,7 +55,6 @@ public class MyUI extends UI {
 		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Error");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
-		Window pestanaDeseleccion = new Window("Aviso");
 
 		// Creamos los FormLayout necesarios
 		FormLayout organizacion = new FormLayout();
@@ -101,6 +99,7 @@ public class MyUI extends UI {
     	Label labelverPrecioFabProducto = new Label("");
     	Label labelDeseleccion = new Label("Se ha deseleccionado el producto");
     	Label labelDeseleccion2 = new Label("Debe seleccionar un producto");
+    	Label labelFaltaDatos = new Label("Error, existen datos sin completar");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -118,6 +117,7 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout8 = new VerticalLayout();
     	VerticalLayout verticalLayout9 = new VerticalLayout();
     	VerticalLayout verticalLayout10 = new VerticalLayout();
+    	VerticalLayout verticalLayout11 = new VerticalLayout();
     	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -143,6 +143,7 @@ public class MyUI extends UI {
         Button botonCerrarR = new Button("Cerrar pestaña");
         Button botonDeseleccionar = new Button("Deseleccionar producto");
         Button botonCerrarD = new Button("Cerrar pestaña");
+        Button botonCerrarFd = new Button("Cerrar pestaña");
         
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
@@ -173,6 +174,7 @@ public class MyUI extends UI {
     	campoDivisa.setWidth("260px");
     	campoTipoTransacciones.setWidth("260px");
     	botonDeseleccionar.setWidth("260px");
+    	botonCerrarFd.setWidth("260px");
     	
     	// Indicamos que en este campo es solo de lectura
     	campoDivisa.setReadOnly(true);
@@ -238,10 +240,10 @@ public class MyUI extends UI {
     	botonDeseleccionar.addClickListener(e -> {
     		// Si no hay producto seleccionado, lo indicamos con una pestaña
     		if (productoSeleccionado == null) {
-    			pestanaDeseleccion.center();
+    			avisoError.center();
     			verticalLayout10.addComponents(labelDeseleccion2, botonCerrarD);
-    			pestanaDeseleccion.setContent(verticalLayout10);
-        		addWindow(pestanaDeseleccion);
+    			avisoError.setContent(verticalLayout10);
+        		addWindow(avisoError);
         		
         		// Indicamos que no se puede deseleccionar el producto
         		System.out.println("No se puede deseleccionar el producto...");
@@ -251,10 +253,10 @@ public class MyUI extends UI {
         		
         		// Indicamos que no se selecciona ningún producto
         		productoSeleccionado = null;
-    			pestanaDeseleccion.center();
+        		avisoError.center();
     			verticalLayout9.addComponents(labelDeseleccion, botonCerrarD);
-    			pestanaDeseleccion.setContent(verticalLayout9);
-        		addWindow(pestanaDeseleccion);
+    			avisoError.setContent(verticalLayout9);
+        		addWindow(avisoError);
         		
         		// Indicamos que se deselecciona el producto
         		System.out.println("Se ha deseleccionado el producto...");
@@ -263,7 +265,7 @@ public class MyUI extends UI {
     	
     	// Añadimos funcionalidad al botón de cerrar la pestaña
     	botonCerrarD.addClickListener(e -> {
-    		pestanaDeseleccion.close();
+    		avisoError.close();
     		
     		// Indicamos que se ha cerrado la pestaña
     		System.out.println("Se ha cerrado la pestaña...");
@@ -306,30 +308,46 @@ public class MyUI extends UI {
 						}
 					}
 						
-					// Damos valores a algunas variables
-					Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
-					Double precioFinalProducto = precioEleccion + precioIntroducido;
-					
-					// Añadimos el producto a la tabla
-					Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
-							Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
-					Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
-					
-					// Limpiamos los campos rellenados y las opciones de los componentes
-					campoNombreProducto.clear();
-					campoPrecioProducto.clear();
-					campoCantidadProducto.clear();
-					campoCosteFabProducto.clear();
-					
-					// Deseleccionamos los componentes
-					opcionesComponentes.deselectAll();
-					
-					// Actualizamos el contenido de la tabla y recargamos la página
-					tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-					Page.getCurrent().reload();
-					
-					// Indicamos el producto que se ha añadido
-					System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
+					// Comprobamos si los textfield estan vacios
+					if (campoNombreProducto.getValue().isEmpty()|| campoCantidadProducto.getValue().isEmpty() ||
+						campoPrecioProducto.getValue().isEmpty() || campoCosteFabProducto.getValue().isEmpty()){
+						
+						// Indicamos que faltan datos por rellenar
+						System.out.println("No se puede añadir el producto, ya que faltan datos...");
+						
+						// Creamos la pestaña indicando el error
+			    		avisoError.center();
+			    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarFd);
+			    		avisoError.setContent(verticalLayout11);
+			    		addWindow(avisoError);
+						
+					} else {
+						
+						// Damos valores a algunas variables
+						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
+						Double precioFinalProducto = precioEleccion + precioIntroducido;
+						
+						// Añadimos el producto a la tabla
+						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
+								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
+						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
+						
+						// Limpiamos los campos rellenados y las opciones de los componentes
+						campoNombreProducto.clear();
+						campoPrecioProducto.clear();
+						campoCantidadProducto.clear();
+						campoCosteFabProducto.clear();
+						
+						// Deseleccionamos los componentes
+						opcionesComponentes.deselectAll();
+						
+						// Actualizamos el contenido de la tabla y recargamos la página
+						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+						Page.getCurrent().reload();
+						
+						// Indicamos el producto que se ha añadido
+						System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
+					}
 				}
 	    	} else if (productoSeleccionado != null) {
 				// Creamos la pestaña indicando el error
@@ -339,6 +357,13 @@ public class MyUI extends UI {
 	    		addWindow(avisoError);
 			}
 		});
+    	
+    	botonCerrarFd.addClickListener(e -> {
+    		avisoError.close();
+    		
+    		// Indicamos que se ha cerrado la pestaña
+    		System.out.println("Se ha cerrado la pestaña...");
+    	});
     	
     	// Añadimos funcionalidad al boton de eliminar la pestaña
     	botonCerrarA.addClickListener(e -> {
@@ -674,27 +699,41 @@ public class MyUI extends UI {
         	// Obtenemos la fecha
         	java.util.Date fechaTrans = new Date();
         	
-        	// Damos valores a las variables creadas
-        	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
-        	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
-        	identificacion = campoIdentificarTransaccion.getValue();
-        	tipo = campoTipoTransacciones.getValue();
+        	// Comprobamos si los textfield estan vacios
+			if (campoIngreso.getValue().isEmpty()|| campoCosteTransaccion.getValue().isEmpty() ||
+					campoIdentificarTransaccion.getValue().isEmpty() || campoTipoTransacciones.getValue().isEmpty()){
+				
+				System.out.println("No se puede añadir la transacción, ya que faltan datos...");
+				
+				// Creamos la pestaña indicando el error
+	    		avisoError.center();
+	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarFd);
+	    		avisoError.setContent(verticalLayout11);
+	    		addWindow(avisoError);
+	    		
+			} else {
+				// Damos valores a las variables creadas
+	        	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
+	        	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
+	        	identificacion = campoIdentificarTransaccion.getValue();
+	        	tipo = campoTipoTransacciones.getValue();
 
-	    	// Insertamos la nueva transacción
-	        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
-	
-	        // Añadimos la transacción al histórico y actualizamos la tabla
-	        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
-	        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
-	        	
-	        // Vaciamos los campos
-	        campoIngreso.clear();
-	        campoCosteTransaccion.clear();
-	        campoIdentificarTransaccion.clear();
-	        campoTipoTransacciones.clear();
-	        
-	        // Indicamos que se ha insertado la transacción
-	        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
+		    	// Insertamos la nueva transacción
+		        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
+		
+		        // Añadimos la transacción al histórico y actualizamos la tabla
+		        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
+		        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+		        	
+		        // Vaciamos los campos
+		        campoIngreso.clear();
+		        campoCosteTransaccion.clear();
+		        campoIdentificarTransaccion.clear();
+		        campoTipoTransacciones.clear();
+		        
+		        // Indicamos que se ha insertado la transacción
+		        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
+			}
         });
     }
 
