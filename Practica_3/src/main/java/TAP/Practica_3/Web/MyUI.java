@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.annotation.WebServlet;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.Page;
@@ -403,32 +402,47 @@ public class MyUI extends UI {
 						precioEleccion1 = siguienteComponente1.getPrecioFabricacionProducto();
 					}
 				}
-				
-				// Declaramos algunas variables
-				Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
-				Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
-				
-				// Añadimos el producto
-				Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
-				Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(), Integer.parseInt(campoCantidadProducto.getValue()),
-						Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto1, componentesProducto1);
-				Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
-				
-				// Limpiamos los campos rellenados e indicamos que no se ha escogido ningún producto
-				productoSeleccionado = null;
-				campoNombreProducto.clear();
-				campoPrecioProducto.clear();
-				campoCantidadProducto.clear();
-				campoCosteFabProducto.clear();
-				
-				// Establecemos los nuevos datos
-				tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
 
-				// Recargamos la página
-				Page.getCurrent().reload();
-				
-				// Indicamos que se ha modificado el producto
-				System.out.println("Se ha modificado el producto...");
+				// Comprobamos si los textfield estan vacios
+				if (campoNombreProducto.getValue().isEmpty()|| campoCantidadProducto.getValue().isEmpty() ||
+					campoPrecioProducto.getValue().isEmpty() || campoCosteFabProducto.getValue().isEmpty()){
+					
+					// Indicamos que faltan datos por rellenar
+					System.out.println("No se puede añadir el producto, ya que faltan datos...");
+					
+					// Creamos la pestaña indicando el error
+		    		avisoError.center();
+		    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
+		    		avisoError.setContent(verticalLayout11);
+		    		addWindow(avisoError);
+		    		
+				} else {
+		    		// Declaramos algunas variables
+					Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
+					Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
+					
+					// Añadimos el producto
+					Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+					Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(), Integer.parseInt(campoCantidadProducto.getValue()),
+							Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto1, componentesProducto1);
+					Almacen.getInstance().getProductosAlmacen().add(productoNuevo1);
+					
+					// Limpiamos los campos rellenados e indicamos que no se ha escogido ningún producto
+					productoSeleccionado = null;
+					campoNombreProducto.clear();
+					campoPrecioProducto.clear();
+					campoCantidadProducto.clear();
+					campoCosteFabProducto.clear();
+					
+					// Establecemos los nuevos datos
+					tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	
+					// Recargamos la página
+					Page.getCurrent().reload();
+					
+					// Indicamos que se ha modificado el producto
+					System.out.println("Se ha modificado el producto...");
+		    	}
     		} else {
     			// Creamos una pestaña indicando el error
         		avisoError.center();
@@ -656,7 +670,7 @@ public class MyUI extends UI {
         	Double costeTransaccion = 0.0;
         	String identificacion;
         	String tipo;
-        	
+
         	// Obtenemos la fecha
         	java.util.Date fechaTrans = new Date();
         	
