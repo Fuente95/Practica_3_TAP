@@ -230,6 +230,15 @@ public class MyUI extends UI {
     			avisoError.setContent(verticalLayout10);
         		addWindow(avisoError);
         		
+        		// Limpiamos los campos rellenados y las opciones de los componentes
+				campoNombreProducto.clear();
+				campoPrecioProducto.clear();
+				campoCantidadProducto.clear();
+				campoCosteFabProducto.clear();
+				
+				// Deseleccionamos los componentes
+				opcionesComponentes.deselectAll();
+				
         		// Indicamos que no se puede deseleccionar el producto
         		System.out.println("No se puede deseleccionar el producto...");
     		} else {
@@ -243,6 +252,15 @@ public class MyUI extends UI {
     			avisoError.setContent(verticalLayout9);
         		addWindow(avisoError);
         		
+        		// Limpiamos los campos rellenados y las opciones de los componentes
+				campoNombreProducto.clear();
+				campoPrecioProducto.clear();
+				campoCantidadProducto.clear();
+				campoCosteFabProducto.clear();
+				
+				// Deseleccionamos los componentes
+				opcionesComponentes.deselectAll();
+				
         		// Indicamos que se deselecciona el producto
         		System.out.println("Se ha deseleccionado el producto...");
     		}
@@ -342,6 +360,12 @@ public class MyUI extends UI {
         	labelCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         	labelPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         	labelFabricacionProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
+        	
+        	// Ponemos los datos en los campos
+        	campoNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+    		campoCantidadProducto.setValue(productoSeleccionado.getCantidadProducto().toString());
+    		campoPrecioProducto.setValue(productoSeleccionado.getPrecioProducto().toString());
+    		campoCosteFabProducto.setValue(productoSeleccionado.getPrecioFabricacionProducto().toString());
     	});
 
     	// Añadimos funcionalidad al botón de eliminar
@@ -475,7 +499,6 @@ public class MyUI extends UI {
         		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         		labelverPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
         		labelverPrecioFabProducto.setValue(Double.toString(productoSeleccionado.getPrecioFabricacionProducto()));
-
         		
         		// Indicamos que se ha modificado el producto
         		System.out.println("Se ha modificado el producto...");
@@ -492,6 +515,12 @@ public class MyUI extends UI {
         botonCerrar.addClickListener(e -> {
         	pestanaMasOpciones.close();
         	
+        	// Ponemos los datos en los campos
+        	campoNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+    		campoCantidadProducto.setValue(productoSeleccionado.getCantidadProducto().toString());
+    		campoPrecioProducto.setValue(productoSeleccionado.getPrecioProducto().toString());
+    		campoCosteFabProducto.setValue(productoSeleccionado.getPrecioFabricacionProducto().toString());
+    		
         	// Indicamos que se ha cerrado la pestaña
     		System.out.println("Se ha cerrado la pestaña...");
         });
@@ -629,6 +658,15 @@ public class MyUI extends UI {
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
         		}
         			
+        		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
+        		if (productoSeleccionado != null) {
+        			// Ponemos los datos en los campos
+	            	campoNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+	        		campoCantidadProducto.setValue(productoSeleccionado.getCantidadProducto().toString());
+	        		campoPrecioProducto.setValue(productoSeleccionado.getPrecioProducto().toString());
+	        		campoCosteFabProducto.setValue(productoSeleccionado.getPrecioFabricacionProducto().toString());
+        		}
+        		
         		// Indicamos que se ha cambiado a dólares
         		System.out.println("Se ha cambiado la divisa a dólares");
         		
@@ -640,6 +678,15 @@ public class MyUI extends UI {
         			prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
         		}
+        		
+        		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
+        		if (productoSeleccionado != null) {
+            		// Ponemos los datos en los campos
+                	campoNombreProducto.setValue(productoSeleccionado.getNombreProducto());
+            		campoCantidadProducto.setValue(productoSeleccionado.getCantidadProducto().toString());
+            		campoPrecioProducto.setValue(productoSeleccionado.getPrecioProducto().toString());
+            		campoCosteFabProducto.setValue(productoSeleccionado.getPrecioFabricacionProducto().toString());
+            		}
         		
         		// Indicamos que se ha cambiado a dólares
         		System.out.println("Se ha cambiado la divisa a euros");
