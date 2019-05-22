@@ -164,7 +164,7 @@ public class MyUI extends UI {
     	// Indicamos que en este campo es solo de lectura
     	campoDivisa.setReadOnly(true);
     	campoDivisa.setValue(divisa);
-    	
+
     	// Creamos unos checkbox para poder crear los productos
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
     	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
