@@ -52,7 +52,7 @@ public class MyUI extends UI {
         Almacen almacen = Almacen.getInstance();
 		
 		// Creamos unas nuevas pestañas
-		Window avisoError = new Window("Error");
+		Window avisoError = new Window("Aviso");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
 
 		// Creamos los FormLayout necesarios
