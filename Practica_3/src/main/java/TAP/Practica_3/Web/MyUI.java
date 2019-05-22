@@ -189,7 +189,7 @@ public class MyUI extends UI {
     	tablaDatos.addColumn(Productos::getCantidadProducto).setCaption("Cantidad existente");
     	tablaDatos.addColumn(Productos::getPrecioProducto).setCaption("Precio del producto");
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
-    	
+
     	// Indicamos que solo se puede seleccionar un producto a la vez
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	
@@ -321,7 +321,7 @@ public class MyUI extends UI {
 						// Damos valores a algunas variables
 						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
 						Double precioFinalProducto = precioEleccion + precioIntroducido;
-						
+												
 						// Añadimos el producto a la tabla
 						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
 								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
@@ -444,7 +444,7 @@ public class MyUI extends UI {
 		    		// Declaramos algunas variables
 					Double precioIntroducido1 = Double.parseDouble(campoCosteFabProducto.getValue());
 					Double precioFinalProducto1 = precioEleccion1 + precioIntroducido1;
-					
+
 					// Añadimos el producto
 					Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
 					Productos productoNuevo1 = new Productos(campoNombreProducto.getValue(), Integer.parseInt(campoCantidadProducto.getValue()),
@@ -630,6 +630,7 @@ public class MyUI extends UI {
 	        			// Actualizamos la página
 	        			pestanaMasOpciones.close();
 	        			
+	        			// Recargamos la página actual
 	        			Page.getCurrent().reload();
 	        		}
 	        	} else {    		
@@ -709,6 +710,7 @@ public class MyUI extends UI {
     	/******************** FUNCIONALIDAD DE LOS TRANSACCIONES ***************************/
     	/***********************************************************************************/
         
+    	
         // Añadimos funcionalidad al boton de introducir la transacción
         botonAniadirIngreso.addClickListener(e -> {
         	
