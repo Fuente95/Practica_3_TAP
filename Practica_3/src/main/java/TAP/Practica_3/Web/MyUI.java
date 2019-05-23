@@ -134,6 +134,7 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout11 = new VerticalLayout();
     	VerticalLayout verticalLayout12 = new VerticalLayout();
     	VerticalLayout verticalLayout13 = new VerticalLayout();
+    	VerticalLayout verticalLayout14 = new VerticalLayout();
     	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -337,8 +338,8 @@ public class MyUI extends UI {
 						
 						// Creamos la pestaña indicando el error
 			    		avisoError.center();
-			    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-			    		avisoError.setContent(verticalLayout11);
+			    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
+			    		avisoError.setContent(verticalLayout14);
 			    		addWindow(avisoError);
 						
 					} else {
@@ -480,8 +481,8 @@ public class MyUI extends UI {
 					
 					// Creamos la pestaña indicando el error
 		    		avisoError.center();
-		    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-		    		avisoError.setContent(verticalLayout11);
+		    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
+		    		avisoError.setContent(verticalLayout14);
 		    		addWindow(avisoError);
 		    		
 				} else {
@@ -577,8 +578,8 @@ public class MyUI extends UI {
 				
 				// Creamos la pestaña indicando el error
 	    		avisoError.center();
-	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-	    		avisoError.setContent(verticalLayout11);
+	    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
+	    		avisoError.setContent(verticalLayout14);
 	    		addWindow(avisoError);
 	    		
         	} else {
@@ -623,8 +624,8 @@ public class MyUI extends UI {
 				
 				// Creamos la pestaña indicando el error
 	    		avisoError.center();
-	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-	    		avisoError.setContent(verticalLayout11);
+	    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
+	    		avisoError.setContent(verticalLayout14);
 	    		addWindow(avisoError);
 	    		
         	} else {
@@ -797,8 +798,8 @@ public class MyUI extends UI {
 					
 					// Creamos la pestaña indicando el error
 		    		avisoError.center();
-		    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-		    		avisoError.setContent(verticalLayout11);
+		    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
+		    		avisoError.setContent(verticalLayout14);
 		    		addWindow(avisoError);
 		    		
 				} else {
