@@ -8,7 +8,7 @@ public class Historico {
 	private static Historico historicoTransacciones;
 	
 	// Creamos un ArrayList con las transacciones realizadas
-	private ArrayList<Transacciones> historico = null;
+	private ArrayList<Transacciones> historico;
 	
 	// Creamos el constructor
 	private Historico() {
