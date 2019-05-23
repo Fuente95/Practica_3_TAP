@@ -113,6 +113,7 @@ public class MyUI extends UI {
     	Label labelFaltaDatos = new Label("Error, existen datos sin completar");
     	Label labelProductoExistente = new Label("Producto ya existente");
     	Label labelNumerosNegativos = new Label("No puede haber números menores de cero");
+    	Label labelTransaccionExistente = new Label("Transacción ya existente");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -132,6 +133,7 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout10 = new VerticalLayout();
     	VerticalLayout verticalLayout11 = new VerticalLayout();
     	VerticalLayout verticalLayout12 = new VerticalLayout();
+    	VerticalLayout verticalLayout13 = new VerticalLayout();
     	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -765,53 +767,72 @@ public class MyUI extends UI {
         	Double costeTransaccion = 0.0;
         	String identificacion;
         	String tipo;
-
+        	Boolean existe1 = null;
+        	
         	// Obtenemos la fecha
         	java.util.Date fechaTrans = new Date();
         	
-        	// Comprobamos si los textfield estan vacios
-			if (campoIngreso.getValue().isEmpty()|| campoCosteTransaccion.getValue().isEmpty() ||
-					campoIdentificarTransaccion.getValue().isEmpty() || campoTipoTransacciones.getValue().isEmpty()){
-				
-				System.out.println("No se puede añadir la transacción, ya que faltan datos...");
-				
-				// Creamos la pestaña indicando el error
-	    		avisoError.center();
-	    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
-	    		avisoError.setContent(verticalLayout11);
-	    		addWindow(avisoError);
-	    		
-			} else {
-				// Damos valores a las variables creadas
-	        	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
-	        	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
-	        	identificacion = campoIdentificarTransaccion.getValue();
-	        	tipo = campoTipoTransacciones.getValue();
+        	// Creamos un iterador para recorrer la lista
+			Iterator<Transacciones> recorrerLista5 = Historico.getInstance().getHistoricoTransacciones().iterator();
+			
+			// Comprobamos si existe el producto en la lista
+			while (recorrerLista5.hasNext()) {
+				if(recorrerLista5.next().getIdentificacionTransaccion().equals(campoIdentificarTransaccion.getValue())) {
+					existe1 = true;
 
-	        	if(Double.parseDouble(campoIngreso.getValue()) < 0 || Double.parseDouble(campoCosteTransaccion.getValue()) < 0){
+					// Creamos la pestaña indicando el error
+		    		avisoError.center();
+		    		verticalLayout13.addComponents(labelTransaccionExistente, botonCerrarP);
+		    		avisoError.setContent(verticalLayout13);
+		    		addWindow(avisoError);
+				} 
+			}
+			
+			if (existe1 == null) {
+	        	// Comprobamos si los textfield estan vacios
+				if (campoIngreso.getValue().isEmpty()|| campoCosteTransaccion.getValue().isEmpty() ||
+						campoIdentificarTransaccion.getValue().isEmpty() || campoTipoTransacciones.getValue().isEmpty()){
+					
+					System.out.println("No se puede añadir la transacción, ya que faltan datos...");
 					
 					// Creamos la pestaña indicando el error
 		    		avisoError.center();
-		    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
+		    		verticalLayout11.addComponents(labelFaltaDatos, botonCerrarP);
 		    		avisoError.setContent(verticalLayout11);
 		    		addWindow(avisoError);
-	        	} else {
-			    	// Insertamos la nueva transacción
-			        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
-			
-			        // Añadimos la transacción al histórico y actualizamos la tabla
-			        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
-			        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
-			        	
-			        // Vaciamos los campos
-			        campoIngreso.clear();
-			        campoCosteTransaccion.clear();
-			        campoIdentificarTransaccion.clear();
-			        campoTipoTransacciones.clear();
-			        
-			        // Indicamos que se ha insertado la transacción
-			        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
-	        	}
+		    		
+				} else {
+					// Damos valores a las variables creadas
+		        	cantidadIngreso = Double.parseDouble(campoIngreso.getValue());
+		        	costeTransaccion = Double.parseDouble(campoCosteTransaccion.getValue());
+		        	identificacion = campoIdentificarTransaccion.getValue();
+		        	tipo = campoTipoTransacciones.getValue();
+	
+		        	if(Double.parseDouble(campoIngreso.getValue()) < 0 || Double.parseDouble(campoCosteTransaccion.getValue()) < 0){
+						
+						// Creamos la pestaña indicando el error
+			    		avisoError.center();
+			    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
+			    		avisoError.setContent(verticalLayout11);
+			    		addWindow(avisoError);
+		        	} else {
+				    	// Insertamos la nueva transacción
+				        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
+				
+				        // Añadimos la transacción al histórico y actualizamos la tabla
+				        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
+				        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+				        	
+				        // Vaciamos los campos
+				        campoIngreso.clear();
+				        campoCosteTransaccion.clear();
+				        campoIdentificarTransaccion.clear();
+				        campoTipoTransacciones.clear();
+				        
+				        // Indicamos que se ha insertado la transacción
+				        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
+		        	}
+				}
 			}
         });
     }
