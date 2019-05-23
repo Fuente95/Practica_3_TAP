@@ -50,7 +50,6 @@ public class MyUI extends UI {
     	
         // Creamos una instancia al almacen de productos y a las transacciones
         Almacen almacen = Almacen.getInstance();
-		Historico historico = Historico.getInstance();
 		
 		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Aviso");
@@ -77,6 +76,18 @@ public class MyUI extends UI {
     	TextField campoCosteTransaccion = new TextField("Coste de la transacción: ");
     	TextField campoDivisa = new TextField("Divisa actual: ");
     	TextField campoTipoTransacciones = new TextField("Tipo de transacción: ");
+    	
+    	// Introducimos los place holders en los campos
+    	campoNombreProducto.setPlaceholder("Campo de texto");
+    	campoCantidadProducto.setPlaceholder("Campo numérico");
+    	campoPrecioProducto.setPlaceholder("Campo numérico");
+    	campoCosteFabProducto.setPlaceholder("Campo numérico");
+    	campoIngreso.setPlaceholder("Campo numérico");
+    	campoAniadirProducto.setPlaceholder("Campo numérico");
+    	campoRestarProducto.setPlaceholder("Campo numérico");
+    	campoCosteTransaccion.setPlaceholder("Campo numérico");
+    	campoIdentificarTransaccion.setPlaceholder("Campo alfanúmerico");
+    	campoTipoTransacciones.setPlaceholder("Campo de texto");
     	
 		// Creamos los labels que usaremos para mostrar datos o información
 		Label labelIndicacionDatos = new Label("Datos de los productos:");
@@ -170,6 +181,7 @@ public class MyUI extends UI {
     	CheckBoxGroup<String> opcionesComponentes = new CheckBoxGroup<>("Selección de los componentes:");
     	Iterator<Productos> recorrerLista1 = Almacen.getInstance().getProductosAlmacen().iterator();
     	ArrayList<String> nombresComponentes = new ArrayList<String>() ;
+    	
 		while (recorrerLista1.hasNext()) {
 			nombresComponentes.add(recorrerLista1.next().getNombreProducto());
 		}
@@ -207,6 +219,7 @@ public class MyUI extends UI {
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
     	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha");
     	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste");
+    	tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());;
     	
     	// Indicamos el tamaño de la tabla
     	tablaTransacciones.setWidth("760px");
@@ -337,10 +350,13 @@ public class MyUI extends UI {
 						// Deseleccionamos los componentes
 						opcionesComponentes.deselectAll();
 						
-						// Actualizamos el contenido de la tabla y recargamos la página
-						tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+						// Recargamos la prágina
 						Page.getCurrent().reload();
 						
+						// Actualizamos las tablas
+	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+	        			
 						// Indicamos el producto que se ha añadido
 						System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
 					}
@@ -375,13 +391,20 @@ public class MyUI extends UI {
     		if (productoSeleccionado != null) {
     			// Se elimina el producto seleccionado
     			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
+    			
+    			// Recargamos la página
+    			Page.getCurrent().reload();
+    			
+    			// Actualizamos las tablas
     			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+    			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
     			
     			// Indicamos que se ha eliminado el producto
     			System.out.println("El producto se ha eliminado del almacen");
     			
+    			// Deseleccionamos el producto
     			productoSeleccionado = null;
-    			Page.getCurrent().reload();
+    			
     			
     		} else {
     			// Creamos una pestaña indicando el error
@@ -459,12 +482,12 @@ public class MyUI extends UI {
 					campoCantidadProducto.clear();
 					campoCosteFabProducto.clear();
 					
-					// Establecemos los nuevos datos
-					tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-	
 					// Recargamos la página
 					Page.getCurrent().reload();
 					
+					// Actualizamos las tablas
+        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        			
 					// Indicamos que se ha modificado el producto
 					System.out.println("Se ha modificado el producto...");
 		    	}
@@ -558,8 +581,9 @@ public class MyUI extends UI {
 	        		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
 	        		campoAniadirProducto.clear();
 	        		
-	        		// Actualizamos los datos en la tabla
-	        		tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        		// Actualizamos las tablas
+        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
 	
 	        	} else {
 	        		// Creamos una pestaña indicando el error
@@ -606,8 +630,9 @@ public class MyUI extends UI {
 	        			labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
 	        			campoRestarProducto.clear();
 	        			
-	        			// Actualizamos la tabla de datos
+	        			// Actualizamos las tablas
 	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
 	        			
 	        		// Si el resultado es menor o igual que 0
 	        		} else if (cantidadTotal <= 0){
@@ -625,14 +650,15 @@ public class MyUI extends UI {
 	        			Almacen.getInstance().getProductosAlmacen().remove(productoSeleccionado);
 	        			campoRestarProducto.clear();
 	        			
-	        			// Actualizamos la tabla de los datos
+	        			// Recargamos la página actual
+	        			Page.getCurrent().reload();
+	        			
+	        			// Actualizamos las tablas
 	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+	        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
 	        			
 	        			// Actualizamos la página
 	        			pestanaMasOpciones.close();
-	        			
-	        			// Recargamos la página actual
-	        			Page.getCurrent().reload();
 	        		}
 	        	} else {    		
 	        		// Creamos una pestaña indicando el error
@@ -659,11 +685,6 @@ public class MyUI extends UI {
         			prod.setPrecioProducto(prod.getPrecioProducto()*precioDolares);
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
         		}
-        			
-        		for(Transacciones trans : historico.getHistoricoTransacciones()) {
-        			trans.setCantidadTransaccion(trans.getCantidadTransaccion()*precioDolares);
-        			trans.setCosteTransaccion(trans.getCosteTransaccion()*precioDolares);
-        		}
         		
         		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
         		if (productoSeleccionado != null) {
@@ -685,12 +706,7 @@ public class MyUI extends UI {
         			prod.setPrecioProducto(prod.getPrecioProducto()/precioDolares);
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
         		}
-        		
-        		for(Transacciones trans : historico.getHistoricoTransacciones()) {
-        			trans.setCantidadTransaccion(trans.getCantidadTransaccion()/precioDolares);
-        			trans.setCosteTransaccion(trans.getCosteTransaccion()/precioDolares);
-        		}
-        		
+
         		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
         		if (productoSeleccionado != null) {
             		// Ponemos los datos en los campos
