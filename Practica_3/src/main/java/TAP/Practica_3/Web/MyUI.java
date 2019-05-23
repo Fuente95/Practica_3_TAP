@@ -48,8 +48,9 @@ public class MyUI extends UI {
 		// 1 Euro es un 1.2 Dólares
     	Double precioDolares = 1.2;
     	
-        // Creamos una instancia al almacen de productos
+        // Creamos una instancia al almacen de productos y a las transacciones
         Almacen almacen = Almacen.getInstance();
+		Historico historico = Historico.getInstance();
 		
 		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Aviso");
@@ -659,6 +660,11 @@ public class MyUI extends UI {
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()*precioDolares);
         		}
         			
+        		for(Transacciones trans : historico.getHistoricoTransacciones()) {
+        			trans.setCantidadTransaccion(trans.getCantidadTransaccion()*precioDolares);
+        			trans.setCosteTransaccion(trans.getCosteTransaccion()*precioDolares);
+        		}
+        		
         		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
         		if (productoSeleccionado != null) {
         			// Ponemos los datos en los campos
@@ -680,6 +686,11 @@ public class MyUI extends UI {
         			prod.setPrecioFabricacionProducto(prod.getPrecioFabricacionProducto()/precioDolares);
         		}
         		
+        		for(Transacciones trans : historico.getHistoricoTransacciones()) {
+        			trans.setCantidadTransaccion(trans.getCantidadTransaccion()/precioDolares);
+        			trans.setCosteTransaccion(trans.getCosteTransaccion()/precioDolares);
+        		}
+        		
         		// Si se ha seleccionado el producto, se aprecia en los campos el cambio
         		if (productoSeleccionado != null) {
             		// Ponemos los datos en los campos
@@ -695,6 +706,7 @@ public class MyUI extends UI {
         	
         	// Actualizamos la lista para ver los precios cambiados
         	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+        	tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
         });
         
         // Añadimos funcionalidad al botón de cerrar la pestaña
