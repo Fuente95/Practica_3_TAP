@@ -1,6 +1,5 @@
 package TAP.Practica_3.Inventario;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Transacciones {
