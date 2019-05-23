@@ -788,21 +788,30 @@ public class MyUI extends UI {
 	        	identificacion = campoIdentificarTransaccion.getValue();
 	        	tipo = campoTipoTransacciones.getValue();
 
-		    	// Insertamos la nueva transacción
-		        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
-		
-		        // Añadimos la transacción al histórico y actualizamos la tabla
-		        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
-		        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
-		        	
-		        // Vaciamos los campos
-		        campoIngreso.clear();
-		        campoCosteTransaccion.clear();
-		        campoIdentificarTransaccion.clear();
-		        campoTipoTransacciones.clear();
-		        
-		        // Indicamos que se ha insertado la transacción
-		        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
+	        	if(Double.parseDouble(campoIngreso.getValue()) < 0 || Double.parseDouble(campoCosteTransaccion.getValue()) < 0){
+					
+					// Creamos la pestaña indicando el error
+		    		avisoError.center();
+		    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
+		    		avisoError.setContent(verticalLayout11);
+		    		addWindow(avisoError);
+	        	} else {
+			    	// Insertamos la nueva transacción
+			        Transacciones nuevaTransaccion = new Transacciones(fechaTrans, identificacion, cantidadIngreso, costeTransaccion, tipo);
+			
+			        // Añadimos la transacción al histórico y actualizamos la tabla
+			        Historico.getInstance().getHistoricoTransacciones().add(nuevaTransaccion);
+			        tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+			        	
+			        // Vaciamos los campos
+			        campoIngreso.clear();
+			        campoCosteTransaccion.clear();
+			        campoIdentificarTransaccion.clear();
+			        campoTipoTransacciones.clear();
+			        
+			        // Indicamos que se ha insertado la transacción
+			        System.out.println("La transacción " + nuevaTransaccion.getIdentificacionTransaccion() + " se ha añadido al histórico");
+	        	}
 			}
         });
     }
