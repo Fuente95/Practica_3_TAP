@@ -112,6 +112,7 @@ public class MyUI extends UI {
     	Label labelDeseleccion2 = new Label("Debe seleccionar un producto");
     	Label labelFaltaDatos = new Label("Error, existen datos sin completar");
     	Label labelProductoExistente = new Label("Producto ya existente");
+    	Label labelNumerosNegativos = new Label("No puede haber números menores de cero");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -339,34 +340,43 @@ public class MyUI extends UI {
 			    		addWindow(avisoError);
 						
 					} else {
-						
 						// Damos valores a algunas variables
 						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
 						Double precioFinalProducto = precioEleccion + precioIntroducido;
 												
-						// Añadimos el producto a la tabla
-						Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
-								Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
-						Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
-						
-						// Limpiamos los campos rellenados y las opciones de los componentes
-						campoNombreProducto.clear();
-						campoPrecioProducto.clear();
-						campoCantidadProducto.clear();
-						campoCosteFabProducto.clear();
-						
-						// Deseleccionamos los componentes
-						opcionesComponentes.deselectAll();
-						
-						// Recargamos la prágina
-						Page.getCurrent().reload();
-						
-						// Actualizamos las tablas
-	        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
-	        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
-	        			
-						// Indicamos el producto que se ha añadido
-						System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
+						if(Double.parseDouble(campoPrecioProducto.getValue()) < 0 || Integer.parseInt(campoCantidadProducto.getValue()) < 0 ||
+								Double.parseDouble(campoCosteFabProducto.getValue()) < 0) {
+							
+							// Creamos la pestaña indicando el error
+				    		avisoError.center();
+				    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
+				    		avisoError.setContent(verticalLayout11);
+				    		addWindow(avisoError);
+						} else {
+							// Añadimos el producto a la tabla
+							Productos productoNuevo = new Productos(campoNombreProducto.getValue(),Integer.parseInt(campoCantidadProducto.getValue()),
+									Double.parseDouble(campoPrecioProducto.getValue()), precioFinalProducto, componentesProducto);
+							Almacen.getInstance().getProductosAlmacen().add(productoNuevo);
+							
+							// Limpiamos los campos rellenados y las opciones de los componentes
+							campoNombreProducto.clear();
+							campoPrecioProducto.clear();
+							campoCantidadProducto.clear();
+							campoCosteFabProducto.clear();
+							
+							// Deseleccionamos los componentes
+							opcionesComponentes.deselectAll();
+							
+							// Recargamos la prágina
+							Page.getCurrent().reload();
+							
+							// Actualizamos las tablas
+		        			tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
+		        			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
+		        			
+							// Indicamos el producto que se ha añadido
+							System.out.println("El producto " + productoNuevo.getNombreProducto() + " se ha añadido al almacen");
+						}
 					}
 				}
 	    	} else if (productoSeleccionado != null) {
