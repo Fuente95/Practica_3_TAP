@@ -1,5 +1,6 @@
 package TAP.Practica_3.Inventario;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Transacciones {
@@ -72,6 +73,7 @@ public class Transacciones {
 		return tipoTransaccion;
 	}
 	
+	// Setter del tipo
 	public void setTipoTransaccion (String tipoTransaccion) {
 		this.tipoTransaccion = tipoTransaccion;
 	}
