@@ -8,7 +8,7 @@ public class Almacen {
 	private static Almacen productosAlmacen;
 	
 	// Creamos un ArrayList con los productos del inventario
-	private ArrayList <Productos> almacen = null;
+	private ArrayList <Productos> almacen;
 	
 	// Creamos el constructor
 	private Almacen() {
