@@ -111,6 +111,7 @@ public class MyUI extends UI {
     	Label labelDeseleccion = new Label("Se ha deseleccionado el producto");
     	Label labelDeseleccion2 = new Label("Debe seleccionar un producto");
     	Label labelFaltaDatos = new Label("Error, existen datos sin completar");
+    	Label labelProductoExistente = new Label("Producto ya existente");
     	
         // Creamos los horizontallayout necesarios
     	HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -129,6 +130,7 @@ public class MyUI extends UI {
     	VerticalLayout verticalLayout9 = new VerticalLayout();
     	VerticalLayout verticalLayout10 = new VerticalLayout();
     	VerticalLayout verticalLayout11 = new VerticalLayout();
+    	VerticalLayout verticalLayout12 = new VerticalLayout();
     	
     	// Creamos las tablas qué usaremos para visualizar datos
     	Grid<Productos> tablaDatos = new Grid<Productos>();
@@ -148,7 +150,7 @@ public class MyUI extends UI {
     	// Creamos lo botones para cerrar las pestañas
         Button botonCerrar = new Button("Cerrar pestaña");
         Button botonCerrarP = new Button("Cerrar pestaña");
-        
+       
     	// Damos un formato a los distintos campos, botones, labels
     	campoNombreProducto.setWidth("260px");
     	campoCantidadProducto.setWidth("260px");
@@ -293,6 +295,12 @@ public class MyUI extends UI {
     			while (recorrerLista2.hasNext()) {
     				if(recorrerLista2.next().getNombreProducto().equals(campoNombreProducto.getValue())) {
     					existe = true;
+
+    					// Creamos la pestaña indicando el error
+			    		avisoError.center();
+			    		verticalLayout12.addComponents(labelProductoExistente, botonCerrarP);
+			    		avisoError.setContent(verticalLayout12);
+			    		addWindow(avisoError);
     				} 
     			}
     			
@@ -318,7 +326,7 @@ public class MyUI extends UI {
 					}
 						
 					// Comprobamos si los textfield estan vacios
-					if (campoNombreProducto.getValue().isEmpty()|| campoCantidadProducto.getValue().isEmpty() ||
+					if (campoNombreProducto.getValue().isEmpty() || campoCantidadProducto.getValue().isEmpty() ||
 						campoPrecioProducto.getValue().isEmpty() || campoCosteFabProducto.getValue().isEmpty()){
 						
 						// Indicamos que faltan datos por rellenar
