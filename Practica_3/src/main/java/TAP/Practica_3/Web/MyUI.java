@@ -909,6 +909,7 @@ public class MyUI extends UI {
     		}
         });
         
+        // Adición de funcionalidad al botón de deseleccionar transacción
         botonDeselecionarT.addClickListener(e -> {
         	// Si no hay una transacción seleccionada, lo indicamos con una pestaña
     		if (transaccionSeleccionada == null) {
