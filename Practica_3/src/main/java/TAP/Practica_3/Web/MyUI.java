@@ -51,7 +51,7 @@ public class MyUI extends UI {
     	
         // Creamos una instancia al almacen de productos y a las transacciones
         Almacen almacen = Almacen.getInstance();
-		
+
 		// Creamos unas nuevas pestañas
 		Window avisoError = new Window("Aviso");
 		Window pestanaMasOpciones = new Window("Opciones disponibles");
@@ -477,6 +477,7 @@ public class MyUI extends UI {
 					productos.setPrecioFabricacionProducto(productos.getPrecioFabricacionProducto()/precioDolares);
 				}
     		}
+
     	});
 
     	// Añadimos funcionalidad al botón de modificar
