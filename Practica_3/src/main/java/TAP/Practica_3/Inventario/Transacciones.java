@@ -11,9 +11,8 @@ public class Transacciones {
 	private Double costeTransaccion = 0.0;
 	private String tipoTransaccion;
 	
-	public Transacciones() {
-		
-	}
+	// Creamos constructor vacio
+	public Transacciones() {}
 
 	// Creamos el constructor
 	public Transacciones (Date fechaTransaccion, String identificacionTransaccion, 
