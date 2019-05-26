@@ -41,7 +41,7 @@ public class MyUI extends UI {
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
 		
-		// Cargamos los productos que se encuentran por defecto 
+		// Cargamos los productos que se encuentran de forma predeterminada
 		Predeterminado productosPre = new Predeterminado();
 		productosPre.Predeterminado();
 		
@@ -49,7 +49,7 @@ public class MyUI extends UI {
 		// 1 Euro es un 1.2 Dólares
     	Double precioDolares = 1.2;
     	
-        // Creamos una instancia al almacen de productos y a las transacciones
+        // Creamos una instancia al almacen de productos
         Almacen almacen = Almacen.getInstance();
 
 		// Creamos unas nuevas pestañas
@@ -223,11 +223,11 @@ public class MyUI extends UI {
     	tablaDatos.addColumn(Productos::getPrecioProducto).setCaption("Precio del producto");
     	tablaDatos.addColumn(Productos::getPrecioFabricacionProducto).setCaption("Coste de fabricación");
 
-    	// Indicamos que solo se puede seleccionar un producto a la vez
+    	// Indicamos que solo se puede seleccionar un producto y una transacción a la vez
     	tablaDatos.setSelectionMode(SelectionMode.SINGLE);
     	tablaTransacciones.setSelectionMode(SelectionMode.SINGLE);
     	
-    	// Indicamos que los datos de la tabla se encuentra en el array Productos
+    	// Indicamos donde se encuentran los datos
     	tablaDatos.setItems(Almacen.getInstance().getProductosAlmacen());
     	
     	// Establecemos el tamaño de la tabla
@@ -240,6 +240,8 @@ public class MyUI extends UI {
     	tablaTransacciones.addColumn(Transacciones::getCantidadTransaccion).setCaption("Efectivo traspasado");
     	tablaTransacciones.addColumn(Transacciones::getFechaTransaccion).setCaption("Fecha");
     	tablaTransacciones.addColumn(Transacciones::getCosteTransaccion).setCaption("Coste");
+    	
+    	// Indicamos donde se encuentran los datos
     	tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());;
     	
     	// Indicamos el tamaño de la tabla
@@ -283,6 +285,8 @@ public class MyUI extends UI {
         		
         		// Indicamos que no se selecciona ningún producto
         		productoSeleccionado = null;
+        		
+        		// Mostramos la pestaña avisando el error
         		avisoError.center();
     			verticalLayout9.addComponents(labelDeseleccion, botonCerrarP);
     			avisoError.setContent(verticalLayout9);
@@ -306,6 +310,7 @@ public class MyUI extends UI {
     	botonAniadirProducto.addClickListener(e -> {
     		// Comprobamos si se ha seleccionado un producto en la tabla
     		if(productoSeleccionado == null) {
+    			// Creamos una variable para usarla como indicación de la existencia o no del producto
     			Boolean existe = null;
     			
     			// Creamos un iterador para recorrer la lista
@@ -314,9 +319,10 @@ public class MyUI extends UI {
     			// Comprobamos si existe el producto en la lista
     			while (recorrerLista2.hasNext()) {
     				if(recorrerLista2.next().getNombreProducto().equals(campoNombreProducto.getValue())) {
+    					// Indicamos que existe el producto
     					existe = true;
 
-    					// Creamos la pestaña indicando el error
+    					// Mostramos la pestaña indicando el error
 			    		avisoError.center();
 			    		verticalLayout12.addComponents(labelProductoExistente, botonCerrarP);
 			    		avisoError.setContent(verticalLayout12);
@@ -332,8 +338,10 @@ public class MyUI extends UI {
 					// Indicmaos el precio inicial
 					double precioEleccion = 0.0;
 						
-					// Creamos el array necesario
+					// Creamos el array de los componentesProducto
 					ArrayList<Productos> componentesProducto = new ArrayList<Productos>();
+					
+					// Creamos un iterador para recorrer la lista
 					Iterator<Productos> recorrerLista3 = Almacen.getInstance().getProductosAlmacen().iterator();
 					
 					// Recorremos la lista con los datos
@@ -352,7 +360,7 @@ public class MyUI extends UI {
 						// Indicamos que faltan datos por rellenar
 						System.out.println("No se puede añadir el producto, ya que faltan datos...");
 						
-						// Creamos la pestaña indicando el error
+						// Mostramos la pestaña indicando el error
 			    		avisoError.center();
 			    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
 			    		avisoError.setContent(verticalLayout14);
@@ -363,10 +371,11 @@ public class MyUI extends UI {
 						Double precioIntroducido = Double.parseDouble(campoCosteFabProducto.getValue());
 						Double precioFinalProducto = precioEleccion + precioIntroducido;
 												
+						// Comprobamos la existencia de números negativos
 						if(Double.parseDouble(campoPrecioProducto.getValue()) < 0 || Integer.parseInt(campoCantidadProducto.getValue()) < 0 ||
 								Double.parseDouble(campoCosteFabProducto.getValue()) < 0) {
 							
-							// Creamos la pestaña indicando el error
+							// Mostramos la pestaña indicando el error
 				    		avisoError.center();
 				    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
 				    		avisoError.setContent(verticalLayout11);
@@ -399,7 +408,7 @@ public class MyUI extends UI {
 					}
 				}
 	    	} else if (productoSeleccionado != null) {
-				// Creamos la pestaña indicando el error
+				// Mostramos la pestaña indicando el error
 	    		avisoError.center();
 	    		verticalLayout3.addComponents(labelerrorConProducto, botonCerrarP);
 	    		avisoError.setContent(verticalLayout3);
@@ -424,6 +433,7 @@ public class MyUI extends UI {
     	
     	// Selección de transacciones por pantalla
     	tablaTransacciones.addItemClickListener(event -> {
+    		// Indicamos que cogemos una transacción
     		transaccionSeleccionada = event.getItem();
 
     		// Ponemos los datos en los campos
@@ -454,7 +464,7 @@ public class MyUI extends UI {
     			productoSeleccionado = null;
     			
     		} else {
-    			// Creamos una pestaña indicando el error
+    			// Mostramos la pestaña indicando el error
         		avisoError.center();
         		verticalLayout4.addComponents(labelerrorSinProducto, botonCerrarP);
         		avisoError.setContent(verticalLayout4);
@@ -485,12 +495,13 @@ public class MyUI extends UI {
     		// Comprobamos si se ha escogido un producto
     		if (productoSeleccionado != null) {
 	    		Set <String> eleccionComponentes1 = opcionesComponentes.getValue();
-				double precioEleccion1 = 0.0;
+				Double precioEleccion1 = 0.0;
 				
 				// Creamos el array necesario
 				ArrayList<Productos> componentesProducto1 = new ArrayList<Productos>();
 				Iterator<Productos> recorrerLista4 = Almacen.getInstance().getProductosAlmacen().iterator();
 				
+				// Recorremos la lista
 				while(recorrerLista4.hasNext()) {
 					Productos siguienteComponente1 = recorrerLista4.next();
 					if(eleccionComponentes1.contains(siguienteComponente1.getNombreProducto())) {
@@ -506,17 +517,18 @@ public class MyUI extends UI {
 					// Indicamos que faltan datos por rellenar
 					System.out.println("No se puede modificar el producto, ya que faltan datos...");
 					
-					// Creamos la pestaña indicando el error
+					// Mostramos la pestaña indicando el error
 		    		avisoError.center();
 		    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
 		    		avisoError.setContent(verticalLayout14);
 		    		addWindow(avisoError);
 		    		
 				} else {
+					// Comprobamos la existencia de números negativos
 					if(Double.parseDouble(campoPrecioProducto.getValue()) < 0 || Integer.parseInt(campoCantidadProducto.getValue()) < 0 ||
 							Double.parseDouble(campoCosteFabProducto.getValue()) < 0) {
 						
-						// Creamos la pestaña indicando el error
+						// Mostramos la pestaña indicando el error
 			    		avisoError.center();
 			    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
 			    		avisoError.setContent(verticalLayout11);
@@ -550,7 +562,7 @@ public class MyUI extends UI {
 					} 
 				}
     		} else {
-		    	// Creamos una pestaña indicando el error
+		    	// Mostramos la pestaña indicando el error
 		        avisoError.center();
 		        verticalLayout5.addComponents(labelerrorSinProducto, botonCerrarP);
 		        avisoError.setContent(verticalLayout5);
@@ -577,6 +589,7 @@ public class MyUI extends UI {
         		// Hacemos que aparezca la nueva pestaña
         		addWindow(pestanaMasOpciones);
         		
+        		// Indicamos los datos que se verán en los labels
         		labelverNombreProducto.setValue(productoSeleccionado.getNombreProducto());
         		labelverCantidadProducto.setValue(Integer.toString(productoSeleccionado.getCantidadProducto()));
         		labelverPrecioProducto.setValue(Double.toString(productoSeleccionado.getPrecioProducto()));
@@ -585,7 +598,7 @@ public class MyUI extends UI {
         		// Indicamos que se ha modificado el producto
         		System.out.println("Se ha modificado el producto...");
         	} else {
-        		// Creamos una pestaña indicando el error
+        		// Mostramos la pestaña indicando el error
         		avisoError.center();
         		verticalLayout6.addComponents(labelerrorSinProducto, botonCerrarP);
         		avisoError.setContent(verticalLayout6);
@@ -644,7 +657,7 @@ public class MyUI extends UI {
         			tablaTransacciones.setItems(Historico.getInstance().getHistoricoTransacciones());
 	
 	        	} else {
-	        		// Creamos una pestaña indicando el error
+	        		// Mostramos la pestaña indicando el error
 	        		avisoError.center();
 	        		verticalLayout7.addComponents(labelerrorSuma, botonCerrarP);
 	        		avisoError.setContent(verticalLayout7);
@@ -657,6 +670,7 @@ public class MyUI extends UI {
         botonRestarCantidad.addClickListener(e -> {
         	// Comprobamos si el textfield esta vacío
         	if (campoRestarProducto.getValue().isEmpty()) {
+        		// Indicamos que no se puede realizar la operación
         		System.out.println("No se puede realizar la operación ya que faltan datos...");
 				
 				// Creamos la pestaña indicando el error
@@ -719,7 +733,7 @@ public class MyUI extends UI {
 	        			pestanaMasOpciones.close();
 	        		}
 	        	} else {    		
-	        		// Creamos una pestaña indicando el error
+	        		// Mostramos la pestaña indicando el error
 	        		avisoError.center();
 	        		verticalLayout8.addComponents(labelerrorResta, botonCerrarP);
 	        		avisoError.setContent(verticalLayout8);
@@ -816,9 +830,10 @@ public class MyUI extends UI {
 				// Comprobamos si existe la transacción en la lista
 				while (recorrerLista5.hasNext()) {
 					if(recorrerLista5.next().getIdentificacionTransaccion().equals(campoIdentificarTransaccion.getValue())) {
+						// Indicamos que existe
 						existe1 = true;
 	
-						// Creamos la pestaña indicando el error
+						// Mostramos la pestaña indicando el error
 			    		avisoError.center();
 			    		verticalLayout13.addComponents(labelTransaccionExistente, botonCerrarP);
 			    		avisoError.setContent(verticalLayout13);
@@ -831,9 +846,10 @@ public class MyUI extends UI {
 					if (campoIngreso.getValue().isEmpty()|| campoCosteTransaccion.getValue().isEmpty() ||
 							campoIdentificarTransaccion.getValue().isEmpty() || campoTipoTransacciones.getValue().isEmpty()){
 						
+						// Indicamos que no se puede añadir la transacción
 						System.out.println("No se puede añadir la transacción, ya que faltan datos...");
 						
-						// Creamos la pestaña indicando el error
+						// Mostramos la pestaña indicando el error
 			    		avisoError.center();
 			    		verticalLayout14.addComponents(labelFaltaDatos, botonCerrarP);
 			    		avisoError.setContent(verticalLayout14);
@@ -846,9 +862,10 @@ public class MyUI extends UI {
 			        	identificacion = campoIdentificarTransaccion.getValue();
 			        	tipo = campoTipoTransacciones.getValue();
 		
+			        	// Comprobamos la existencia de números negativos
 			        	if(Double.parseDouble(campoIngreso.getValue()) < 0 || Double.parseDouble(campoCosteTransaccion.getValue()) < 0){
 							
-							// Creamos la pestaña indicando el error
+							// Mostramos la pestaña indicando el error
 				    		avisoError.center();
 				    		verticalLayout11.addComponents(labelNumerosNegativos, botonCerrarP);
 				    		avisoError.setContent(verticalLayout11);
@@ -873,7 +890,7 @@ public class MyUI extends UI {
 					}
 				}
 			} else if (transaccionSeleccionada != null){
-				// Creamos una pestaña indicando el error
+				// Mostramos la pestaña indicando el error
         		avisoError.center();
         		verticalLayout16.addComponents(labelErrorConTransaccion, botonCerrarP);
         		avisoError.setContent(verticalLayout16);
@@ -901,7 +918,7 @@ public class MyUI extends UI {
     			// Deseleccionamos el producto
     			transaccionSeleccionada = null;
     		} else {
-    			// Creamos una pestaña indicando el error
+    			// Mostramos la pestaña indicando el error
         		avisoError.center();
         		verticalLayout15.addComponents(labelErrorSinTransaccion, botonCerrarP);
         		avisoError.setContent(verticalLayout15);
@@ -913,6 +930,7 @@ public class MyUI extends UI {
         botonDeselecionarT.addClickListener(e -> {
         	// Si no hay una transacción seleccionada, lo indicamos con una pestaña
     		if (transaccionSeleccionada == null) {
+    			// Mostramos la pestaña indicando el error
     			avisoError.center();
     			verticalLayout17.addComponents(labelDeseleccion4, botonCerrarP);
     			avisoError.setContent(verticalLayout17);
@@ -932,6 +950,8 @@ public class MyUI extends UI {
         		
         		// Indicamos que no se selecciona ninguna transacción
         		transaccionSeleccionada = null;
+        		
+        		// Mostramos la pestaña indicando el error
         		avisoError.center();
     			verticalLayout18.addComponents(labelDeseleccion3, botonCerrarP);
     			avisoError.setContent(verticalLayout18);
