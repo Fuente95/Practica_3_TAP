@@ -13,9 +13,8 @@ public class Productos {
 	// Creamos un arraylist con los componentes de cada producto
 	private ArrayList<Productos> componentesProducto;
 	
-	public Productos() {
-		
-	}
+	// Creamos un constructor vacio
+	public Productos() {}
 	
 	// Creamos el constructor
 	public Productos(String nombreProducto, Integer cantidadProducto, Double precioProducto, Double preciofabProducto,
